@@ -48,10 +48,15 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Data / ML / AI | Python, Jupyter, pandas, PyTorch, scikit-learn, pipelines | `references/data-ml.md` |
 | DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS, GCP, Azure | `references/devops.md` |
 | Full-stack | Frontend + backend together, Next.js, Nuxt, SvelteKit | `references/fullstack.md` + `references/frontend.md` + `references/backend.md` |
+| Other / Unrecognized | Embedded, game dev, firmware, desktop, or anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
+**If no reference file matches**: Proceed with the base workflows without type-specific enrichment. The base templates, questions, and review dimensions still apply. Ask the user for domain-specific conventions, review criteria, and common patterns — then capture those directly in `context/conventions.md` as a custom reference.
+
 If the project spans multiple types, load all relevant reference files. When conventions from different references conflict (e.g., file naming patterns), ask the user which convention to follow and capture the decision in `context/decisions.md`.
+
+**Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap (e.g., naming, project structure, API design). Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
 
 ---
 
@@ -67,6 +72,29 @@ If the project spans multiple types, load all relevant reference files. When con
 | Vague or unclear | → Ask: *"Are you starting a new project, working on a feature prompt, or reviewing something the AI generated?"* |
 
 **If context files don't exist yet:** Don't block the user. Proceed with the requested workflow and suggest context files afterward.
+
+### Returning to an existing PDD project
+
+When the user comes back to a project that already has context files, start by checking freshness:
+
+1. *"Has anything changed since your context files were last updated — new stack decisions, shifted scope, or added constraints?"*
+2. If yes → Workflow 2 (update context) before proceeding
+3. If no → proceed to the requested workflow
+
+This prevents stale context from silently degrading future prompts.
+
+### Workflow transitions
+
+After completing any workflow, suggest the natural next step:
+
+| Just finished | Suggest next |
+|---|---|
+| **Scaffold** | → Workflow 2 (Context): *"Structure is ready. Want to write `context/project.md`?"* |
+| **Context** | → Workflow 3 (Prompts): *"Context is set. Ready to write your first feature prompt?"* |
+| **Prompts** | → Run the prompt, then → Workflow 5 (Review): *"Run this prompt and paste the output — I'll review it."* |
+| **Update** | → Re-run the prompt, then → Workflow 5 (Review): *"Try the updated prompt and I'll review the new output."* |
+| **Review** — issues found | → Fix code, or → Workflow 4 (Update) if the prompt needs work |
+| **Review** — looks good | → Commit both prompt and output |
 
 ---
 
@@ -94,6 +122,22 @@ mkdir <project-name>\context && mkdir <project-name>\outputs && mkdir <project-n
 cd <project-name> && git init
 type nul > context\project.md && type nul > context\conventions.md
 type nul > context\decisions.md && type nul > README.md
+```
+
+### Windows (PowerShell)
+
+```powershell
+New-Item -ItemType Directory -Force -Path `
+  <project-name>\prompts\system, `
+  <project-name>\prompts\features, `
+  <project-name>\prompts\templates, `
+  <project-name>\prompts\experiments, `
+  <project-name>\context, `
+  <project-name>\outputs, `
+  <project-name>\evals
+Set-Location <project-name>
+git init
+New-Item context\project.md, context\conventions.md, context\decisions.md, README.md
 ```
 
 ### No CLI / non-technical user
@@ -197,6 +241,20 @@ Draft from their answer, or use the type-specific starter from the reference fil
 **Don't suggest**: <alternatives to avoid>
 ```
 
+### Updating existing context files
+
+When the user returns to update context (not write from scratch):
+
+1. **Read the existing files** — `project.md`, `conventions.md`, `decisions.md`
+2. **Ask targeted questions** to surface what's changed:
+   - *"Has the tech stack changed — new libraries, dropped tools, version bumps?"*
+   - *"Any new architectural decisions that aren't captured in `decisions.md`?"*
+   - *"Have any constraints or conventions shifted since this was written?"*
+3. **Diff against reality** — if you can see the codebase, compare what the context claims vs. what actually exists (e.g., context says Express but code imports Fastify)
+4. **Update in place** — don't rewrite the whole file. Edit the specific sections that are stale, and add a `**Last updated**: <date>` line at the top of each file
+
+The goal is surgical updates, not rewrites. Stale context is worse than no context — it actively misleads.
+
 ### Edge cases
 
 - **Monorepo**: Root `context/project.md` for the system + `context/` inside each sub-project
@@ -283,6 +341,17 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 - Number prompts sequentially: `feature-name-01-schema.md`, `feature-name-02-api.md`, `feature-name-03-ui.md`
 - Review each step's output before running the next prompt
 - If a step fails, fix it (Workflow 4) before continuing the chain
+
+**Chain failure recovery**:
+When a step in the chain fails or produces bad output:
+
+1. **Fix the failing step** using Workflow 4 (Update) — diagnose and apply targeted fixes to that step's prompt
+2. **Re-run the fixed step** and verify the output is correct
+3. **Check earlier outputs for compatibility** — if the fix changed the output shape (e.g., different schema fields), earlier steps' outputs may still be valid but later steps that depend on the failed step need re-evaluation
+4. **Re-run downstream steps** — any step whose `Depends on` includes the fixed step must be re-run against the corrected output
+5. **Don't re-run upstream steps** unless the failure revealed a problem in their output too
+
+If the failure reveals that the chain's decomposition was wrong (e.g., steps 2 and 3 should have been one step), restructure the chain before continuing.
 
 ### Edge cases
 
@@ -372,6 +441,16 @@ Act as a critical reviewer. Load the project type reference file for the type-sp
 
 *Then apply the type-specific checklist from the reference file.*
 
+### Issue severity
+
+When listing issues, tag each with a severity level so the user knows what to fix now vs. later:
+
+| Severity | Meaning | Action |
+|---|---|---|
+| **Blocking** | Broken, insecure, or violates a hard constraint — will cause problems in production | Must fix before committing |
+| **Should fix** | Wrong pattern, missing edge case, or convention violation — will cause problems later | Fix before or soon after committing |
+| **Consider** | Style nit, minor improvement, or optional enhancement — won't cause problems | Fix if time allows, otherwise skip |
+
 ### Output format
 
 ```
@@ -379,9 +458,12 @@ Act as a critical reviewer. Load the project type reference file for the type-sp
 <concrete strengths — don't skip even if problems exist>
 
 ⚠️ Issues to fix before committing
-<specific problems + fixes, in priority order>
+<[Blocking] or [Should fix] — specific problem + fix, highest severity first>
 
-💡 Prompt improvement
+💡 Suggestions
+<[Consider] — optional improvements>
+
+🔧 Prompt improvement
 <how to revise the prompt for better output next time>
 
 📋 Next step
@@ -452,6 +534,16 @@ Save scripts to `evals/scripts/` and run them after each generation.
 - After creating a new prompt (Workflow 3) — run it 2–3 times and fill out the checklist
 - After updating a prompt (Workflow 4) — compare against baseline
 - After a model update — re-run key prompts and check for drift
+
+### When to promote eval levels
+
+| From | To | When |
+|---|---|---|
+| No eval | Level 1 (checklist) | Immediately — every prompt should have at least a checklist after its first run |
+| Level 1 | Level 2 (diff baseline) | After 5+ successful runs — the prompt is stable enough that a baseline is meaningful |
+| Level 2 | Level 3 (automated) | When the prompt runs regularly (weekly+) or is used by multiple people — manual checks don't scale |
+
+Don't skip levels. A prompt that hasn't been run enough to establish a baseline won't benefit from automated checks — you'd be automating the wrong assumptions.
 
 ---
 
