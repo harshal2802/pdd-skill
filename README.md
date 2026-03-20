@@ -8,6 +8,72 @@ We've also built and published a complete Claude skill for PDD — with project-
 
 ---
 
+## Installation
+
+The PDD skill consists of the core skill definition (`SKILL.md`) plus domain-specific reference guides in `references/` that get loaded based on your project type. You need the full repository, not just a single file.
+
+### Claude Code
+
+**Option 1 — Clone into your project (recommended)**
+
+```bash
+# From your project root
+git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
+```
+
+Then reference the skill in your `.claude/settings.json`:
+
+```json
+{
+  "skills": [".claude/skills/pdd-skill/SKILL.md"]
+}
+```
+
+**Option 2 — Clone standalone and reference globally**
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git ~/pdd-skill
+```
+
+Add to your global settings (`~/.claude/settings.json`):
+
+```json
+{
+  "skills": ["~/pdd-skill/SKILL.md"]
+}
+```
+
+### GitHub Copilot
+
+GitHub Copilot doesn't use the same skill system. To use PDD with Copilot:
+
+1. Clone the repo into your project:
+   ```bash
+   git clone https://github.com/harshal2802/pdd-skill.git .pdd
+   ```
+
+2. Copy the core content into Copilot's custom instructions file:
+   ```bash
+   cp .pdd/SKILL.md .github/copilot-instructions.md
+   ```
+
+3. Reference the relevant reference guide for your project type in your prompts (e.g., `.pdd/references/frontend.md` for React projects).
+
+### What's included
+
+| Path | Purpose |
+|---|---|
+| `SKILL.md` | Core skill definition — five workflows, detection logic, prompt templates |
+| `references/frontend.md` | Context questions, conventions, and review checklists for frontend/UI projects |
+| `references/backend.md` | Same for backend/API projects |
+| `references/mobile.md` | Same for mobile (iOS, Android, cross-platform) |
+| `references/data-ml.md` | Same for data science and ML projects |
+| `references/devops.md` | Same for DevOps and infrastructure |
+| `references/fullstack.md` | Same for full-stack projects (also loads frontend + backend refs) |
+| `examples/` | Complete PDD example for a Task Management API |
+
+---
+
 ## What is Prompt Driven Development?
 
 PDD is a development approach where prompts — instructions given to AI models — are treated as first-class artifacts, not throwaway inputs. Andrew Miller, one of the earliest writers to formalize the term, describes it as a workflow where the developer is primarily prompting an LLM to generate all necessary code, with the developer reviewing changes rather than writing code themselves. Just as traditional development has source code, tests, and documentation, PDD has a structured set of prompts, context files, and outputs that together define how a project is built.
