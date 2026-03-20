@@ -24,6 +24,26 @@ This matters because without structure, AI-assisted development tends to drift. 
 
 A common trap with AI tools is treating them like a smarter autocomplete. You type a vague request, get something plausible-looking, copy it in, and move on. This works fine for one-off tasks — but it doesn't scale.
 
+```mermaid
+graph LR
+    subgraph without["❌ Without Structure"]
+        direction TB
+        A1[Session 1] -->|context lost| A2[Session 2]
+        A2 -->|context lost| A3[Session 3]
+        A3 -->|contradicts Session 1| A4[Drift & Rework]
+    end
+
+    subgraph with["✅ With PDD Structure"]
+        direction TB
+        B1[Session 1] -->|updates context/| B2[Session 2]
+        B2 -->|reads context/| B3[Session 3]
+        B3 -->|consistent & compounding| B4[Reliable Output]
+    end
+
+    style without fill:#2d1117,stroke:#f85149,color:#fff
+    style with fill:#0d1117,stroke:#3fb950,color:#fff
+```
+
 Here's what happens without structure:
 
 **Context drift**: Every new session starts cold. The AI doesn't know your stack, your conventions, or what you built last week.
@@ -54,6 +74,27 @@ my-project/
 ├── outputs/             # Reviewed, committed AI-generated artifacts
 ├── evals/               # Tests for prompt quality and output correctness
 └── README.md
+```
+
+```mermaid
+graph TB
+    subgraph layers["PDD Project Layers"]
+        direction TB
+        CX["🧠 Context Layer\nproject.md · conventions.md · decisions.md"]
+        PR["📝 Prompt Layer\nsystem/ · features/ · templates/ · experiments/"]
+        OU["📦 Output Layer\nReviewed, committed AI-generated artifacts"]
+        EV["✅ Eval Layer\nTests for prompt quality & output correctness"]
+    end
+
+    CX -->|"feeds into"| PR
+    PR -->|"generates"| OU
+    OU -->|"validated by"| EV
+    EV -->|"informs updates to"| CX
+
+    style CX fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style PR fill:#8957e5,stroke:#bc8cff,color:#fff
+    style OU fill:#238636,stroke:#3fb950,color:#fff
+    style EV fill:#da3633,stroke:#f85149,color:#fff
 ```
 
 The four layers each serve a distinct purpose:
@@ -90,16 +131,24 @@ A React app and a Python data pipeline both need a `project.md` and versioned pr
 
 The skill handles this cleanly without requiring separate tools for each project type. The core `SKILL.md` detects the project type — either from the tech stack in `context/project.md`, from what the user says, or by asking — and then loads the appropriate reference file:
 
-```
-pdd-skill/
-├── SKILL.md                    ← universal core (five workflows)
-└── references/
-    ├── frontend.md             ← context questions, conventions, review checklist
-    ├── backend.md
-    ├── mobile.md
-    ├── data-ml.md
-    ├── devops.md
-    └── fullstack.md
+```mermaid
+graph TB
+    SKILL["SKILL.md\nUniversal Core · Five Workflows"]
+
+    SKILL -->|detects type| DETECT{"Project Type\nDetection"}
+
+    DETECT -->|"React, Vue, etc."| FE["references/frontend.md"]
+    DETECT -->|"Express, Django, etc."| BE["references/backend.md"]
+    DETECT -->|"iOS, Android, etc."| MO["references/mobile.md"]
+    DETECT -->|"pandas, PyTorch, etc."| DA["references/data-ml.md"]
+    DETECT -->|"Terraform, K8s, etc."| DV["references/devops.md"]
+    DETECT -->|"Next.js, Rails, etc."| FS["references/fullstack.md"]
+
+    FE & BE & MO & DA & DV & FS -->|enriches| OUT["Context Questions\nConventions Templates\nReview Checklists"]
+
+    style SKILL fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style DETECT fill:#8957e5,stroke:#bc8cff,color:#fff
+    style OUT fill:#238636,stroke:#3fb950,color:#fff
 ```
 
 Each reference file enriches three things: the context file questions and templates, the conventions starter content, and the review checklist — all tailored to that project type.
@@ -110,14 +159,23 @@ Each reference file enriches three things: the context file questions and templa
 
 For any given feature or task, the loop looks like this:
 
-```
-Detect project type
-  → Define intent clearly
-      → Write a context-rich prompt
-          → Generate output
-              → Review + edit (treat it like a PR)
-                  → Commit output AND the prompt that produced it
-                      → Update context/decisions.md if anything changed
+```mermaid
+graph LR
+    A["🔍 Detect\nProject Type"] --> B["🎯 Define\nIntent"]
+    B --> C["✍️ Write\nPrompt"]
+    C --> D["⚡ Generate\nOutput"]
+    D --> E["👀 Review\n& Edit"]
+    E --> F["💾 Commit\nPrompt + Output"]
+    F --> G["📝 Update\nContext"]
+    G -.->|"next feature"| B
+
+    style A fill:#8957e5,stroke:#bc8cff,color:#fff
+    style B fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style C fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style D fill:#238636,stroke:#3fb950,color:#fff
+    style E fill:#da3633,stroke:#f85149,color:#fff
+    style F fill:#238636,stroke:#3fb950,color:#fff
+    style G fill:#bf8700,stroke:#d29922,color:#fff
 ```
 
 The last step is the one most people skip — and it's the most important. Keeping your context layer current is what separates PDD that scales from PDD that quietly regresses.
@@ -155,6 +213,26 @@ From there, for each new feature: write a prompt in `prompts/features/`, run it,
 
 Retrofitting PDD is trickier, but very doable if you resist doing it all at once.
 
+```mermaid
+gantt
+    title PDD Integration Timeline
+    dateFormat  X
+    axisFormat Week %s
+
+    section Week 1
+    Observe & log prompts           :active, w1a, 0, 1
+    Note what context you re-explain :active, w1b, 0, 1
+
+    section Week 2
+    Write context/project.md        :w2a, 1, 2
+    Write context/decisions.md      :w2b, 1, 2
+    Harvest best past prompts       :w2c, 1, 2
+
+    section Week 3+
+    Full workflow on new features    :w3a, 2, 4
+    Grow conventions over time      :w3b, 2, 4
+```
+
 **Week 1 — observe before changing**
 
 Run your normal workflow, but log: what did you ask the AI to do, which prompts produced good results, where did you have to heavily edit output, and what context did you find yourself re-explaining repeatedly. This log tells you what to systematize first.
@@ -174,6 +252,30 @@ Don't try to PDD-ify your entire existing codebase. Apply the full workflow — 
 ## The Five Workflows
 
 The PDD skill covers five distinct situations you'll encounter in practice:
+
+```mermaid
+graph TB
+    subgraph workflows["The Five Workflows"]
+        direction LR
+        SC["🏗️ Scaffold\nSet up project\nstructure"]
+        CX["🧠 Context\nWrite & update\ncore files"]
+        PM["✍️ Prompts\nGenerate focused\nfeature prompts"]
+        UP["🔧 Update\nDiagnose & fix\nweak prompts"]
+        RV["👀 Review\nCritique output\nbefore commit"]
+    end
+
+    SC -->|"project ready"| CX
+    CX -->|"context set"| PM
+    PM -->|"output generated"| RV
+    RV -.->|"prompt needs work"| UP
+    UP -.->|"re-run"| PM
+
+    style SC fill:#8957e5,stroke:#bc8cff,color:#fff
+    style CX fill:#1f6feb,stroke:#58a6ff,color:#fff
+    style PM fill:#238636,stroke:#3fb950,color:#fff
+    style UP fill:#bf8700,stroke:#d29922,color:#fff
+    style RV fill:#da3633,stroke:#f85149,color:#fff
+```
 
 **Scaffold** sets up the folder structure for a new project — with OS-aware commands (Mac, Linux, Windows, and a no-CLI option for non-technical users).
 
