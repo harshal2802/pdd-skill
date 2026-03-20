@@ -73,6 +73,10 @@ The skill auto-detects your project type and loads the right reference file to e
 
 See [`examples/task-management-api/`](examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
 
+## GitHub Copilot Version
+
+This skill is also available for GitHub Copilot Chat. See [`copilot/`](copilot/) for setup instructions and prompt files that map to the same five workflows.
+
 ## Learn More
 
 For the philosophy behind PDD, integration guides, and further reading, see [`docs/philosophy.md`](docs/philosophy.md).
