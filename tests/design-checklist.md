@@ -1,7 +1,7 @@
-# SKILL.md Functional Test Report
+# SKILL.md Design Checklist
 
 **Date**: 2026-03-19
-**Scope**: All workflows, decision branches, edge cases, and reference file integrations in `SKILL.md`
+**Scope**: Design review checklist covering all workflows, decision branches, and edge cases in `SKILL.md`
 
 ---
 

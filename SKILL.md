@@ -1,18 +1,10 @@
 ---
 name: prompt-driven-development
 description: >-
-  Use this skill whenever the user wants to set up, manage, or work within a
-  Prompt Driven Development (PDD) project. Trigger this skill when the user
-  mentions PDD, wants to scaffold a new AI-assisted project, needs help writing
-  a project context file, wants to create or improve prompts for features, or
-  wants feedback on AI-generated output. Also trigger when the user asks how to
-  organize their prompts, context files, or AI workflow -- even if they do not
-  use the term PDD explicitly. Trigger for phrases like: help me structure my AI
-  project, how do I work with AI on a codebase, review this AI-generated code,
-  write a prompt for this feature, or I want to start building with AI tools.
-  This skill covers five core workflows: scaffold project structure, write
-  context files, generate feature prompts, update existing prompts, and review
-  AI-generated output.
+  Trigger when the user mentions PDD, wants to scaffold an AI-assisted project,
+  write context or prompt files, improve prompts, or review AI-generated output.
+  Also trigger for: "structure my AI project", "organize my prompts", or
+  "review this AI code" -- even without the term PDD.
 ---
 
 # Prompt Driven Development (PDD) Skill
@@ -52,9 +44,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
-**If no reference file matches**: Proceed with the base workflows without type-specific enrichment. The base templates, questions, and review dimensions still apply. Ask the user for domain-specific conventions, review criteria, and common patterns — then capture those directly in `context/conventions.md` as a custom reference.
-
-If the project spans multiple types, load all relevant reference files. When conventions from different references conflict (e.g., file naming patterns), ask the user which convention to follow and capture the decision in `context/decisions.md`.
+If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `context/decisions.md`.
 
 **Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap (e.g., naming, project structure, API design). Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
 
@@ -75,13 +65,7 @@ If the project spans multiple types, load all relevant reference files. When con
 
 ### Returning to an existing PDD project
 
-When the user comes back to a project that already has context files, start by checking freshness:
-
-1. *"Has anything changed since your context files were last updated — new stack decisions, shifted scope, or added constraints?"*
-2. If yes → Workflow 2 (update context) before proceeding
-3. If no → proceed to the requested workflow
-
-This prevents stale context from silently degrading future prompts.
+When context files already exist, check freshness first: *"Has anything changed since your context files were last updated?"* If yes → Workflow 2 before proceeding.
 
 ### Workflow transitions
 
@@ -100,11 +84,7 @@ After completing any workflow, suggest the natural next step:
 
 ## Workflow 1: Scaffold Project Structure
 
-### Detect environment first
-
-Before outputting commands, ask or infer: **project name** (used in folder and commands), OS (affects commands), git comfort level, solo vs team, and IDE.
-
-### Mac / Linux / WSL
+Ask or infer the **project name**, then scaffold:
 
 ```bash
 mkdir -p <project-name>/{prompts/{system,features,templates,experiments},context,outputs,evals}
@@ -113,56 +93,7 @@ git init
 touch context/project.md context/conventions.md context/decisions.md README.md
 ```
 
-### Windows (Command Prompt)
-
-```cmd
-mkdir <project-name>\prompts\system && mkdir <project-name>\prompts\features
-mkdir <project-name>\prompts\templates && mkdir <project-name>\prompts\experiments
-mkdir <project-name>\context && mkdir <project-name>\outputs && mkdir <project-name>\evals
-cd <project-name> && git init
-type nul > context\project.md && type nul > context\conventions.md
-type nul > context\decisions.md && type nul > README.md
-```
-
-### Windows (PowerShell)
-
-```powershell
-New-Item -ItemType Directory -Force -Path `
-  <project-name>\prompts\system, `
-  <project-name>\prompts\features, `
-  <project-name>\prompts\templates, `
-  <project-name>\prompts\experiments, `
-  <project-name>\context, `
-  <project-name>\outputs, `
-  <project-name>\evals
-Set-Location <project-name>
-git init
-New-Item context\project.md, context\conventions.md, context\decisions.md, README.md
-```
-
-### No CLI / non-technical user
-
-Provide as a folder diagram and tell them to create manually in Finder or File Explorer:
-
-```
-my-project/
-├── prompts/
-│   ├── system/
-│   ├── features/
-│   ├── templates/
-│   └── experiments/
-├── context/
-│   ├── project.md
-│   ├── conventions.md
-│   └── decisions.md
-├── outputs/
-├── evals/
-└── README.md
-```
-
-### VS Code / Cursor users
-
-Mention `.github/copilot-instructions.md` (Copilot) and `.clinerules` (Cline/Cursor) as native equivalents of `context/project.md` — auto-loaded by those tools.
+Adapt the commands for your platform if not using bash.
 
 ### Folder reference
 
@@ -243,17 +174,7 @@ Draft from their answer, or use the type-specific starter from the reference fil
 
 ### Updating existing context files
 
-When the user returns to update context (not write from scratch):
-
-1. **Read the existing files** — `project.md`, `conventions.md`, `decisions.md`
-2. **Ask targeted questions** to surface what's changed:
-   - *"Has the tech stack changed — new libraries, dropped tools, version bumps?"*
-   - *"Any new architectural decisions that aren't captured in `decisions.md`?"*
-   - *"Have any constraints or conventions shifted since this was written?"*
-3. **Diff against reality** — if you can see the codebase, compare what the context claims vs. what actually exists (e.g., context says Express but code imports Fastify)
-4. **Update in place** — don't rewrite the whole file. Edit the specific sections that are stale, and add a `**Last updated**: <date>` line at the top of each file
-
-The goal is surgical updates, not rewrites. Stale context is worse than no context — it actively misleads.
+Read the existing files, ask what's changed (stack, decisions, constraints), and update the specific stale sections. If you can see the codebase, diff what the context claims vs. what actually exists. Add a `**Last updated**: <date>` line. Surgical updates, not rewrites — stale context actively misleads.
 
 ### Edge cases
 
@@ -318,40 +239,9 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **When to chain**: the feature has a natural order of dependencies (e.g., schema → API → UI), or the full task would exceed what a single prompt can do well.
 
-**How to structure a chain**:
+**How to structure**: Number prompts sequentially (`feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
-```markdown
-# Chain: <feature name>
-**Files**: prompts/features/<feature-name>-01-<step>.md, -02-<step>.md, ...
-
-## Prompt 01: <first step>
-<full prompt — self-contained, no dependency on later steps>
-
-## Prompt 02: <second step>
-**Depends on**: output from Prompt 01
-<full prompt — reference what Prompt 01 produced as input>
-
-## Prompt 03: <third step>
-**Depends on**: output from Prompt 01 + 02
-<full prompt>
-```
-
-**Rules for chains**:
-- Each prompt in the chain must be independently understandable — don't rely on conversational context
-- Number prompts sequentially: `feature-name-01-schema.md`, `feature-name-02-api.md`, `feature-name-03-ui.md`
-- Review each step's output before running the next prompt
-- If a step fails, fix it (Workflow 4) before continuing the chain
-
-**Chain failure recovery**:
-When a step in the chain fails or produces bad output:
-
-1. **Fix the failing step** using Workflow 4 (Update) — diagnose and apply targeted fixes to that step's prompt
-2. **Re-run the fixed step** and verify the output is correct
-3. **Check earlier outputs for compatibility** — if the fix changed the output shape (e.g., different schema fields), earlier steps' outputs may still be valid but later steps that depend on the failed step need re-evaluation
-4. **Re-run downstream steps** — any step whose `Depends on` includes the fixed step must be re-run against the corrected output
-5. **Don't re-run upstream steps** unless the failure revealed a problem in their output too
-
-If the failure reveals that the chain's decomposition was wrong (e.g., steps 2 and 3 should have been one step), restructure the chain before continuing.
+**Chain failure recovery**: Fix the failing step (Workflow 4), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
 ### Edge cases
 
@@ -376,37 +266,15 @@ If the failure reveals that the chain's decomposition was wrong (e.g., steps 2 a
 
 ### Step 1 — Identify the root cause
 
-Run the prompt 2–3 times and compare outputs. Look for:
-- **Consistent errors**: the prompt is wrong (missing context, bad constraints)
-- **Inconsistent output**: the prompt is ambiguous (add examples, tighten wording)
-- **Correct but unusable**: the output format doesn't match what you need
+Run the prompt 2–3 times and compare outputs. Consistent errors mean the prompt is wrong; inconsistent output means it's ambiguous; correct but unusable means the format is off.
 
 ### Step 2 — Apply targeted fixes
 
-Don't rewrite from scratch. Make the smallest change that addresses the diagnosed cause:
-
-1. **Add missing context** — paste the relevant section from `project.md` or `conventions.md` directly into the prompt
-2. **Elevate buried constraints** — move critical constraints above the task description, not below
-3. **Add concrete examples** — show one input/output pair to anchor the AI's interpretation
-4. **Narrow the task** — if splitting is needed, extract sub-tasks into separate prompts
+Don't rewrite from scratch. Make the smallest change: add missing context, elevate buried constraints above the task, add a concrete example, or narrow the task by splitting.
 
 ### Step 3 — Rewrite and explain
 
-Produce the improved version and explain what changed and why — not just a new prompt without reasoning.
-
-Use this format when presenting the update:
-
-```
-## What changed
-- <specific change 1>: <why>
-- <specific change 2>: <why>
-
-## Before (key section)
-<the problematic part of the old prompt>
-
-## After (key section)
-<the improved version>
-```
+Produce the improved version and show what changed and why — not just a new prompt without reasoning.
 
 ### Step 4 — Verify and version
 
@@ -415,9 +283,7 @@ Use this format when presenting the update:
 
 Versioning: *"Keep the old version commented out. If the new one works better across a few runs, delete the old."*
 
-### When to abandon and start fresh
-
-If more than half the prompt needs rewriting, or the fundamental approach is wrong (e.g., one prompt trying to do three jobs), start a new prompt from Workflow 3 instead of iterating. Move the old prompt to `prompts/experiments/` with a note on why it was retired.
+If more than half the prompt needs rewriting, start fresh from Workflow 3 instead. Move the old prompt to `prompts/experiments/`.
 
 ---
 
@@ -453,24 +319,7 @@ When listing issues, tag each with a severity level so the user knows what to fi
 
 ### Output format
 
-```
-✅ What's good
-<concrete strengths — don't skip even if problems exist>
-
-⚠️ Issues to fix before committing
-<[Blocking] or [Should fix] — specific problem + fix, highest severity first>
-
-💡 Suggestions
-<[Consider] — optional improvements>
-
-🔧 Prompt improvement
-<how to revise the prompt for better output next time>
-
-📋 Next step
-<one clear action>
-```
-
-*This is the default format. If the user or team prefers plain-text output without emoji, adapt accordingly.*
+Structure your review as: what's good (concrete strengths), issues to fix (tagged with severity, highest first), suggestions, how to improve the prompt, and one clear next step.
 
 ### Edge cases
 
@@ -509,41 +358,15 @@ Create a markdown file per prompt or feature with pass/fail criteria:
 
 Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt change.
 
-**Level 2 — Diff comparison**
+**Level 2 — Diff comparison**: Save good outputs to `evals/baselines/`. When you update a prompt, diff new output against the baseline to catch regressions.
 
-Save representative outputs from good prompt runs to `evals/baselines/`. When you update a prompt, diff the new output against the baseline to catch regressions.
-
-```
-evals/
-├── baselines/
-│   └── <prompt-name>-baseline.txt
-└── <prompt-name>-eval.md
-```
-
-**Level 3 — Automated checks**
-
-For mature prompts, write lightweight scripts that validate output structure:
-- Does the output parse as valid code / JSON / markdown?
-- Are required sections present?
-- Do imports reference real packages?
-
-Save scripts to `evals/scripts/` and run them after each generation.
+**Level 3 — Automated checks**: For mature prompts, write scripts that validate output structure (valid code, required sections, real imports). Save to `evals/scripts/`.
 
 ### When to evaluate
 
 - After creating a new prompt (Workflow 3) — run it 2–3 times and fill out the checklist
 - After updating a prompt (Workflow 4) — compare against baseline
 - After a model update — re-run key prompts and check for drift
-
-### When to promote eval levels
-
-| From | To | When |
-|---|---|---|
-| No eval | Level 1 (checklist) | Immediately — every prompt should have at least a checklist after its first run |
-| Level 1 | Level 2 (diff baseline) | After 5+ successful runs — the prompt is stable enough that a baseline is meaningful |
-| Level 2 | Level 3 (automated) | When the prompt runs regularly (weekly+) or is used by multiple people — manual checks don't scale |
-
-Don't skip levels. A prompt that hasn't been run enough to establish a baseline won't benefit from automated checks — you'd be automating the wrong assumptions.
 
 ---
 
