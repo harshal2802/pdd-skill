@@ -211,6 +211,22 @@ Anything important that emerges in a session — a decision, a pattern that work
 
 ---
 
+## Examples
+
+Want to see PDD in action? The [examples/](examples/) directory contains a complete, realistic PDD setup for a Task Management API — including filled-in context files, structured feature prompts, a prompt chain, and an eval checklist.
+
+| Example | What it shows |
+|---|---|
+| [context/project.md](examples/task-management-api/context/project.md) | A filled-in project context file |
+| [context/conventions.md](examples/task-management-api/context/conventions.md) | Coding standards the AI must follow |
+| [context/decisions.md](examples/task-management-api/context/decisions.md) | Architecture decisions with rationale |
+| [create-task-endpoint.md](examples/task-management-api/prompts/features/create-task-endpoint.md) | A standalone feature prompt |
+| [task-filtering-01-schema.md](examples/task-management-api/prompts/features/task-filtering-01-schema.md) | Prompt chain (step 1 of 2) |
+| [task-filtering-02-api.md](examples/task-management-api/prompts/features/task-filtering-02-api.md) | Prompt chain (step 2 of 2) |
+| [create-task-endpoint-eval.md](examples/task-management-api/evals/create-task-endpoint-eval.md) | Eval checklist for verifying output |
+
+---
+
 ## The Skill
 
 Everything described in this post is codified in a Claude skill published at [github.com/harshal2802/pdd-skill](https://github.com/harshal2802/pdd-skill).
