@@ -95,16 +95,21 @@ graph TD
 The core PDD structure is universal — it works for any kind of project. But where projects genuinely differ is in the *content* of those files and the *criteria* for good output.
 
 ```mermaid
-graph LR
+graph TD
     PDD((PDD Core))
 
-    PDD --> FE["Frontend / UI\nDesign systems · Component naming\nAccessibility · State management"]
-    PDD --> BE["Backend / API\nSchema design · Auth patterns\nError handling · Parameterized queries"]
-    PDD --> MO["Mobile\nPlatform constraints · Offline-first\nPermissions · App store readiness"]
-    PDD --> DA["Data / ML\nDataset provenance · Model selection\nEval metrics · Pipeline idempotency"]
-    PDD --> DO["DevOps / Infra\nIaC conventions · Blast radius\nSecret management · Change safety"]
-    PDD --> FS["Full-stack\nClient/server boundary\nShared types · API contracts"]
+    PDD --> row1[ ] & row2[ ]
 
+    row1 --> FE["Frontend / UI"]
+    row1 --> BE["Backend / API"]
+    row1 --> MO["Mobile"]
+
+    row2 --> DA["Data / ML"]
+    row2 --> DO["DevOps / Infra"]
+    row2 --> FS["Full-stack"]
+
+    style row1 fill:none,stroke:none
+    style row2 fill:none,stroke:none
     style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
     style FE fill:#3498db,stroke:#2471a3,color:#fff
     style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
@@ -112,7 +117,19 @@ graph LR
     style DA fill:#27ae60,stroke:#1e8449,color:#fff
     style DO fill:#e74c3c,stroke:#c0392b,color:#fff
     style FS fill:#1abc9c,stroke:#17a589,color:#fff
+
+    linkStyle 0 stroke:none
+    linkStyle 1 stroke:none
 ```
+
+| Flavor | Key concerns |
+|--------|-------------|
+| **Frontend / UI** | Design systems, component naming, accessibility, state management |
+| **Backend / API** | Schema design, auth patterns, error handling, parameterized queries |
+| **Mobile** | Platform constraints, offline-first, permissions, app store readiness |
+| **Data / ML** | Dataset provenance, model selection, eval metrics, pipeline idempotency |
+| **DevOps / Infra** | IaC conventions, blast radius, secret management, change safety |
+| **Full-stack** | Client/server boundary, shared types, API contracts |
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them.
 
