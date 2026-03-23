@@ -64,10 +64,10 @@ Structure doesn't slow you down. It's what lets PDD compound over time instead o
 
 ```mermaid
 graph TD
-    C["🗂 Context Layer\nPermanent project briefing"]
-    P["💬 Prompt Layer\nModular, single-purpose instructions"]
-    O["📦 Output Layer\nReviewed & accepted artifacts"]
-    E["✅ Eval Layer\nValidation & checklists"]
+    C["Context Layer\nPermanent project briefing"]
+    P["Prompt Layer\nModular, single-purpose instructions"]
+    O["Output Layer\nReviewed & accepted artifacts"]
+    E["Eval Layer\nValidation & checklists"]
 
     C -->|informs| P
     P -->|generates| O
@@ -146,7 +146,7 @@ touch context/project.md context/conventions.md context/decisions.md README.md
 ```mermaid
 flowchart LR
     A["1. Scaffold\nDirectories & files"] --> B["2. Write context\nproject.md\nconventions.md"]
-    B --> C["3. First prompt\nprompts/features/<area>/"]
+    B --> C["3. First prompt\nprompts/features/area/"]
     C --> D["4. Review output\nRead & understand"]
     D --> E["5. Commit both\nPrompt + output"]
     E --> F{"Decision\nmade?"}
