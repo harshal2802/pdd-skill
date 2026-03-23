@@ -95,37 +95,23 @@ graph TD
 The core PDD structure is universal — it works for any kind of project. But where projects genuinely differ is in the *content* of those files and the *criteria* for good output.
 
 ```mermaid
-mindmap
-  root((PDD Core))
-    Frontend / UI
-      Design systems
-      Component naming
-      Accessibility
-      State management
-    Backend / API
-      Schema design
-      Auth patterns
-      Error handling
-      Parameterized queries
-    Mobile
-      Platform constraints
-      Offline-first
-      Permissions
-      App store readiness
-    Data / ML
-      Dataset provenance
-      Model selection
-      Eval metrics
-      Pipeline idempotency
-    DevOps / Infra
-      IaC conventions
-      Blast radius
-      Secret management
-      Change safety
-    Full-stack
-      Client/server boundary
-      Shared types
-      API contracts
+graph LR
+    PDD((PDD Core))
+
+    PDD --> FE["Frontend / UI\nDesign systems · Component naming\nAccessibility · State management"]
+    PDD --> BE["Backend / API\nSchema design · Auth patterns\nError handling · Parameterized queries"]
+    PDD --> MO["Mobile\nPlatform constraints · Offline-first\nPermissions · App store readiness"]
+    PDD --> DA["Data / ML\nDataset provenance · Model selection\nEval metrics · Pipeline idempotency"]
+    PDD --> DO["DevOps / Infra\nIaC conventions · Blast radius\nSecret management · Change safety"]
+    PDD --> FS["Full-stack\nClient/server boundary\nShared types · API contracts"]
+
+    style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
+    style FE fill:#3498db,stroke:#2471a3,color:#fff
+    style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
+    style MO fill:#e67e22,stroke:#ca6f1e,color:#fff
+    style DA fill:#27ae60,stroke:#1e8449,color:#fff
+    style DO fill:#e74c3c,stroke:#c0392b,color:#fff
+    style FS fill:#1abc9c,stroke:#17a589,color:#fff
 ```
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them.
