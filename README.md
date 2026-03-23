@@ -43,14 +43,16 @@ A PDD project looks like this:
 my-project/
 ├── prompts/
 │   ├── system/          # Persistent system prompts and constraints
-│   ├── features/        # Feature-specific prompt chains
+│   ├── features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
+│   │   ├── auth/        #   One subfolder per feature domain, app module, or tool
+│   │   └── tasks/
 │   ├── templates/       # Reusable prompt patterns
 │   └── experiments/     # Exploratory, time-boxed prompts
 ├── context/
 │   ├── project.md       # What you're building, why, and with what stack
 │   ├── conventions.md   # Code style, naming, patterns the AI should follow
 │   └── decisions.md     # Architecture decisions and the reasoning behind them
-├── outputs/             # Reviewed, committed AI-generated artifacts
+├── app/                 # Reviewed, committed AI-generated artifacts
 └── evals/               # Tests for prompt quality and output correctness
 ```
 

@@ -18,9 +18,9 @@ Browse these examples to see how PDD artifacts look in practice, then adapt them
 
 | File | Purpose |
 |---|---|
-| [prompts/features/create-task-endpoint.md](prompts/features/create-task-endpoint.md) | Standalone prompt for the POST /tasks endpoint |
-| [prompts/features/task-filtering-01-schema.md](prompts/features/task-filtering-01-schema.md) | Chained prompt 1/2: database query layer for filtering |
-| [prompts/features/task-filtering-02-api.md](prompts/features/task-filtering-02-api.md) | Chained prompt 2/2: API endpoint that uses the query layer |
+| [prompts/features/tasks/create-task-endpoint.md](prompts/features/tasks/create-task-endpoint.md) | Standalone prompt for the POST /tasks endpoint |
+| [prompts/features/tasks/task-filtering-01-schema.md](prompts/features/tasks/task-filtering-01-schema.md) | Chained prompt 1/2: database query layer for filtering |
+| [prompts/features/tasks/task-filtering-02-api.md](prompts/features/tasks/task-filtering-02-api.md) | Chained prompt 2/2: API endpoint that uses the query layer |
 
 ### Evals
 

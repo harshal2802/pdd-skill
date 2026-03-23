@@ -139,14 +139,14 @@ A React app and a Python data pipeline both need a `project.md` and versioned pr
 ```bash
 mkdir my-project && cd my-project
 git init
-mkdir -p prompts/{system,features,templates,experiments} context outputs evals
+mkdir -p prompts/{system,features,templates,experiments} context app evals
 touch context/project.md context/conventions.md context/decisions.md README.md
 ```
 
 ```mermaid
 flowchart LR
     A["1. Scaffold\nDirectories & files"] --> B["2. Write context\nproject.md\nconventions.md"]
-    B --> C["3. First prompt\nprompts/features/"]
+    B --> C["3. First prompt\nprompts/features/<area>/"]
     C --> D["4. Review output\nRead & understand"]
     D --> E["5. Commit both\nPrompt + output"]
     E --> F{"Decision\nmade?"}
@@ -171,7 +171,7 @@ Then invest 30 minutes writing `context/project.md`. Answer these questions:
 
 Follow that with a lean `context/conventions.md` — even 10 lines covering naming, file structure, and error handling. You'll grow it over time.
 
-For each new feature: write a prompt in `prompts/features/`, run it, review the output, and commit both. If you made any architectural decision in the process, capture it in `context/decisions.md`.
+For each new feature: write a prompt in `prompts/features/<area>/`, run it, review the output, and commit both. If you made any architectural decision in the process, capture it in `context/decisions.md`.
 
 **The ongoing discipline**: every session starts by asking — *is my context still current?*
 

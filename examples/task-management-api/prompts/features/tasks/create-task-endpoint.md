@@ -1,6 +1,6 @@
 # Prompt: POST /api/v1/tasks
 
-**File**: prompts/features/create-task-endpoint.md
+**File**: prompts/features/tasks/create-task-endpoint.md
 **Created**: 2026-02-03
 **Project type**: Backend / API
 

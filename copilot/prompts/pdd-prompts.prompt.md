@@ -34,7 +34,7 @@ Generate a prompt file using this structure:
 
 ```markdown
 # Prompt: <feature name>
-**File**: prompts/features/<feature-name>.md
+**File**: prompts/features/<area>/<feature-name>.md
 **Created**: <date>
 **Project type**: <detected type>
 
@@ -59,7 +59,7 @@ Input: <example>
 Output: <example>
 ```
 
-Save to `prompts/features/<feature-name>.md`.
+Save to `prompts/features/<area>/<feature-name>.md`. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`). Create the subfolder if it doesn't exist.
 
 ## Prompt chaining (multi-step features)
 

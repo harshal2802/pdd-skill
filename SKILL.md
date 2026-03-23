@@ -87,7 +87,7 @@ After completing any workflow, suggest the natural next step:
 Ask or infer the **project name**, then scaffold:
 
 ```bash
-mkdir -p <project-name>/{prompts/{system,features,templates,experiments},context,outputs,evals}
+mkdir -p <project-name>/{prompts/{system,features,templates,experiments},context,app,evals}
 cd <project-name>
 git init
 touch context/project.md context/conventions.md context/decisions.md README.md
@@ -100,11 +100,11 @@ Adapt the commands for your platform if not using bash.
 | Folder | What goes here |
 |---|---|
 | `prompts/system/` | Persistent AI personas and global constraints |
-| `prompts/features/` | One prompt file per feature or task |
+| `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/billing/`) |
 | `prompts/templates/` | Reusable prompt patterns |
 | `prompts/experiments/` | Time-boxed exploratory prompts — dated, pruned weekly |
 | `context/` | Permanent project briefing files |
-| `outputs/` | Reviewed, committed AI-generated artifacts |
+| `app/` | Reviewed, committed AI-generated artifacts |
 | `evals/` | Prompt quality checks and output tests |
 
 After scaffold say: *"Structure is ready. The most important next step is `context/project.md`. Want me to help write it?"*
@@ -206,7 +206,7 @@ If spotted: *"This covers a few distinct things — let's split. Which first?"*
 
 ```markdown
 # Prompt: <feature name>
-**File**: prompts/features/<feature-name>.md
+**File**: prompts/features/<area>/<feature-name>.md
 **Created**: <date>
 **Project type**: <type>
 
@@ -231,7 +231,7 @@ Input: <example>
 Output: <example>
 ```
 
-Save to `prompts/features/<feature-name>.md` and commit alongside the output.
+Save to `prompts/features/<area>/<feature-name>.md` and commit alongside the output. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`, `billing/`, `infra/`). Create the subfolder if it doesn't exist.
 
 ### Prompt chaining (multi-step features)
 
@@ -239,7 +239,7 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **When to chain**: the feature has a natural order of dependencies (e.g., schema → API → UI), or the full task would exceed what a single prompt can do well.
 
-**How to structure**: Number prompts sequentially (`feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
+**How to structure**: Number prompts sequentially within the same area subfolder (`<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
 **Chain failure recovery**: Fix the failing step (Workflow 4), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
@@ -342,7 +342,7 @@ Create a markdown file per prompt or feature with pass/fail criteria:
 
 ```markdown
 # Eval: <prompt name>
-**Prompt**: prompts/features/<prompt-file>.md
+**Prompt**: prompts/features/<area>/<prompt-file>.md
 **Last run**: <date>
 
 ## Criteria

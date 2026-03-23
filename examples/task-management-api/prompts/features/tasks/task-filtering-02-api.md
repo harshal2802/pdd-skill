@@ -2,7 +2,7 @@
 
 # Prompt: Task filtering — API endpoint
 
-**File**: prompts/features/task-filtering-02-api.md
+**File**: prompts/features/tasks/task-filtering-02-api.md
 **Created**: 2026-02-10
 **Project type**: Backend / API
 **Depends on**: Output from `task-filtering-01-schema.md`

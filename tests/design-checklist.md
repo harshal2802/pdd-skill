@@ -91,7 +91,7 @@ Tests the routing table at lines 58-70.
 | 4.5 | Custom project name | User says "call it task-api" | `<project-name>` replaced with `task-api` | PASS | |
 | 4.6 | Post-scaffold prompt | After scaffold completes | Suggests writing `context/project.md` next | PASS | Line 135 |
 | 4.7 | Git init included | Any scaffold | `git init` is part of the commands | PASS | |
-| 4.8 | All folders created | Any scaffold | system/, features/, templates/, experiments/, context/, outputs/, evals/ | PASS | |
+| 4.8 | All folders created | Any scaffold | system/, features/, templates/, experiments/, context/, app/, evals/ | PASS | |
 | 4.9 | Windows PowerShell | User on Windows PowerShell | PowerShell-specific commands | **FAIL** | **Only CMD is covered (line 89-97). PowerShell syntax differs (`New-Item` vs `mkdir`). WSL is mentioned but PowerShell is not.** |
 | 4.10 | Team vs solo | User says "team project" | Should note team-specific considerations | PASS | Line 77 asks about this |
 
@@ -125,7 +125,7 @@ Tests the routing table at lines 58-70.
 | 6.1 | Single-job prompt | "Add user search" | One focused prompt generated | PASS | |
 | 6.2 | Multi-concern detected | "Build auth AND user profiles" | Suggests splitting before writing | PASS | Line 215 |
 | 6.3 | Prompt template used | Any feature prompt | Follows the template structure (Context, Task, Input, Output, Constraints, Examples) | PASS | |
-| 6.4 | File path convention | Feature prompt | Saved to `prompts/features/<feature-name>.md` | PASS | |
+| 6.4 | File path convention | Feature prompt | Saved to `prompts/features/<area>/<feature-name>.md` | PASS | |
 | 6.5 | Context referenced | Context files exist | Prompt references relevant parts of project.md | PASS | |
 | 6.6 | No context files | Fresh project, no context | Inline context in the prompt + suggest creating context files | PASS | |
 | 6.7 | Prompt chaining | Multi-step feature | Numbered chain: -01-step, -02-step | PASS | Lines 257-286 |
@@ -256,7 +256,7 @@ The `examples/task-management-api/` directory was validated against the skill's 
 | `context/project.md` follows base + backend extended template | PASS |
 | `context/conventions.md` matches backend conventions starter | PASS |
 | `context/decisions.md` uses the decision template format | PASS |
-| `prompts/features/create-task-endpoint.md` follows prompt template | PASS |
+| `prompts/features/tasks/create-task-endpoint.md` follows prompt template | PASS |
 | Prompt chain (`task-filtering-01/02`) uses numbered naming | PASS |
 | `evals/create-task-endpoint-eval.md` follows Level 1 checklist format | PASS |
 | Example matches backend reference review checklist items | PASS |
