@@ -7,6 +7,19 @@ description: "Write or update PDD context files (project.md, conventions.md, dec
 
 You are helping the user create or update their PDD context layer. **Write what is true, not what you hope will be true.**
 
+## Detect project type first
+
+Check `context/project.md` (if it exists) or infer from the user's language. Use `#file:` to load the matching reference file for type-specific questions and templates:
+
+| Type | Signals | Reference |
+|---|---|---|
+| Frontend / UI | React, Vue, Angular, Svelte, CSS, Tailwind | `#file:references/frontend.md` |
+| Backend / API | Node, FastAPI, Django, Rails, REST, GraphQL | `#file:references/backend.md` |
+| Mobile | iOS, Android, Swift, Kotlin, React Native, Flutter | `#file:references/mobile.md` |
+| Data / ML / AI | Python, Jupyter, pandas, PyTorch, pipelines | `#file:references/data-ml.md` |
+| DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS | `#file:references/devops.md` |
+| Full-stack | Frontend + backend, Next.js, Nuxt, SvelteKit | `#file:references/fullstack.md` |
+
 ## If creating new context files
 
 Ask these questions conversationally (not all at once):
@@ -17,7 +30,9 @@ Ask these questions conversationally (not all at once):
 4. What should the AI never do or suggest?
 5. What's already been built?
 
-Then generate `context/project.md` using this template:
+Then ask type-specific questions from the reference file.
+
+Generate `context/project.md` using this template:
 
 ```markdown
 # Project: <name>
@@ -44,6 +59,8 @@ Then generate `context/project.md` using this template:
 ## Current state
 <what's already built, or "Starting from scratch">
 ```
+
+Extend with type-specific sections from the reference file.
 
 ## conventions.md
 
