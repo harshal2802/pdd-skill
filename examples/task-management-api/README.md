@@ -22,11 +22,25 @@ Browse these examples to see how PDD artifacts look in practice, then adapt them
 | [prompts/features/tasks/task-filtering-01-schema.md](prompts/features/tasks/task-filtering-01-schema.md) | Chained prompt 1/2: database query layer for filtering |
 | [prompts/features/tasks/task-filtering-02-api.md](prompts/features/tasks/task-filtering-02-api.md) | Chained prompt 2/2: API endpoint that uses the query layer |
 
+### Experiments
+
+| File | Purpose |
+|---|---|
+| [prompts/experiments/2026-02-05-task-comments-spike.md](prompts/experiments/2026-02-05-task-comments-spike.md) | Time-boxed spike comparing flat vs. threaded comments |
+
+### Templates
+
+| File | Purpose |
+|---|---|
+| [prompts/templates/new-api-endpoint.template.md](prompts/templates/new-api-endpoint.template.md) | Reusable template for new REST endpoints — extracted after writing 2 similar prompts |
+
 ### Evals
 
 | File | Purpose |
 |---|---|
-| [evals/create-task-endpoint-eval.md](evals/create-task-endpoint-eval.md) | Manual checklist to verify the create-task prompt output |
+| [evals/create-task-endpoint-eval.md](evals/create-task-endpoint-eval.md) | Level 1 manual checklist for the create-task prompt |
+| [evals/baselines/create-task-endpoint-baseline.md](evals/baselines/create-task-endpoint-baseline.md) | Level 2 baseline — saved good output for diff comparison |
+| [evals/task-filtering-eval.md](evals/task-filtering-eval.md) | Level 2 eval covering the chained filtering prompts |
 
 ## How to use these examples
 

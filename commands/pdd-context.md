@@ -1,11 +1,21 @@
----
-mode: "agent"
-description: "Write or update PDD context files (project.md, conventions.md, decisions.md)"
----
-
 # Write PDD Context Files
 
 You are helping the user create or update their PDD context layer. **Write what is true, not what you hope will be true.**
+
+**User input**: $ARGUMENTS
+
+## Detect project type first
+
+Check `context/project.md` (if it exists) or infer from user input. Load the matching reference file from this skill's `references/` folder to get type-specific questions and templates:
+
+| Type | Signals | Reference |
+|---|---|---|
+| Frontend / UI | React, Vue, Angular, Svelte, CSS, Tailwind | `references/frontend.md` |
+| Backend / API | Node, FastAPI, Django, Rails, REST, GraphQL | `references/backend.md` |
+| Mobile | iOS, Android, Swift, Kotlin, React Native, Flutter | `references/mobile.md` |
+| Data / ML / AI | Python, Jupyter, pandas, PyTorch, pipelines | `references/data-ml.md` |
+| DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS | `references/devops.md` |
+| Full-stack | Frontend + backend, Next.js, Nuxt, SvelteKit | `references/fullstack.md` |
 
 ## If creating new context files
 
@@ -17,7 +27,9 @@ Ask these questions conversationally (not all at once):
 4. What should the AI never do or suggest?
 5. What's already been built?
 
-Then generate `context/project.md` using this template:
+Then ask type-specific questions from the reference file.
+
+### Generate `context/project.md`
 
 ```markdown
 # Project: <name>
@@ -39,21 +51,20 @@ Then generate `context/project.md` using this template:
 
 ## Constraints (what the AI should never do or suggest)
 -
--
 
 ## Current state
 <what's already built, or "Starting from scratch">
 ```
 
-## conventions.md
+Extend with type-specific sections from the reference file.
+
+### Generate `context/conventions.md`
 
 Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
 
-Draft from their answer. Even 10 lines covering naming, file structure, and error handling is valuable. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts. The user will grow it over time.
+Draft from their answer, or use the type-specific starter from the reference file. Even 10 lines covering naming, file structure, and error handling is valuable. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts.
 
-## decisions.md
-
-For each architectural decision, use this format:
+### Generate `context/decisions.md`
 
 ```markdown
 ## Decision: <short title>
@@ -80,4 +91,4 @@ For each architectural decision, use this format:
 
 ## Next step
 
-After writing context, suggest: *"Context is set. Ready to write your first feature prompt? Use `/pdd-prompts`."*
+After writing context: *"Context is set. Ready to write your first feature prompt? Run `/project:pdd-prompts`."*

@@ -75,10 +75,10 @@ After completing any workflow, suggest the natural next step:
 |---|---|
 | **Scaffold** | → Workflow 2 (Context): *"Structure is ready. Want to write `context/project.md`?"* |
 | **Context** | → Workflow 3 (Prompts): *"Context is set. Ready to write your first feature prompt?"* |
-| **Prompts** | → Run the prompt, then → Workflow 5 (Review): *"Run this prompt and paste the output — I'll review it."* |
+| **Prompts** | → Run the prompt 2–3 times, then → Workflow 5 (Review): *"Run this prompt and paste the output — I'll review it."* For critical prompts, create a Level 1 eval in `evals/` first. |
 | **Update** | → Re-run the prompt, then → Workflow 5 (Review): *"Try the updated prompt and I'll review the new output."* |
 | **Review** — issues found | → Fix code, or → Workflow 4 (Update) if the prompt needs work |
-| **Review** — looks good | → Commit both prompt and output |
+| **Review** — looks good | → Commit both prompt and output. If no eval exists for this prompt yet, consider creating one. |
 
 ---
 
@@ -87,7 +87,7 @@ After completing any workflow, suggest the natural next step:
 Ask or infer the **project name**, then scaffold:
 
 ```bash
-mkdir -p <project-name>/{prompts/{system,features,templates,experiments},context,app,evals}
+mkdir -p <project-name>/{prompts/{features,templates,experiments},context,app,evals}
 cd <project-name>
 git init
 touch context/project.md context/conventions.md context/decisions.md README.md
@@ -99,10 +99,9 @@ Adapt the commands for your platform if not using bash.
 
 | Folder | What goes here |
 |---|---|
-| `prompts/system/` | Persistent AI personas and global constraints |
 | `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/billing/`) |
-| `prompts/templates/` | Reusable prompt patterns |
-| `prompts/experiments/` | Time-boxed exploratory prompts — dated, pruned weekly |
+| `prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
+| `prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
 | `context/` | Permanent project briefing files |
 | `app/` | Reviewed, committed AI-generated artifacts |
 | `evals/` | Prompt quality checks and output tests |
@@ -160,7 +159,7 @@ Then ask the type-specific questions from the reference file.
 ### `context/conventions.md`
 
 Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
-Draft from their answer, or use the type-specific starter from the reference file.
+Draft from their answer, or use the type-specific starter from the reference file. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts.
 
 ### `context/decisions.md`
 
@@ -203,6 +202,8 @@ If spotted: *"This covers a few distinct things — let's split. Which first?"*
 - Existing code it needs to fit into?
 
 ### Step 3 — Write the prompt
+
+Before writing from scratch, check `prompts/templates/` for an existing template that fits this feature type.
 
 ```markdown
 # Prompt: <feature name>
@@ -247,7 +248,8 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 - **Vague goal**: Help break into feature list first, then prompt the first one
 - **Prompt keeps failing**: Move to Workflow 4 (Update)
-- **Reusable template needed**: Save to `prompts/templates/` with `<placeholder>` notation
+- **Exploratory / uncertain approach**: Save to `prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. This signals "temporary — evaluate within a week."
+- **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
 
 ---
 
@@ -283,7 +285,7 @@ Produce the improved version and show what changed and why — not just a new pr
 
 Versioning: *"Keep the old version commented out. If the new one works better across a few runs, delete the old."*
 
-If more than half the prompt needs rewriting, start fresh from Workflow 3 instead. Move the old prompt to `prompts/experiments/`.
+If more than half the prompt needs rewriting, start fresh from Workflow 3 instead. Move the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ---
 
@@ -368,6 +370,11 @@ Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt chan
 - After updating a prompt (Workflow 4) — compare against baseline
 - After a model update — re-run key prompts and check for drift
 
+### When to level up
+
+- **Level 1 → Level 2**: After 5+ runs of the same prompt, save a known-good output to `evals/baselines/` and start diffing against it on future runs.
+- **Level 2 → Level 3**: When the prompt is stable, used regularly, and you want to catch regressions automatically — write a validation script in `evals/scripts/`.
+
 ---
 
 ## General Principles
@@ -375,7 +382,7 @@ Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt chan
 - **One prompt, one job.** Split if multiple concerns.
 - **Commit prompts alongside outputs.** The prompt is part of the codebase.
 - **Update context after every significant decision.** Stale context degrades future prompts.
-- **Timebox experiments.** Older than one week: graduate or delete.
+- **Timebox experiments.** Name with a date prefix (`YYYY-MM-DD-`). After one week: promote to `prompts/features/` if it worked, delete if it didn't.
 - **Never commit unreviewed output.** Treat it like a PR.
 - **Context must reflect reality.** Aspirational `project.md` actively misleads.
 

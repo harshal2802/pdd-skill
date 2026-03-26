@@ -1,15 +1,14 @@
----
-mode: "agent"
-description: "Generate a well-structured PDD feature prompt"
----
-
 # Generate a Feature Prompt
 
 You are helping the user write a focused, single-purpose feature prompt for their PDD project.
 
-## Step 1 — Check for context files
+**User input**: $ARGUMENTS
 
-If `context/project.md` exists, read it for project context. If it doesn't, proceed without it but suggest creating one afterward.
+## Step 1 — Load context
+
+If `context/project.md` exists, read it for project context. If not, proceed without it but suggest creating one afterward via `/project:pdd-context`.
+
+Detect the project type and load the matching reference file from `references/` for type-specific prompt patterns.
 
 ## Step 2 — Decompose if needed
 
@@ -32,8 +31,6 @@ Ask conversationally:
 
 Before writing from scratch, check `prompts/templates/` for an existing template that fits this feature type.
 
-Generate a prompt file using this structure:
-
 ```markdown
 # Prompt: <feature name>
 **File**: prompts/features/<area>/<feature-name>.md
@@ -54,14 +51,13 @@ Generate a prompt file using this structure:
 
 ## Constraints
 -
--
 
 ## Examples (optional but recommended)
 Input: <example>
 Output: <example>
 ```
 
-Save to `prompts/features/<area>/<feature-name>.md`. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`). Create the subfolder if it doesn't exist.
+Save to `prompts/features/<area>/<feature-name>.md`. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`). Create the subfolder if needed.
 
 ## Prompt chaining (multi-step features)
 
@@ -76,10 +72,10 @@ When a feature has sequential dependencies (e.g., schema → API → UI):
 ## Edge cases
 
 - **Vague goal**: Help break it into a feature list first, then prompt the first one
-- **Prompt keeps failing**: Suggest using `/pdd-update` to diagnose
+- **Prompt keeps failing**: Suggest `/project:pdd-update` to diagnose
 - **Exploratory / uncertain approach**: Save to `prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. Signals "temporary — evaluate within a week."
 - **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
 
 ## Next step
 
-After writing the prompt: *"Run this prompt and paste the output — I'll review it. Use `/pdd-review` when ready."* For critical prompts, also suggest creating a Level 1 eval checklist in `evals/`.
+After writing the prompt: *"Run this prompt and paste the output — I'll review it. Run `/project:pdd-review` when ready."* For critical prompts, also suggest creating a Level 1 eval checklist in `evals/`.

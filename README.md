@@ -42,7 +42,6 @@ A PDD project looks like this:
 ```
 my-project/
 ├── prompts/
-│   ├── system/          # Persistent system prompts and constraints
 │   ├── features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
 │   │   ├── auth/        #   One subfolder per feature domain, app module, or tool
 │   │   └── tasks/
@@ -56,6 +55,28 @@ my-project/
 └── evals/               # Tests for prompt quality and output correctness
 ```
 
+## Slash Commands
+
+PDD includes six slash commands for Claude Code. Copy the `commands/` folder into your project's `.claude/commands/` directory:
+
+```bash
+# From your project root (assuming skill is at .claude/skills/pdd-skill/)
+cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
+```
+
+Then invoke them in Claude Code:
+
+| Command | What it does |
+|---|---|
+| `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
+| `/project:pdd-context` | Write or update `project.md`, `conventions.md`, and `decisions.md` |
+| `/project:pdd-prompts` | Generate a focused feature prompt (standalone or chained) |
+| `/project:pdd-update` | Diagnose and fix a prompt that isn't producing good results |
+| `/project:pdd-review` | Review AI-generated output before committing |
+| `/project:pdd-status` | Health check — shows what's set up, what's missing, and what's stale |
+
+All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
+
 ## What's Included
 
 | Path | Purpose |
@@ -67,6 +88,7 @@ my-project/
 | `references/data-ml.md` | Same for data science and ML projects |
 | `references/devops.md` | Same for DevOps and infrastructure |
 | `references/fullstack.md` | Same for full-stack projects (also loads frontend + backend refs) |
+| `commands/` | Six Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 
 The skill auto-detects your project type and loads the right reference file to enrich context questions, conventions, and review checklists.

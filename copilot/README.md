@@ -25,6 +25,7 @@ Your project should end up with:
     pdd-prompts.prompt.md
     pdd-update.prompt.md
     pdd-review.prompt.md
+    pdd-status.prompt.md
 ```
 
 ## Usage
@@ -38,6 +39,7 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 | `/pdd-prompts` | Generate a focused feature prompt |
 | `/pdd-update` | Diagnose and fix a prompt that isn't working |
 | `/pdd-review` | Review AI-generated code before committing |
+| `/pdd-status` | Health check — what's set up, what's missing, what's stale |
 
 The `copilot-instructions.md` file loads automatically in every Copilot Chat session, providing PDD-aware routing and core principles.
 

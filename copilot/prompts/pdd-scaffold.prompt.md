@@ -16,7 +16,7 @@ You are setting up a new Prompt Driven Development project structure.
 3. Create the following structure:
 
 ```bash
-mkdir -p {{project-name}}/{prompts/{system,features,templates,experiments},context,app,evals}
+mkdir -p {{project-name}}/{prompts/{features,templates,experiments},context,app,evals}
 cd {{project-name}}
 git init
 touch context/project.md context/conventions.md context/decisions.md README.md
@@ -26,10 +26,9 @@ touch context/project.md context/conventions.md context/decisions.md README.md
 
 | Folder | Purpose |
 |---|---|
-| `prompts/system/` | Persistent AI personas and global constraints |
 | `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/tasks/`) |
-| `prompts/templates/` | Reusable prompt patterns |
-| `prompts/experiments/` | Time-boxed exploratory prompts — dated, pruned weekly |
+| `prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
+| `prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
 | `context/` | Permanent project briefing files |
 | `app/` | Reviewed, committed AI-generated artifacts |
 | `evals/` | Prompt quality checks and output tests |

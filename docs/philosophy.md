@@ -142,7 +142,7 @@ A React app and a Python data pipeline both need a `project.md` and versioned pr
 ```bash
 mkdir my-project && cd my-project
 git init
-mkdir -p prompts/{system,features,templates,experiments} context app evals
+mkdir -p prompts/{features,templates,experiments} context app evals
 touch context/project.md context/conventions.md context/decisions.md README.md
 ```
 

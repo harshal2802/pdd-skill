@@ -91,7 +91,7 @@ Tests the routing table at lines 58-70.
 | 4.5 | Custom project name | User says "call it task-api" | `<project-name>` replaced with `task-api` | PASS | |
 | 4.6 | Post-scaffold prompt | After scaffold completes | Suggests writing `context/project.md` next | PASS | Line 135 |
 | 4.7 | Git init included | Any scaffold | `git init` is part of the commands | PASS | |
-| 4.8 | All folders created | Any scaffold | system/, features/, templates/, experiments/, context/, app/, evals/ | PASS | |
+| 4.8 | All folders created | Any scaffold | features/, templates/, experiments/, context/, app/, evals/ | PASS | |
 | 4.9 | Windows PowerShell | User on Windows PowerShell | PowerShell-specific commands | **FAIL** | **Only CMD is covered (line 89-97). PowerShell syntax differs (`New-Item` vs `mkdir`). WSL is mentioned but PowerShell is not.** |
 | 4.10 | Team vs solo | User says "team project" | Should note team-specific considerations | PASS | Line 77 asks about this |
 

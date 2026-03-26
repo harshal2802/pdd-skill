@@ -26,6 +26,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 - **Update context after every significant decision.** Stale context degrades future prompts.
 - **Never commit unreviewed output.** Treat AI output like a PR.
 - **Context must reflect reality.** Aspirational project.md actively misleads.
+- **Timebox experiments.** Exploratory prompts go in `prompts/experiments/` with a date prefix (`YYYY-MM-DD-`). After one week: promote to `features/` or delete.
 
 ## Workflow Routing
 
@@ -36,3 +37,4 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Write a feature prompt | Use `/pdd-prompts` |
 | Fix a prompt that isn't working | Use `/pdd-update` |
 | Review AI-generated code | Use `/pdd-review` |
+| Check project PDD health | Use `/pdd-status` |
