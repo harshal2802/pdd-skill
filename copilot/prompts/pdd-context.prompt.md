@@ -1,5 +1,5 @@
 ---
-mode: "agent"
+agent: agent
 description: "Write or update PDD context files (project.md, conventions.md, decisions.md)"
 ---
 

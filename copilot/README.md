@@ -22,9 +22,12 @@ Your project should end up with:
   prompts/
     pdd-scaffold.prompt.md
     pdd-context.prompt.md
+    pdd-search.prompt.md
+    pdd-plan.prompt.md
     pdd-prompts.prompt.md
     pdd-update.prompt.md
     pdd-review.prompt.md
+    pdd-eval.prompt.md
     pdd-status.prompt.md
 ```
 
@@ -36,9 +39,12 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 |---|---|
 | `/pdd-scaffold` | Set up PDD folder structure for a new project |
 | `/pdd-context` | Write or update context files (project.md, conventions.md, decisions.md) |
+| `/pdd-search` | Search for existing solutions before building custom features |
+| `/pdd-plan` | Create an implementation plan before writing prompts |
 | `/pdd-prompts` | Generate a focused feature prompt |
 | `/pdd-update` | Diagnose and fix a prompt that isn't working |
-| `/pdd-review` | Review AI-generated code before committing |
+| `/pdd-review` | Verify and review AI-generated code before committing |
+| `/pdd-eval` | Run prompt evaluations and track pass rates |
 | `/pdd-status` | Health check — what's set up, what's missing, what's stale |
 
 The `copilot-instructions.md` file loads automatically in every Copilot Chat session, providing PDD-aware routing and core principles.

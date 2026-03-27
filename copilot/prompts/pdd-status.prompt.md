@@ -1,5 +1,5 @@
 ---
-mode: "agent"
+agent: agent
 description: "Check the health and completeness of your PDD project setup"
 ---
 

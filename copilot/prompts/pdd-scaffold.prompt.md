@@ -1,5 +1,5 @@
 ---
-mode: "agent"
+agent: agent
 description: "Scaffold a new PDD project with folders, context files, and git init"
 ---
 
@@ -16,7 +16,7 @@ You are setting up a new Prompt Driven Development project structure.
 3. Create the following structure:
 
 ```bash
-mkdir -p {{project-name}}/{prompts/{features,templates,experiments},context,app,evals}
+mkdir -p {{project-name}}/{prompts/{features,templates,experiments},context,app,evals/{baselines,scripts}}
 cd {{project-name}}
 git init
 touch context/project.md context/conventions.md context/decisions.md README.md
@@ -32,6 +32,8 @@ touch context/project.md context/conventions.md context/decisions.md README.md
 | `context/` | Permanent project briefing files |
 | `app/` | Reviewed, committed AI-generated artifacts |
 | `evals/` | Prompt quality checks and output tests |
+| `evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
+| `evals/scripts/` | Automated validation scripts (Level 3 evals) |
 
 5. After creating the structure, say:
 *"Structure is ready. The most important next step is `context/project.md` — want me to help write it? Use `/pdd-context` to get started."*

@@ -34,7 +34,10 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 |---|---|
 | Start a new project / set up structure | Use `/pdd-scaffold` |
 | Write or update context files | Use `/pdd-context` |
+| Find existing libraries or solutions | Use `/pdd-search` |
+| Plan a feature before writing prompts | Use `/pdd-plan` |
 | Write a feature prompt | Use `/pdd-prompts` |
 | Fix a prompt that isn't working | Use `/pdd-update` |
-| Review AI-generated code | Use `/pdd-review` |
+| Review AI-generated code (includes quality checks) | Use `/pdd-review` |
+| Track prompt quality and pass rates | Use `/pdd-eval` |
 | Check project PDD health | Use `/pdd-status` |

@@ -1,0 +1,13 @@
+{
+  "hooks": [
+    {
+      "matcher": "SessionStart",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "if [ -f context/project.md ]; then updated=$(grep -i 'last updated' context/project.md | head -1); if [ -n \"$updated\" ]; then echo \"PDD context exists. $updated — check if anything has changed.\"; else echo \"PDD context exists but has no Last updated date. Consider adding one.\"; fi; elif [ -d prompts/ ] || [ -d context/ ]; then echo \"PDD project detected but context/project.md is missing. Run /project:pdd-context to create it.\"; fi"
+        }
+      ]
+    }
+  ]
+}

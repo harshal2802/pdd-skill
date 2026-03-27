@@ -1,5 +1,5 @@
 ---
-mode: "agent"
+agent: agent
 description: "Generate a well-structured PDD feature prompt"
 ---
 

@@ -1,5 +1,5 @@
 ---
-mode: "agent"
+agent: agent
 description: "Diagnose and improve a PDD prompt that isn't producing good results"
 ---
 
