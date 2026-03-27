@@ -84,6 +84,40 @@ Then invoke them in Claude Code:
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
 
+## Workflow
+
+```mermaid
+flowchart LR
+    A["Scaffold"] --> B["Context"]
+    B --> S{Complex?}
+    S -- Yes --> C["Search"] --> D["Plan"] --> E
+    S -- No --> E["Prompts"]
+    E --> F["Run prompt"]
+    F --> G["Review"]
+    G --> H["Commit"]
+    H -.-> I["Eval"]
+
+    style S fill:#f1c40f,stroke:#d4ac0d,color:#333
+    style C fill:#1abc9c,stroke:#17a589,color:#fff
+    style D fill:#1abc9c,stroke:#17a589,color:#fff
+    style I fill:#f4a460,stroke:#c4824a,color:#fff
+```
+
+**Quick path**: Context → Prompts → Review → commit. Add Search and Plan for complex features. Eval is optional for tracking prompt reliability.
+
+Unlike Copilot where you invoke each step manually, Claude Code **auto-triggers** the right workflow based on what you say. After each step, it suggests the natural next one:
+
+```
+You:    "Help me add authentication to my API"
+Claude: detects → Search workflow (checks for existing auth libraries)
+        → suggests Plan (feature spans schema + middleware + routes)
+        → walks through Prompts for each phase
+        → runs Review (verify + review) on generated code
+        → suggests Eval after commit
+```
+
+You can also jump directly to any workflow with slash commands, or let the skill route you automatically.
+
 ## What's Included
 
 | Path | Purpose |

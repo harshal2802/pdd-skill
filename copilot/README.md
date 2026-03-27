@@ -49,6 +49,29 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 
 The `copilot-instructions.md` file loads automatically in every Copilot Chat session, providing PDD-aware routing and core principles.
 
+## Workflow
+
+```mermaid
+flowchart LR
+    A["/pdd-scaffold"] --> B["/pdd-context"]
+    B --> S{Complex?}
+    S -- Yes --> C["/pdd-search"] --> D["/pdd-plan"] --> E
+    S -- No --> E["/pdd-prompts"]
+    E --> F["Run prompt"]
+    F --> G["/pdd-review"]
+    G --> H["Commit"]
+    H -.-> I["/pdd-eval"]
+
+    style S fill:#f1c40f,stroke:#d4ac0d,color:#333
+    style C fill:#1abc9c,stroke:#17a589,color:#fff
+    style D fill:#1abc9c,stroke:#17a589,color:#fff
+    style I fill:#f4a460,stroke:#c4824a,color:#fff
+```
+
+**Quick path**: `/pdd-context` → `/pdd-prompts` → `/pdd-review` → commit. Add `/pdd-search` and `/pdd-plan` for complex features. Use `/pdd-eval` to track prompt reliability over time.
+
+Each prompt file suggests the next step at the end, so you don't need to memorize the flow.
+
 ## Differences from the Claude Code version
 
 | Aspect | Claude Code (SKILL.md) | Copilot (prompt files) |
