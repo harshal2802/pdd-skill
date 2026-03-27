@@ -1,6 +1,6 @@
 # Baseline: create-task-endpoint
 
-**Prompt**: prompts/features/tasks/create-task-endpoint.md
+**Prompt**: pdd/prompts/features/tasks/create-task-endpoint.md
 **Saved from run on**: 2026-02-10
 **Model**: Claude (February 2026)
 

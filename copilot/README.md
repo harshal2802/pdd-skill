@@ -48,7 +48,7 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 | Command | What it does |
 |---|---|
 | `/pdd-scaffold` | Set up PDD folder structure for a new project |
-| `/pdd-context` | Write or update context files (project.md, conventions.md, decisions.md) |
+| `/pdd-context` | Write or update context files (pdd/context/project.md, conventions.md, decisions.md) |
 | `/pdd-search` | Search for existing solutions before building custom features |
 | `/pdd-plan` | Create an implementation plan before writing prompts |
 | `/pdd-prompts` | Generate a focused feature prompt |

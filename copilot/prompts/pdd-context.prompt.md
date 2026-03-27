@@ -9,7 +9,7 @@ You are helping the user create or update their PDD context layer. **Write what 
 
 ## Detect project type first
 
-Check `context/project.md` (if it exists) or infer from the user's language. Use `#file:` to load the matching reference file for type-specific questions and templates:
+Check `pdd/context/project.md` (if it exists) or infer from the user's language. Use `#file:` to load the matching reference file for type-specific questions and templates:
 
 | Type | Signals | Reference |
 |---|---|---|
@@ -32,7 +32,7 @@ Ask these questions conversationally (not all at once):
 
 Then ask type-specific questions from the reference file.
 
-Generate `context/project.md` using this template:
+Generate `pdd/context/project.md` using this template:
 
 ```markdown
 # Project: <name>
@@ -90,7 +90,7 @@ For each architectural decision, use this format:
 
 ## Edge cases
 
-- **Monorepo**: Root `context/project.md` for the system + `context/` inside each sub-project
+- **Monorepo**: Root `pdd/context/project.md` for the system + `pdd/context/` inside each sub-project
 - **Team project**: Prioritize `conventions.md` — pull from existing linter config or style guide
 - **Context too long**: Split at ~300 lines into `project.md` (overview) + `architecture.md` (depth)
 - **Partial info**: Draft with placeholders — partial context is better than none

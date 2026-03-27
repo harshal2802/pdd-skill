@@ -20,7 +20,7 @@ Ask these after the base questions in `project.md`:
 - How is the model or pipeline deployed? (batch, real-time API, embedded)
 - What are the evaluation metrics? (accuracy, F1, RMSE, custom business metric)
 
-### Extended `context/project.md` sections for data/ML
+### Extended `pdd/context/project.md` sections for data/ML
 
 ```markdown
 ## Data

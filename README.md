@@ -43,20 +43,22 @@ A PDD project looks like this:
 
 ```
 my-project/
-├── prompts/
-│   ├── features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
-│   │   ├── auth/        #   One subfolder per feature domain, app module, or tool
-│   │   └── tasks/
-│   ├── templates/       # Reusable prompt patterns
-│   └── experiments/     # Exploratory, time-boxed prompts
-├── context/
-│   ├── project.md       # What you're building, why, and with what stack
-│   ├── conventions.md   # Code style, naming, patterns the AI should follow
-│   └── decisions.md     # Architecture decisions and the reasoning behind them
-├── app/                 # Reviewed, committed AI-generated artifacts
-└── evals/               # Tests for prompt quality and output correctness
-    ├── baselines/       # Known-good outputs for diff comparison
-    └── scripts/         # Automated validation scripts
+├── pdd/
+│   ├── prompts/
+│   │   ├── features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
+│   │   │   ├── auth/        #   One subfolder per feature domain, app module, or tool
+│   │   │   └── tasks/
+│   │   ├── templates/       # Reusable prompt patterns
+│   │   └── experiments/     # Exploratory, time-boxed prompts
+│   ├── context/
+│   │   ├── project.md       # What you're building, why, and with what stack
+│   │   ├── conventions.md   # Code style, naming, patterns the AI should follow
+│   │   └── decisions.md     # Architecture decisions and the reasoning behind them
+│   └── evals/               # Tests for prompt quality and output correctness
+│       ├── baselines/       # Known-good outputs for diff comparison
+│       └── scripts/         # Automated validation scripts
+├── src/                     # Reviewed, committed AI-generated artifacts (or user-chosen name)
+└── ...
 ```
 
 ## Slash Commands
@@ -73,7 +75,7 @@ Then invoke them in Claude Code:
 | Command | What it does |
 |---|---|
 | `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
-| `/project:pdd-context` | Write or update `project.md`, `conventions.md`, and `decisions.md` |
+| `/project:pdd-context` | Write or update `pdd/context/project.md`, `conventions.md`, and `decisions.md` |
 | `/project:pdd-search` | Search for existing solutions before building custom features |
 | `/project:pdd-plan` | Create an implementation plan before writing prompts |
 | `/project:pdd-prompts` | Generate a focused feature prompt (standalone or chained) |
@@ -142,6 +144,10 @@ See [`examples/task-management-api/`](examples/task-management-api/) for a compl
 ## GitHub Copilot Version
 
 This skill is also available for GitHub Copilot Chat. See [`copilot/`](copilot/) for setup instructions and prompt files that map to the same eight workflows.
+
+## Migrating from the old layout
+
+If you have an existing PDD project using the old layout (with `prompts/`, `context/`, `evals/` at the project root), see [`docs/migration.md`](docs/migration.md) for step-by-step migration instructions.
 
 ## Learn More
 

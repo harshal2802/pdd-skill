@@ -1,6 +1,6 @@
 # Eval: create-task-endpoint
 
-**Prompt**: prompts/features/tasks/create-task-endpoint.md
+**Prompt**: pdd/prompts/features/tasks/create-task-endpoint.md
 **Last run**: 2026-02-03
 
 ## Criteria

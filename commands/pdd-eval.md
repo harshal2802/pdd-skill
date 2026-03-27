@@ -10,14 +10,14 @@ If the user specifies a prompt, evaluate that one. Otherwise, scan for prompts w
 
 ```
 # Find prompts in features/ that don't have a matching eval
-# prompts/features/auth/login.md → evals/login-eval.md
+# pdd/prompts/features/auth/login.md → pdd/evals/login-eval.md
 ```
 
 Suggest starting with the prompt that has the most runs or is most critical.
 
 ## Step 2 — Check for existing eval
 
-Look in `evals/` for a matching eval file (`<prompt-name>-eval.md`).
+Look in `pdd/evals/` for a matching eval file (`<prompt-name>-eval.md`).
 
 - **Eval exists**: Load it, run the checklist against the latest output
 - **No eval exists**: Create one using the template below
@@ -26,7 +26,7 @@ Look in `evals/` for a matching eval file (`<prompt-name>-eval.md`).
 
 ```markdown
 # Eval: <prompt name>
-**Prompt**: prompts/features/<area>/<prompt-file>.md
+**Prompt**: pdd/prompts/features/<area>/<prompt-file>.md
 **Created**: <date>
 **Level**: 1 — Manual checklist
 
@@ -50,7 +50,7 @@ Look in `evals/` for a matching eval file (`<prompt-name>-eval.md`).
 | 3 | | | |
 ```
 
-Save to `evals/<prompt-name>-eval.md`.
+Save to `pdd/evals/<prompt-name>-eval.md`.
 
 ## Step 3 — Run the evaluation
 
@@ -71,8 +71,8 @@ Ask the user to run the prompt (or provide output from a recent run). Then:
 
 | Current level | Trigger to level up | Action |
 |---|---|---|
-| **Level 1** (checklist) | 5+ runs of the same prompt | Save a known-good output to `evals/baselines/<prompt-name>-baseline.md` → Level 2 |
-| **Level 2** (baseline diff) | Prompt is stable and used regularly | Write a validation script in `evals/scripts/` → Level 3 |
+| **Level 1** (checklist) | 5+ runs of the same prompt | Save a known-good output to `pdd/evals/baselines/<prompt-name>-baseline.md` → Level 2 |
+| **Level 2** (baseline diff) | Prompt is stable and used regularly | Write a validation script in `pdd/evals/scripts/` → Level 3 |
 
 ### Level 2 — Baseline comparison
 
@@ -87,7 +87,7 @@ For mature, frequently-used prompts:
 
 ```markdown
 # Eval script: <prompt name>
-**Script**: evals/scripts/<prompt-name>-eval.sh
+**Script**: pdd/evals/scripts/<prompt-name>-eval.sh
 **Checks**:
 - Output is valid <language> (syntax check)
 - Required imports/sections present

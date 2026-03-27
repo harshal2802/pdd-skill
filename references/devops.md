@@ -19,7 +19,7 @@ Ask these after the base questions in `project.md`:
 - Are there compliance or security requirements? (SOC2, HIPAA, PCI, etc.)
 - What's the on-call / incident response setup?
 
-### Extended `context/project.md` sections for DevOps/infra
+### Extended `pdd/context/project.md` sections for DevOps/infra
 
 ```markdown
 ## Cloud & platform

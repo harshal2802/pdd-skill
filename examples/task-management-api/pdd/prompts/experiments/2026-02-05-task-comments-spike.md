@@ -1,6 +1,6 @@
 # Experiment: Task comments — threading approach
 
-**File**: prompts/experiments/2026-02-05-task-comments-spike.md
+**File**: pdd/prompts/experiments/2026-02-05-task-comments-spike.md
 **Created**: 2026-02-05
 **Goal**: Explore whether task comments should be flat or threaded
 **Timebox**: 1 week (evaluate by 2026-02-12)
@@ -26,4 +26,4 @@ For each, produce: Prisma schema addition, repository, and service.
 
 ## Outcome
 
-_Fill in after running: which approach won, or if neither worked. Then either promote the winning approach to `prompts/features/tasks/` or delete this file._
+_Fill in after running: which approach won, or if neither worked. Then either promote the winning approach to `pdd/prompts/features/tasks/` or delete this file._

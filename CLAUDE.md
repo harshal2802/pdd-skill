@@ -53,3 +53,4 @@ done
 - Copilot prompt frontmatter uses `agent: agent` (not `mode: "agent"`)
 - Commit messages: imperative mood, describe the why not just the what
 - Never add Co-Authored-By trailer to commits
+- PDD project structure: all PDD artifacts live under `pdd/` (prompts, context, evals). Source code goes in `src/` (or user-chosen name). See `docs/migration.md` for migration from the old layout.

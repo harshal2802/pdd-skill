@@ -18,7 +18,7 @@ Ask the user to share the prompt and its output. Then diagnose using this table:
 | Output does too many things | Task too broad | Split into multiple prompts |
 | Output format is wrong | No format specified | Add explicit output format section |
 | Output drifts across runs | Prompt is ambiguous | Add concrete examples |
-| Output contradicts conventions | No conventions reference | Add or paste from `conventions.md` |
+| Output contradicts conventions | No conventions reference | Add or paste from `pdd/context/conventions.md` |
 
 Run the prompt 2-3 times if possible:
 - **Consistent errors** → the prompt is wrong
@@ -45,7 +45,7 @@ Produce the improved version and explain what changed and why — not just a new
 
 ## When to start fresh
 
-If more than half the prompt needs rewriting, suggest starting from scratch with `/pdd-prompts` and moving the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
+If more than half the prompt needs rewriting, suggest starting from scratch with `/pdd-prompts` and moving the old prompt to `pdd/prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ## Next step
 
