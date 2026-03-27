@@ -1,5 +1,5 @@
 ---
-name: prompt-driven-development
+name: pdd-skill
 description: >-
   Trigger when the user mentions PDD, wants to scaffold an AI-assisted project,
   write context or prompt files, improve prompts, or review AI-generated output.
@@ -11,12 +11,17 @@ description: >-
 
 This skill turns Claude into a PDD partner — helping users structure, operate, and improve AI-assisted development projects.
 
-**Five core workflows:**
+**Eight core workflows:**
 1. **Scaffold** — set up the project folder structure
 2. **Context** — write or update context files (`project.md`, `conventions.md`, `decisions.md`)
-3. **Prompts** — generate well-structured feature prompts
-4. **Update** — improve or refactor an existing prompt
-5. **Review** — critique AI-generated output before it gets committed
+3. **Search** — research existing solutions before building custom features
+4. **Plan** — decompose a feature into phases and a prompt chain strategy
+5. **Prompts** — generate well-structured feature prompts
+6. **Update** — improve or refactor an existing prompt
+7. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
+8. **Eval** — run prompt evaluations and track quality over time
+
+**Quick path**: For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required for every task.
 
 ---
 
@@ -56,9 +61,12 @@ If the project spans multiple types, load all relevant reference files. When con
 |---|---|
 | "Start a new PDD project", "Set up folder structure", "How do I get started?" | → **Scaffold** |
 | "Help me write my project.md", "What should my context file say?" | → **Context** |
+| "Is there a library for this?", "Does something already do this?" | → **Search** |
+| "Plan this feature", "How should I break this down?" | → **Plan** |
 | "Write a prompt for this feature", "Help me prompt this" | → **Prompts** |
 | "This prompt isn't working", "Can you improve this prompt?" | → **Update** |
-| "Review this output", pastes code without instructions | → **Review** |
+| "Check this code", "Run the quality checks", "Is this ready to commit?", "Review this output", pastes code without instructions | → **Review** |
+| "How is my prompt performing?", "Run the eval", "Track prompt quality" | → **Eval** |
 | Vague or unclear | → Ask: *"Are you starting a new project, working on a feature prompt, or reviewing something the AI generated?"* |
 
 **If context files don't exist yet:** Don't block the user. Proceed with the requested workflow and suggest context files afterward.
@@ -73,12 +81,17 @@ After completing any workflow, suggest the natural next step:
 
 | Just finished | Suggest next |
 |---|---|
-| **Scaffold** | → Workflow 2 (Context): *"Structure is ready. Want to write `context/project.md`?"* |
-| **Context** | → Workflow 3 (Prompts): *"Context is set. Ready to write your first feature prompt?"* |
-| **Prompts** | → Run the prompt, then → Workflow 5 (Review): *"Run this prompt and paste the output — I'll review it."* |
-| **Update** | → Re-run the prompt, then → Workflow 5 (Review): *"Try the updated prompt and I'll review the new output."* |
-| **Review** — issues found | → Fix code, or → Workflow 4 (Update) if the prompt needs work |
-| **Review** — looks good | → Commit both prompt and output |
+| **Scaffold** | → Context: *"Structure is ready. Want to write `context/project.md`?"* |
+| **Context** | → Search or Plan: *"Context is set. Before writing prompts — want to search for existing solutions or plan the implementation?"* |
+| **Search** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
+| **Search** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
+| **Plan** | → Prompts: *"Plan is set. Ready to write the first prompt? Start with Phase 1."* |
+| **Prompts** | → Run the prompt 2–3 times, then → Review: *"Run this prompt, then `/project:pdd-review` to verify and review the output."* For critical prompts, create a Level 1 eval first. |
+| **Update** | → Re-run the prompt, then → Review: *"Try the updated prompt and run `/project:pdd-review` on the output."* |
+| **Review** — issues found | → Fix code, or → Update if the prompt needs work |
+| **Review** — looks good | → Commit both prompt and output. → Eval: *"Consider running `/project:pdd-eval` to track this prompt's quality over time."* |
+| **Eval** — passes | → Level up the eval if 5+ runs, or continue to next feature |
+| **Eval** — fails | → Update: *"These criteria failed. Fix the prompt first."* |
 
 ---
 
@@ -87,7 +100,7 @@ After completing any workflow, suggest the natural next step:
 Ask or infer the **project name**, then scaffold:
 
 ```bash
-mkdir -p <project-name>/{prompts/{system,features,templates,experiments},context,app,evals}
+mkdir -p <project-name>/{prompts/{features,templates,experiments},context,app,evals/{baselines,scripts}}
 cd <project-name>
 git init
 touch context/project.md context/conventions.md context/decisions.md README.md
@@ -99,13 +112,14 @@ Adapt the commands for your platform if not using bash.
 
 | Folder | What goes here |
 |---|---|
-| `prompts/system/` | Persistent AI personas and global constraints |
 | `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/billing/`) |
-| `prompts/templates/` | Reusable prompt patterns |
-| `prompts/experiments/` | Time-boxed exploratory prompts — dated, pruned weekly |
+| `prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
+| `prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
 | `context/` | Permanent project briefing files |
 | `app/` | Reviewed, committed AI-generated artifacts |
 | `evals/` | Prompt quality checks and output tests |
+| `evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
+| `evals/scripts/` | Automated validation scripts (Level 3 evals) |
 
 After scaffold say: *"Structure is ready. The most important next step is `context/project.md`. Want me to help write it?"*
 
@@ -160,7 +174,7 @@ Then ask the type-specific questions from the reference file.
 ### `context/conventions.md`
 
 Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
-Draft from their answer, or use the type-specific starter from the reference file.
+Draft from their answer, or use the type-specific starter from the reference file. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts.
 
 ### `context/decisions.md`
 
@@ -185,7 +199,79 @@ Read the existing files, ask what's changed (stack, decisions, constraints), and
 
 ---
 
-## Workflow 3: Generate Feature Prompts
+## Workflow 3: Search Before Building
+
+**Don't build what already exists.** Before writing a custom feature prompt, check whether a library, MCP server, framework built-in, or existing codebase pattern already solves the problem.
+
+### Search order
+
+1. **Existing codebase** — search `app/`, `prompts/features/`, and `prompts/templates/` for similar work
+2. **Package ecosystem** — npm, PyPI, crates.io, pkg.go.dev, etc.
+3. **MCP servers** — GitHub, Supabase, Vercel, Playwright, Context7, etc.
+4. **Framework built-ins** — check if the project's framework already includes the feature
+
+### Decision matrix
+
+| Option | When to use | Example |
+|---|---|---|
+| **Adopt** | A library/tool does exactly what you need | Use `zod` for validation instead of writing custom validators |
+| **Extend** | Something close exists but needs customization | Fork a template prompt, add project-specific constraints |
+| **Compose** | Combine 2-3 existing pieces | Chain an MCP server with a thin wrapper |
+| **Build** | Nothing exists or doesn't fit constraints | Write a custom prompt for truly novel features |
+
+If the decision is to build, log why existing options were rejected in `context/decisions.md`.
+
+---
+
+## Workflow 4: Plan Before Prompting
+
+**Plan first, prompt second.** For non-trivial features, create an implementation plan before writing any prompts. This catches missing dependencies, wrong decomposition, and implicit architectural decisions.
+
+### When to plan
+
+- Feature spans multiple files or layers (schema → API → UI)
+- Feature has unknowns or requires architectural decisions
+- Feature will need a prompt chain (3+ sequential prompts)
+
+Skip the plan for single-prompt features — go directly to Workflow 5 (Prompts). See the **Quick path** above.
+
+### How to plan
+
+1. Read context files and scan existing prompts
+2. Decompose into ordered phases — each phase produces one testable artifact and maps to one prompt
+3. Identify risks, unknowns, and decisions needed
+4. Map phases to a prompt chain: `feature-01-<phase>.md` through `feature-NN-<phase>.md`
+
+### Plan template
+
+```markdown
+# Implementation Plan: <feature name>
+**Created**: <date>
+**Complexity**: Low | Medium | High
+**Estimated prompts**: <count>
+
+## Summary
+<2-3 sentence overview>
+
+## Phases
+### Phase 1: <name>
+**Produces**: <artifact>
+**Depends on**: nothing | Phase N
+**Risk**: Low | Medium | High — <why>
+**Prompt**: `prompts/features/<area>/<feature>-01-<phase>.md`
+
+## Risks & Unknowns
+- <risk>
+
+## Decisions Needed
+- <choice to log in decisions.md>
+```
+
+Save to `prompts/features/<area>/PLAN-<feature-name>.md`. Review with the user before proceeding to prompts.
+
+---
+
+## Workflow 5: Generate Feature Prompts
 
 Load the project type reference file — it contains type-specific prompt patterns and common feature templates.
 
@@ -203,6 +289,8 @@ If spotted: *"This covers a few distinct things — let's split. Which first?"*
 - Existing code it needs to fit into?
 
 ### Step 3 — Write the prompt
+
+Before writing from scratch, check `prompts/templates/` for an existing template that fits this feature type.
 
 ```markdown
 # Prompt: <feature name>
@@ -241,17 +329,18 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **How to structure**: Number prompts sequentially within the same area subfolder (`<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
-**Chain failure recovery**: Fix the failing step (Workflow 4), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
+**Chain failure recovery**: Fix the failing step (Workflow 6), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
 ### Edge cases
 
 - **Vague goal**: Help break into feature list first, then prompt the first one
-- **Prompt keeps failing**: Move to Workflow 4 (Update)
-- **Reusable template needed**: Save to `prompts/templates/` with `<placeholder>` notation
+- **Prompt keeps failing**: Move to Workflow 6 (Update)
+- **Exploratory / uncertain approach**: Save to `prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. This signals "temporary — evaluate within a week."
+- **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
 
 ---
 
-## Workflow 4: Update an Existing Prompt
+## Workflow 6: Update an Existing Prompt
 
 ### Diagnose first
 
@@ -283,19 +372,35 @@ Produce the improved version and show what changed and why — not just a new pr
 
 Versioning: *"Keep the old version commented out. If the new one works better across a few runs, delete the old."*
 
-If more than half the prompt needs rewriting, start fresh from Workflow 3 instead. Move the old prompt to `prompts/experiments/`.
+If more than half the prompt needs rewriting, start fresh from Workflow 5 instead. Move the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ---
 
-## Workflow 5: Review AI-Generated Output
+## Workflow 7: Review AI-Generated Output
 
-Act as a critical reviewer. Load the project type reference file for the type-specific checklist.
+Review combines automated quality checks with subjective code review in a single pass. Run verification first, then review what the checks can't catch.
 
 **If no context files exist:** Ask *"What was this supposed to do?"* then proceed. Flag that context files would make future reviews more thorough.
 
 **If user pastes code without explanation:** Ask *"What did you prompt to get this, and what were you expecting?"*
 
-### Universal review dimensions
+Load the project type reference file for the type-specific checklist.
+
+### Phase 1: Automated verification
+
+Run these checks in order. Stop at the first failure — fix before continuing.
+
+| Check | What it checks | Tools |
+|---|---|---|
+| **Build** | Code compiles/builds without errors | `npm run build`, `tsc`, `go build`, `cargo build`, etc. |
+| **Type check** | Passes static type checking (if applicable) | `tsc --noEmit`, `mypy`, `pyright` |
+| **Lint** | No new lint warnings | ESLint, Biome, Ruff, golangci-lint, clippy |
+| **Test** | Existing tests pass, new code has tests | `npm test`, `pytest`, `go test`, `cargo test` |
+| **Security** | No hardcoded secrets, injection vulnerabilities, or dependency issues | Pattern scan, `npm audit`, `pip audit` |
+
+Skip checks that don't apply (e.g., no build system, no static types). If all checks pass, proceed to Phase 2. If any fail, fix first.
+
+### Phase 2: Subjective review
 
 **1. Correctness** — Does it do what was asked? Unhandled edge cases? Obvious bugs?
 
@@ -319,7 +424,7 @@ When listing issues, tag each with a severity level so the user knows what to fi
 
 ### Output format
 
-Structure your review as: what's good (concrete strengths), issues to fix (tagged with severity, highest first), suggestions, how to improve the prompt, and one clear next step.
+Structure your review as: verification results (pass/fail per check), what's good (concrete strengths), issues to fix (tagged with severity, highest first), suggestions, how to improve the prompt, and one clear next step.
 
 ### Edge cases
 
@@ -330,20 +435,19 @@ Structure your review as: what's good (concrete strengths), issues to fix (tagge
 
 ---
 
-## Evaluating Prompts (`evals/`)
+## Workflow 8: Evaluate Prompts (`evals/`)
 
-The `evals/` folder tracks whether your prompts are producing consistent, quality output over time. Start simple — even a manual checklist counts.
+The `evals/` folder tracks whether your prompts produce consistent, quality output over time. Treat evals as the unit tests of AI development — define expected behavior, run continuously, track regressions.
 
 ### Three levels of evaluation
 
 **Level 1 — Manual checklist** (start here)
 
-Create a markdown file per prompt or feature with pass/fail criteria:
-
 ```markdown
 # Eval: <prompt name>
 **Prompt**: prompts/features/<area>/<prompt-file>.md
-**Last run**: <date>
+**Created**: <date>
+**Level**: 1 — Manual checklist
 
 ## Criteria
 - [ ] Output compiles / runs without errors
@@ -351,22 +455,38 @@ Create a markdown file per prompt or feature with pass/fail criteria:
 - [ ] Handles the listed edge cases
 - [ ] Follows project conventions
 - [ ] No hallucinated imports, APIs, or functions
+- [ ] Integrates with existing code without conflicts
 
-## Notes
-<anything surprising about this run>
+## Run log
+| Run | Date | Result | Notes |
+|---|---|---|---|
+| 1 | | | |
 ```
 
-Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt change.
+Save to `evals/<prompt-name>-eval.md`.
 
-**Level 2 — Diff comparison**: Save good outputs to `evals/baselines/`. When you update a prompt, diff new output against the baseline to catch regressions.
+**Level 2 — Baseline comparison**: Save known-good outputs to `evals/baselines/`. Diff new output against the baseline to catch regressions.
 
-**Level 3 — Automated checks**: For mature prompts, write scripts that validate output structure (valid code, required sections, real imports). Save to `evals/scripts/`.
+**Level 3 — Automated validation**: Write scripts that check output structure, valid syntax, required sections, and forbidden patterns. Save to `evals/scripts/`.
+
+### Pass rate tracking
+
+After 3+ runs, track reliability metrics:
+- **pass@1** — passes on first try (percentage)
+- **pass@3** — passes at least once in 3 tries (percentage)
+
+These metrics tell you whether the prompt is reliable or needs work.
 
 ### When to evaluate
 
-- After creating a new prompt (Workflow 3) — run it 2–3 times and fill out the checklist
-- After updating a prompt (Workflow 4) — compare against baseline
+- After creating a new prompt (Workflow 5) — run 2–3 times and fill out the checklist
+- After updating a prompt (Workflow 6) — compare against baseline
 - After a model update — re-run key prompts and check for drift
+
+### When to level up
+
+- **Level 1 → Level 2**: After 5+ runs, save a known-good output to `evals/baselines/`
+- **Level 2 → Level 3**: When the prompt is stable and used regularly — write a validation script in `evals/scripts/`
 
 ---
 
@@ -375,7 +495,7 @@ Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt chan
 - **One prompt, one job.** Split if multiple concerns.
 - **Commit prompts alongside outputs.** The prompt is part of the codebase.
 - **Update context after every significant decision.** Stale context degrades future prompts.
-- **Timebox experiments.** Older than one week: graduate or delete.
+- **Timebox experiments.** Name with a date prefix (`YYYY-MM-DD-`). After one week: promote to `prompts/features/` if it worked, delete if it didn't.
 - **Never commit unreviewed output.** Treat it like a PR.
 - **Context must reflect reality.** Aspirational `project.md` actively misleads.
 
@@ -391,6 +511,10 @@ Save to `evals/<prompt-name>-eval.md`. Review after each significant prompt chan
 
 **"My team doesn't know about PDD"** → Start with `context/` layer — reads as plain docs, no workflow change required.
 
-**"The prompt didn't work at all"** → Workflow 4. Diagnose before rewriting.
+**"The prompt didn't work at all"** → Workflow 6 (Update). Diagnose before rewriting.
+
+**"Is this code ready to commit?"** → Workflow 7 (Review). Runs automated checks first, then detailed review.
+
+**"How reliable is this prompt?"** → Workflow 8 (Eval). Track pass rates across runs.
 
 **"Can you just do it for me?"** → Yes — but explain each step so the user learns the pattern.

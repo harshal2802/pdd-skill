@@ -34,8 +34,8 @@ graph LR
     subgraph "✅ With PDD"
         E[New Session] --> F[Load context files]
         F --> G[Focused prompt]
-        G --> H[Review & commit]
-        H --> I[Update context]
+        G --> H[Verify & review]
+        H --> I[Commit & update context]
         I --> E
     end
 
@@ -87,6 +87,22 @@ graph TD
 **Output layer** is where reviewed, accepted AI-generated code or content lives. Nothing goes here without being read and understood.
 
 **Eval layer** is how you know your prompts are still working. Even simple checklists beat nothing.
+
+---
+
+## Search Before Building, Plan Before Prompting
+
+Two of the most common failure modes in AI-assisted development:
+
+1. **Building what already exists.** A developer prompts a custom validation layer when `zod` does the job. A team writes a custom auth flow when their framework has one built in. The AI is happy to build whatever you ask — it won't tell you not to.
+
+2. **Prompting without a plan.** A developer writes a monolithic prompt for a feature that spans schema, API, and UI. The output is too large, too tangled, and too hard to review. Or they write prompts in the wrong order and discover halfway through that a dependency is missing.
+
+The fix for both is the same: **slow down before you speed up.**
+
+Before writing a prompt, check whether a library, MCP server, framework built-in, or existing codebase pattern already solves the problem. If the answer is "build it," decompose the feature into phases where each phase produces one testable artifact and maps to one prompt. The plan catches implicit decisions before they become embedded in generated code.
+
+This doesn't apply to every feature. Simple, single-prompt tasks should skip straight to prompting. But for anything that spans multiple files or layers — search first, plan second, prompt third.
 
 ---
 
@@ -142,16 +158,20 @@ A React app and a Python data pipeline both need a `project.md` and versioned pr
 ```bash
 mkdir my-project && cd my-project
 git init
-mkdir -p prompts/{system,features,templates,experiments} context app evals
+mkdir -p prompts/{features,templates,experiments} context app evals/{baselines,scripts}
 touch context/project.md context/conventions.md context/decisions.md README.md
 ```
 
 ```mermaid
 flowchart LR
     A["1. Scaffold\nDirectories & files"] --> B["2. Write context\nproject.md\nconventions.md"]
-    B --> C["3. First prompt\nprompts/features/area/"]
-    C --> D["4. Review output\nRead & understand"]
-    D --> E["5. Commit both\nPrompt + output"]
+    B --> S{"Complex\nfeature?"}
+    S -- Yes --> R["3. Search\nExisting solutions?"]
+    R --> P["4. Plan\nDecompose into phases"]
+    P --> C
+    S -- No --> C["5. Write prompt\nprompts/features/area/"]
+    C --> D["6. Review\nVerify + review"]
+    D --> E["7. Commit both\nPrompt + output"]
     E --> F{"Decision\nmade?"}
     F -- Yes --> G["Log in\ndecisions.md"]
     F -- No --> C
@@ -159,12 +179,17 @@ flowchart LR
 
     style A fill:#3498db,stroke:#2471a3,color:#fff
     style B fill:#3498db,stroke:#2471a3,color:#fff
+    style S fill:#f1c40f,stroke:#d4ac0d,color:#333
+    style R fill:#1abc9c,stroke:#17a589,color:#fff
+    style P fill:#1abc9c,stroke:#17a589,color:#fff
     style C fill:#9b59b6,stroke:#7d3c98,color:#fff
     style D fill:#e67e22,stroke:#ca6f1e,color:#fff
     style E fill:#27ae60,stroke:#1e8449,color:#fff
     style F fill:#f1c40f,stroke:#d4ac0d,color:#333
     style G fill:#1abc9c,stroke:#17a589,color:#fff
 ```
+
+The **quick path** for simple features is Context → Prompt → Review → Commit. For complex features, add Search and Plan before prompting — they catch missing dependencies, wrong decomposition, and "don't build what already exists" moments.
 
 Then invest 30 minutes writing `context/project.md`. Answer these questions:
 - What are we building and why?
@@ -210,7 +235,9 @@ gantt
 
 ## Rules of Thumb
 
-**One prompt, one job.** Decompose aggressively before prompting.
+**Don't build what already exists.** Search before prompting — a library, framework built-in, or existing pattern may already solve the problem.
+
+**One prompt, one job.** Decompose aggressively before prompting. For complex features, write a plan first.
 
 **Version your prompts.** A prompt that worked last week may not work after a model update.
 
@@ -218,7 +245,7 @@ gantt
 
 **Timebox experiments.** Exploratory prompts go in `/experiments` with a date. If they don't graduate within a week, delete them.
 
-**Never treat raw output as done.** Review AI-generated code like you'd review a PR.
+**Never treat raw output as done.** Verify it builds, passes tests, and has no security issues. Then review it like you'd review a PR.
 
 ---
 

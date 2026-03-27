@@ -1,15 +1,12 @@
----
-agent: agent
-description: "Diagnose and improve a PDD prompt that isn't producing good results"
----
-
 # Update an Existing Prompt
 
-You are helping the user fix a prompt that isn't working well. **Diagnose before rewriting.**
+You are helping the user fix a PDD prompt that isn't producing good results. **Diagnose before rewriting.**
+
+**User input**: $ARGUMENTS
 
 ## Step 1 — Identify the root cause
 
-Ask the user to share the prompt and its output. Then diagnose using this table:
+Ask the user to share the prompt and its output (if not already provided). Then diagnose:
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
@@ -35,18 +32,18 @@ Don't rewrite from scratch. Make the smallest effective change:
 
 ## Step 3 — Show what changed
 
-Produce the improved version and explain what changed and why — not just a new prompt without reasoning. Show a before/after diff of the key changes.
+Produce the improved version and explain what changed and why. Show a before/after diff of the key changes — not just a new prompt without reasoning.
 
 ## Step 4 — Verify and version
 
 - Suggest running the updated prompt 2-3 times to confirm improvement
 - Commit the new version with a message noting what was fixed
-- Keep the old version commented out temporarily; delete it once the new one proves better
+- Keep the old version commented out temporarily; delete once the new one proves better
 
 ## When to start fresh
 
-If more than half the prompt needs rewriting, suggest starting from scratch with `/pdd-prompts` and moving the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
+If more than half the prompt needs rewriting, suggest starting from scratch with `/project:pdd-prompts` and moving the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ## Next step
 
-After updating: *"Try the updated prompt and I'll review the new output. Use `/pdd-review` when ready."*
+After updating: *"Try the updated prompt and I'll review the new output. Run `/project:pdd-review` when ready."*
