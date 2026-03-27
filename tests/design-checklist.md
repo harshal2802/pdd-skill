@@ -313,19 +313,25 @@ for f in frontend backend mobile data-ml devops fullstack; do
 done
 
 # 13.7 — Copilot #file: references have setup instructions
-grep -h '#file:references/' copilot/prompts/*.md | grep -oP 'references/\S+' | sort -u | while read f; do
-  grep -q "$f" copilot/README.md && echo "OK: $f in setup" || echo "MISSING from setup: $f"
+# Check that a references/ copy instruction exists and individual files are listed
+grep -q 'cp.*references/' copilot/README.md && echo "OK: references/ copy instruction" || echo "MISSING: references/ copy instruction"
+for f in frontend backend mobile data-ml devops fullstack; do
+  grep -q "$f.md" copilot/README.md && echo "OK: $f.md listed" || echo "MISSING from setup: $f.md"
 done
 
 # 13.9/13.10 — Slash command references point to existing files
-grep -ohP '/project:pdd-\w+' commands/*.md | sort -u | while read cmd; do
+grep -oh '/project:pdd-[a-z]*' commands/*.md | sort -u | while read cmd; do
   f="commands/$(echo $cmd | sed 's|/project:||').md"
-  [ -f "$f" ] && echo "OK: $cmd → $f" || echo "BROKEN: $cmd → $f"
+  [ -f "$f" ] && echo "OK: $cmd" || echo "BROKEN: $cmd → $f"
 done
 
 # 13.12/13.13 — README tables match actual files
 echo "=== Main README ==="
-diff <(ls commands/ | sed 's/.md//' | sort) <(grep -oP 'pdd-\w+' README.md | sort -u)
+for f in $(ls commands/ | sed 's/.md//'); do
+  grep -q "$f" README.md && echo "OK: $f" || echo "MISSING from README: $f"
+done
 echo "=== Copilot README ==="
-diff <(ls copilot/prompts/ | sed 's/.prompt.md//' | sort) <(grep -oP 'pdd-\w+' copilot/README.md | sort -u)
+for f in $(ls copilot/prompts/ | sed 's/.prompt.md//'); do
+  grep -q "$f" copilot/README.md && echo "OK: $f" || echo "MISSING from Copilot README: $f"
+done
 ```

@@ -329,7 +329,7 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **How to structure**: Number prompts sequentially within the same area subfolder (`<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
-**Chain failure recovery**: Fix the failing step (Workflow 4), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
+**Chain failure recovery**: Fix the failing step (Workflow 6), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
 ### Edge cases
 

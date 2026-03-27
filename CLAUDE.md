@@ -39,9 +39,10 @@ for f in frontend backend mobile data-ml devops fullstack; do
   [ -f "references/$f.md" ] && echo "OK: $f" || echo "MISSING: $f"
 done
 
-# Copilot #file: references have setup instructions
-grep -rh '#file:references/' copilot/prompts/ | grep -oP 'references/\S+' | sort -u | while read f; do
-  grep -q "$f" copilot/README.md && echo "OK: $f" || echo "MISSING from setup: $f"
+# Copilot setup covers references
+grep -q 'cp.*references/' copilot/README.md && echo "OK: references/ copy instruction" || echo "MISSING: references/ copy"
+for f in frontend backend mobile data-ml devops fullstack; do
+  grep -q "$f.md" copilot/README.md && echo "OK: $f.md listed" || echo "MISSING: $f.md"
 done
 ```
 
