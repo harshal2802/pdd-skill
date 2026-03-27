@@ -12,6 +12,9 @@ cp copilot-instructions.md <your-project>/.github/copilot-instructions.md
 
 # Copy the prompt files
 cp -r prompts/ <your-project>/.github/prompts/
+
+# Copy the reference files (project type flavors)
+cp -r ../references/ <your-project>/.github/references/
 ```
 
 Your project should end up with:
@@ -29,6 +32,13 @@ Your project should end up with:
     pdd-review.prompt.md
     pdd-eval.prompt.md
     pdd-status.prompt.md
+  references/
+    frontend.md
+    backend.md
+    mobile.md
+    data-ml.md
+    devops.md
+    fullstack.md
 ```
 
 ## Usage
