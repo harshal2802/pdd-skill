@@ -44,6 +44,7 @@ Your project should end up with:
     cli-devtools.md
     embedded-iot.md
     game-dev.md
+    blockchain.md
 ```
 
 ## Usage

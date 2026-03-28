@@ -114,7 +114,7 @@ The core PDD structure is universal — it works for any kind of project. But wh
 graph TD
     PDD((PDD Core))
 
-    PDD --> row1[ ] & row2[ ] & row3[ ]
+    PDD --> row1[ ] & row2[ ] & row3[ ] & row4[ ]
 
     row1 --> FE["Frontend / UI"]
     row1 --> BE["Backend / API"]
@@ -129,9 +129,12 @@ graph TD
     row3 --> EM["Embedded / IoT"]
     row3 --> GD["Game Dev"]
 
+    row4 --> BC["Blockchain"]
+
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
     style row3 fill:none,stroke:none
+    style row4 fill:none,stroke:none
     style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
     style FE fill:#3498db,stroke:#2471a3,color:#fff
     style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
@@ -143,6 +146,7 @@ graph TD
     style CL fill:#8e44ad,stroke:#6c3483,color:#fff
     style EM fill:#d35400,stroke:#a04000,color:#fff
     style GD fill:#2ecc71,stroke:#27ae60,color:#fff
+    style BC fill:#f1c40f,stroke:#d4ac0d,color:#333
 
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
@@ -161,6 +165,7 @@ graph TD
 | **CLI / Developer Tools** | Argument parsing, exit codes, signal handling, piped output, cross-platform behavior, shell completions |
 | **Embedded / IoT** | Memory constraints, interrupt safety, power budgets, cross-compilation, OTA updates, real-time behavior |
 | **Game Development** | Frame budgets, ECS architecture, asset pipelines, physics/rendering integration, platform certification |
+| **Blockchain / Smart Contracts** | Security patterns (reentrancy, access control), gas optimization, upgradeability, audit readiness, on-chain math |
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them. The Library flavor is **composable** — a React component library would combine it with the Frontend flavor, a Python ML toolkit with the Data / ML flavor.
 

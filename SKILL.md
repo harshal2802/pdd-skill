@@ -51,7 +51,8 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing (clap, cobra, yargs, argparse), subcommands, shell completions | `references/cli-devtools.md` |
 | Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware, cross-compilation | `references/embedded-iot.md` |
 | Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders | `references/game-dev.md` |
-| Other / Unrecognized | Desktop, or anything not above | No reference file ��� use base workflows only |
+| Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract, gas optimization | `references/blockchain.md` |
+| Other / Unrecognized | Desktop, or anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
