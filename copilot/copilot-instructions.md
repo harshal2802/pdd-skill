@@ -22,6 +22,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing, subcommands, shell completions |
 | Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware |
 | Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders |
+| Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract |
 
 ## Core Principles
 
