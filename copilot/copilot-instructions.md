@@ -33,6 +33,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | User intent | Suggest |
 |---|---|
 | Start a new project / set up structure | Use `/pdd-scaffold` |
+| Add PDD to an existing project | Use `/pdd-init` |
 | Write or update context files | Use `/pdd-context` |
 | Find existing libraries or solutions | Use `/pdd-search` |
 | Plan a feature before writing prompts | Use `/pdd-plan` |
