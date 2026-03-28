@@ -26,6 +26,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability |
 | API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, rate limiting, webhooks, API versioning |
 | Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF, window management, system tray, code signing, auto-update |
+| Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST, type checker, codegen, tree-sitter |
 
 ## Core Principles
 

@@ -133,6 +133,7 @@ graph TD
     row4 --> SC["Security"]
     row4 --> AP["API Platform"]
     row4 --> DG["Desktop GUI"]
+    row4 --> CO["Compiler"]
 
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
@@ -153,6 +154,7 @@ graph TD
     style SC fill:#c0392b,stroke:#96281b,color:#fff
     style AP fill:#2980b9,stroke:#1f6da0,color:#fff
     style DG fill:#16a085,stroke:#0e7a63,color:#fff
+    style CO fill:#7f8c8d,stroke:#5d6d6e,color:#fff
 
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
@@ -175,6 +177,7 @@ graph TD
 | **Security / Pentesting Tools** | Detection quality, false positive management, safe defaults, responsible disclosure, SIEM integration, adversarial input handling |
 | **API Platform / SDK** | Backward compatibility, SDK generation, error design, rate limiting, pagination, webhooks, developer experience |
 | **Desktop / Native GUI** | Window management, OS integration, code signing, auto-updates, cross-platform behavior, memory budgets, accessibility |
+| **Compiler / Language Tooling** | Parsing, AST design, type systems, error recovery, source span tracking, incremental compilation, LSP integration |
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them. The Library flavor is **composable** — a React component library would combine it with the Frontend flavor, a Python ML toolkit with the Data / ML flavor.
 
