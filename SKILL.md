@@ -52,6 +52,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware, cross-compilation | `references/embedded-iot.md` |
 | Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders | `references/game-dev.md` |
 | Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract, gas optimization | `references/blockchain.md` |
+| Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability, nuclei, Burp, Metasploit | `references/security.md` |
 | Other / Unrecognized | Desktop, or anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
