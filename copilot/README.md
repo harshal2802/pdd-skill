@@ -42,6 +42,7 @@ Your project should end up with:
     fullstack.md
     library.md
     cli-devtools.md
+    embedded-iot.md
     game-dev.md
 ```
 
