@@ -1,3 +1,8 @@
+---
+title: "Prompt Driven Development: The Philosophy"
+description: "Why prompts should be treated as first-class artifacts. The four layers of PDD, project type flavors, and how to start structuring AI-assisted development."
+---
+
 # Prompt Driven Development: The Philosophy
 
 There's a quiet shift happening in how software gets built. It's not just that developers are using AI tools — it's that the *act of prompting* is becoming a core part of the development workflow itself. Some are calling this Prompt Driven Development, or PDD. And if you're using AI tools daily without a clear structure around it, you're probably leaving a lot on the table.
