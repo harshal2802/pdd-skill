@@ -84,6 +84,7 @@ Then invoke them in Claude Code:
 | `/project:pdd-review` | Verify and review AI-generated output before committing |
 | `/project:pdd-eval` | Run prompt evaluations and track pass rates over time |
 | `/project:pdd-status` | Health check — shows what's set up, what's missing, and what's stale |
+| `/project:pdd-help` | Quick reference — lists all commands, workflow order, and usage guidance |
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
 
@@ -145,7 +146,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/desktop-gui.md` | Same for desktop / native GUI projects (window management, OS integration, code signing, auto-updates, cross-platform) |
 | `references/compiler-lang.md` | Same for compiler / language tooling projects (parsing, AST design, type systems, error recovery, LSP integration) |
 | `references/robotics.md` | Same for robotics / ROS projects (real-time control, sensor fusion, simulation-first, safety systems, coordinate frames) |
-| `commands/` | Ten Claude Code slash commands for each workflow + status check |
+| `commands/` | Eleven Claude Code slash commands for each workflow + status check + help |
 | `examples/` | Complete PDD example for a Task Management API |
 
 The skill auto-detects your project type and loads the right reference file to enrich context questions, conventions, and review checklists.

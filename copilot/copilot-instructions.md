@@ -52,3 +52,4 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Review AI-generated code (includes quality checks) | Use `/pdd-review` |
 | Track prompt quality and pass rates | Use `/pdd-eval` |
 | Check project PDD health | Use `/pdd-status` |
+| List available commands / how PDD works / get help | Use `/pdd-help` |
