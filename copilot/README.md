@@ -41,6 +41,7 @@ Your project should end up with:
     devops.md
     fullstack.md
     library.md
+    cli-devtools.md
 ```
 
 ## Usage

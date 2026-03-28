@@ -19,6 +19,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, cloud providers |
 | Full-stack | Frontend + backend together, Next.js, Nuxt, SvelteKit |
 | Library / Package | npm package, PyPI library, crate, gem, Go module, SDK, "publish", `exports` map |
+| CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing, subcommands, shell completions |
 
 ## Core Principles
 
