@@ -34,7 +34,8 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 
 1. **Check `pdd/context/project.md`** if it exists — look at the tech stack section
 2. **Infer from what the user says** — framework names, tools, or domain language
-3. **If still unclear**, ask: *"What kind of project is this — web frontend, backend API, mobile app, data/ML pipeline, infrastructure, or full-stack?"*
+3. **Check if it's a library** — look for signals like `exports` map in package.json, `lib/` output dir, `prepublishOnly` script, `pyproject.toml` with build system, `Cargo.toml` with `[lib]`, or user mentions "package", "library", "crate", "module", "SDK". If so, load `references/library.md` alongside any domain flavor.
+4. **If still unclear**, ask: *"What kind of project is this — web frontend, backend API, mobile app, data/ML pipeline, infrastructure, or full-stack? And is this a library/package consumed by other developers, or a production application?"*
 
 ### Project type → reference file
 
@@ -46,13 +47,16 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Data / ML / AI | Python, Jupyter, pandas, PyTorch, scikit-learn, pipelines | `references/data-ml.md` |
 | DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS, GCP, Azure | `references/devops.md` |
 | Full-stack | Frontend + backend together, Next.js, Nuxt, SvelteKit | `references/fullstack.md` + `references/frontend.md` + `references/backend.md` |
-| Other / Unrecognized | Embedded, game dev, firmware, desktop, or anything not above | No reference file — use base workflows only |
+| Library / Package | npm package, PyPI library, crate, gem, Go module, SDK, reusable component lib | `references/library.md` (+ domain flavor if applicable) |
+| Other / Unrecognized | Embedded, game dev, firmware, desktop, or anything not above | No reference file ��� use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
 If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `pdd/context/decisions.md`.
 
 **Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap (e.g., naming, project structure, API design). Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
+
+**Library is composable**: A project can be both a library and a domain type (e.g., a React component library = `library.md` + `frontend.md`). When combined, `library.md` takes precedence for API surface, versioning, and distribution concerns; the domain flavor takes precedence for implementation patterns.
 
 ---
 
