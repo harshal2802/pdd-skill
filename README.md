@@ -138,6 +138,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/library.md` | Same for library / installable package projects (composable with domain flavors) |
 | `references/cli-devtools.md` | Same for CLI and developer tools (argument parsing, exit codes, signal handling) |
 | `references/embedded-iot.md` | Same for embedded systems and IoT projects (memory constraints, real-time, cross-compilation) |
+| `references/game-dev.md` | Same for game development projects (frame budgets, ECS, asset pipelines, platform certification) |
 | `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 

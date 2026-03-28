@@ -43,6 +43,7 @@ Your project should end up with:
     library.md
     cli-devtools.md
     embedded-iot.md
+    game-dev.md
 ```
 
 ## Usage

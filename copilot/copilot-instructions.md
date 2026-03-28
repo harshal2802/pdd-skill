@@ -21,6 +21,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Library / Package | npm package, PyPI library, crate, gem, Go module, SDK, "publish", `exports` map |
 | CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing, subcommands, shell completions |
 | Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware |
+| Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders |
 
 ## Core Principles
 
