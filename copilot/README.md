@@ -47,6 +47,7 @@ Your project should end up with:
     blockchain.md
     security.md
     api-platform.md
+    desktop-gui.md
 ```
 
 ## Usage

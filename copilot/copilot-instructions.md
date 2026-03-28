@@ -25,6 +25,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract |
 | Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability |
 | API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, rate limiting, webhooks, API versioning |
+| Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF, window management, system tray, code signing, auto-update |
 
 ## Core Principles
 

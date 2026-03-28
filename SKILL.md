@@ -54,7 +54,8 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract, gas optimization | `references/blockchain.md` |
 | Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability, nuclei, Burp, Metasploit | `references/security.md` |
 | API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, Stainless, Fern, rate limiting, webhooks, API versioning | `references/api-platform.md` |
-| Other / Unrecognized | Desktop, or anything not above | No reference file — use base workflows only |
+| Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF, window management, system tray, code signing, auto-update | `references/desktop-gui.md` |
+| Other / Unrecognized | Anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
