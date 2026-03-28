@@ -53,6 +53,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders | `references/game-dev.md` |
 | Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract, gas optimization | `references/blockchain.md` |
 | Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability, nuclei, Burp, Metasploit | `references/security.md` |
+| API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, Stainless, Fern, rate limiting, webhooks, API versioning | `references/api-platform.md` |
 | Other / Unrecognized | Desktop, or anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.

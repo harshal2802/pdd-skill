@@ -46,6 +46,7 @@ Your project should end up with:
     game-dev.md
     blockchain.md
     security.md
+    api-platform.md
 ```
 
 ## Usage
