@@ -24,6 +24,7 @@ Your project should end up with:
   copilot-instructions.md
   prompts/
     pdd-scaffold.prompt.md
+    pdd-init.prompt.md
     pdd-context.prompt.md
     pdd-search.prompt.md
     pdd-plan.prompt.md
@@ -48,6 +49,7 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 | Command | What it does |
 |---|---|
 | `/pdd-scaffold` | Set up PDD folder structure for a new project |
+| `/pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
 | `/pdd-context` | Write or update context files (pdd/context/project.md, conventions.md, decisions.md) |
 | `/pdd-search` | Search for existing solutions before building custom features |
 | `/pdd-plan` | Create an implementation plan before writing prompts |
@@ -63,7 +65,8 @@ The `copilot-instructions.md` file loads automatically in every Copilot Chat ses
 
 ```mermaid
 flowchart LR
-    A["/pdd-scaffold"] --> B["/pdd-context"]
+    A["/pdd-scaffold (new)"] --> B["/pdd-context"]
+    A2["/pdd-init (existing)"] --> B
     B --> S{Complex?}
     S -- Yes --> C["/pdd-search"] --> D["/pdd-plan"] --> E
     S -- No --> E["/pdd-prompts"]
@@ -72,13 +75,14 @@ flowchart LR
     G --> H["Commit"]
     H -.-> I["/pdd-eval"]
 
+    style A2 fill:#3498db,stroke:#2980b9,color:#fff
     style S fill:#f1c40f,stroke:#d4ac0d,color:#333
     style C fill:#1abc9c,stroke:#17a589,color:#fff
     style D fill:#1abc9c,stroke:#17a589,color:#fff
     style I fill:#f4a460,stroke:#c4824a,color:#fff
 ```
 
-**Quick path**: `/pdd-context` → `/pdd-prompts` → `/pdd-review` → commit. Add `/pdd-search` and `/pdd-plan` for complex features. Use `/pdd-eval` to track prompt reliability over time.
+**Quick path**: `/pdd-context` → `/pdd-prompts` → `/pdd-review` → commit. Use `/pdd-init` instead of `/pdd-scaffold` for existing projects. Add `/pdd-search` and `/pdd-plan` for complex features. Use `/pdd-eval` to track prompt reliability over time.
 
 Each prompt file suggests the next step at the end, so you don't need to memorize the flow.
 

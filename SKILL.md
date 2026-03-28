@@ -11,17 +11,18 @@ description: >-
 
 This skill turns Claude into a PDD partner — helping users structure, operate, and improve AI-assisted development projects.
 
-**Eight core workflows:**
-1. **Scaffold** — set up the project folder structure
-2. **Context** — write or update context files (`project.md`, `conventions.md`, `decisions.md`)
-3. **Search** — research existing solutions before building custom features
-4. **Plan** — decompose a feature into phases and a prompt chain strategy
-5. **Prompts** — generate well-structured feature prompts
-6. **Update** — improve or refactor an existing prompt
-7. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
-8. **Eval** — run prompt evaluations and track quality over time
+**Nine core workflows:**
+1. **Scaffold** — set up a new project folder structure
+2. **Init** — add PDD to an existing project (auto-detects stack and conventions)
+3. **Context** — write or update context files (`project.md`, `conventions.md`, `decisions.md`)
+4. **Search** — research existing solutions before building custom features
+5. **Plan** — decompose a feature into phases and a prompt chain strategy
+6. **Prompts** — generate well-structured feature prompts
+7. **Update** — improve or refactor an existing prompt
+8. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
+9. **Eval** — run prompt evaluations and track quality over time
 
-**Quick path**: For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required for every task.
+**Quick path**: For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
 
 ---
 
@@ -60,6 +61,7 @@ If the project spans multiple types, load all relevant reference files. When con
 | If the user says... | Use workflow |
 |---|---|
 | "Start a new PDD project", "Set up folder structure", "How do I get started?" | → **Scaffold** |
+| "Add PDD to my project", "Initialize PDD here", "Set up PDD in this repo" | → **Init** |
 | "Help me write my project.md", "What should my context file say?" | → **Context** |
 | "How do I migrate to the new PDD structure?" | → See `docs/migration.md` |
 | "Is there a library for this?", "Does something already do this?" | → **Search** |
@@ -74,7 +76,7 @@ If the project spans multiple types, load all relevant reference files. When con
 
 ### Returning to an existing PDD project
 
-When context files already exist, check freshness first: *"Has anything changed since your context files were last updated?"* If yes → Workflow 2 before proceeding.
+When context files already exist, check freshness first: *"Has anything changed since your context files were last updated?"* If yes → Workflow 3 before proceeding.
 
 ### Workflow transitions
 
@@ -83,6 +85,7 @@ After completing any workflow, suggest the natural next step:
 | Just finished | Suggest next |
 |---|---|
 | **Scaffold** | → Context: *"Structure is ready. Want to write `pdd/context/project.md`?"* |
+| **Init** | → Context: *"PDD structure is ready. Run `/project:pdd-context` to fill in your context files — I'll use what I detected as a starting point."* |
 | **Context** | → Search or Plan: *"Context is set. Before writing prompts — want to search for existing solutions or plan the implementation?"* |
 | **Search** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
 | **Search** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
@@ -128,7 +131,46 @@ After scaffold say: *"Structure is ready. The most important next step is `pdd/c
 
 ---
 
-## Workflow 2: Write Context Files
+## Workflow 2: Initialize PDD in an Existing Project
+
+For projects that already have code, a git repo, and dependencies — add PDD structure without disturbing what's already there.
+
+**When to use Init vs. Scaffold**: Use Scaffold for brand-new projects (creates project directory, `src/`, `git init`). Use Init when the project already exists and you're adding PDD on top.
+
+### Step 1 — Verify and guard
+
+- Confirm the directory has a git repo and existing source files. If empty, suggest Scaffold instead.
+- If `pdd/` already exists, warn and ask before continuing.
+
+### Step 2 — Auto-detect
+
+Scan the project to detect:
+
+| What | How |
+|---|---|
+| **Project type** | `package.json` deps, `requirements.txt`, `go.mod`, `Cargo.toml`, `Podfile`, `pubspec.yaml`, `Dockerfile`, `terraform/`, framework configs |
+| **Tech stack** | Languages, frameworks, databases, and deployment targets from dependency and config files |
+| **Source directory** | Look for `src/`, `app/`, `lib/`, `cmd/`, `pkg/`, or code at the project root |
+| **Conventions** | Linter/formatter configs (`.eslintrc*`, `.prettierrc*`, `biome.json`, `.editorconfig`, `ruff.toml`, `.golangci.yml`, `rustfmt.toml`, `pyproject.toml`) |
+
+If the project type is ambiguous (e.g., both frontend and backend signals), mention all matches and ask the user to confirm.
+
+### Step 3 — Create `pdd/` structure
+
+```bash
+mkdir -p pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}}
+touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md
+```
+
+Only create the `pdd/` tree. Do not create a source directory, `README.md`, or run `git init`.
+
+### Step 4 — Present summary and suggest next step
+
+Show what was detected (project type, tech stack, source dir, conventions) and ask the user to confirm. Then suggest: *"Run `/project:pdd-context` to fill in your context files — I'll use what I detected as a starting point."*
+
+---
+
+## Workflow 3: Write Context Files
 
 **Write what is true, not what you hope will be true.**
 
@@ -202,7 +244,7 @@ Read the existing files, ask what's changed (stack, decisions, constraints), and
 
 ---
 
-## Workflow 3: Search Before Building
+## Workflow 4: Search Before Building
 
 **Don't build what already exists.** Before writing a custom feature prompt, check whether a library, MCP server, framework built-in, or existing codebase pattern already solves the problem.
 
@@ -226,7 +268,7 @@ If the decision is to build, log why existing options were rejected in `pdd/cont
 
 ---
 
-## Workflow 4: Plan Before Prompting
+## Workflow 5: Plan Before Prompting
 
 **Plan first, prompt second.** For non-trivial features, create an implementation plan before writing any prompts. This catches missing dependencies, wrong decomposition, and implicit architectural decisions.
 
@@ -236,7 +278,7 @@ If the decision is to build, log why existing options were rejected in `pdd/cont
 - Feature has unknowns or requires architectural decisions
 - Feature will need a prompt chain (3+ sequential prompts)
 
-Skip the plan for single-prompt features — go directly to Workflow 5 (Prompts). See the **Quick path** above.
+Skip the plan for single-prompt features — go directly to Workflow 6 (Prompts). See the **Quick path** above.
 
 ### How to plan
 
@@ -274,7 +316,7 @@ Save to `pdd/prompts/features/<area>/PLAN-<feature-name>.md`. Review with the us
 
 ---
 
-## Workflow 5: Generate Feature Prompts
+## Workflow 6: Generate Feature Prompts
 
 Load the project type reference file — it contains type-specific prompt patterns and common feature templates.
 
@@ -332,18 +374,18 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **How to structure**: Number prompts sequentially within the same area subfolder (`pdd/prompts/features/<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
-**Chain failure recovery**: Fix the failing step (Workflow 6), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
+**Chain failure recovery**: Fix the failing step (Workflow 7), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
 ### Edge cases
 
 - **Vague goal**: Help break into feature list first, then prompt the first one
-- **Prompt keeps failing**: Move to Workflow 6 (Update)
+- **Prompt keeps failing**: Move to Workflow 7 (Update)
 - **Exploratory / uncertain approach**: Save to `pdd/prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. This signals "temporary — evaluate within a week."
 - **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `pdd/prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
 
 ---
 
-## Workflow 6: Update an Existing Prompt
+## Workflow 7: Update an Existing Prompt
 
 ### Diagnose first
 
@@ -375,11 +417,11 @@ Produce the improved version and show what changed and why — not just a new pr
 
 Versioning: *"Keep the old version commented out. If the new one works better across a few runs, delete the old."*
 
-If more than half the prompt needs rewriting, start fresh from Workflow 5 instead. Move the old prompt to `pdd/prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
+If more than half the prompt needs rewriting, start fresh from Workflow 6 instead. Move the old prompt to `pdd/prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ---
 
-## Workflow 7: Review AI-Generated Output
+## Workflow 8: Review AI-Generated Output
 
 Review combines automated quality checks with subjective code review in a single pass. Run verification first, then review what the checks can't catch.
 
@@ -438,7 +480,7 @@ Structure your review as: verification results (pass/fail per check), what's goo
 
 ---
 
-## Workflow 8: Evaluate Prompts (`pdd/evals/`)
+## Workflow 9: Evaluate Prompts (`pdd/evals/`)
 
 The `pdd/evals/` folder tracks whether your prompts produce consistent, quality output over time. Treat evals as the unit tests of AI development — define expected behavior, run continuously, track regressions.
 
@@ -482,8 +524,8 @@ These metrics tell you whether the prompt is reliable or needs work.
 
 ### When to evaluate
 
-- After creating a new prompt (Workflow 5) — run 2–3 times and fill out the checklist
-- After updating a prompt (Workflow 6) — compare against baseline
+- After creating a new prompt (Workflow 6) — run 2–3 times and fill out the checklist
+- After updating a prompt (Workflow 7) — compare against baseline
 - After a model update — re-run key prompts and check for drift
 
 ### When to level up
@@ -510,14 +552,14 @@ These metrics tell you whether the prompt is reliable or needs work.
 
 **"This is too complicated"** → Start with just `pdd/context/project.md`. Everything else can come later.
 
-**"I'm mid-project and things are messy"** → Write context files for what exists now. Apply full workflow to new work only.
+**"I'm mid-project and things are messy"** → Init (Workflow 2) to add PDD structure, then write context files for what exists now. Apply full workflow to new work only.
 
 **"My team doesn't know about PDD"** → Start with `pdd/context/` layer — reads as plain docs, no workflow change required.
 
-**"The prompt didn't work at all"** → Workflow 6 (Update). Diagnose before rewriting.
+**"The prompt didn't work at all"** → Workflow 7 (Update). Diagnose before rewriting.
 
-**"Is this code ready to commit?"** → Workflow 7 (Review). Runs automated checks first, then detailed review.
+**"Is this code ready to commit?"** → Workflow 8 (Review). Runs automated checks first, then detailed review.
 
-**"How reliable is this prompt?"** → Workflow 8 (Eval). Track pass rates across runs.
+**"How reliable is this prompt?"** → Workflow 9 (Eval). Track pass rates across runs.
 
 **"Can you just do it for me?"** → Yes — but explain each step so the user learns the pattern.

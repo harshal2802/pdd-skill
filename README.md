@@ -2,7 +2,7 @@
 
 A Claude Code skill for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
 
-PDD treats prompts as first-class artifacts — not throwaway inputs. This skill gives Claude eight workflows: **scaffold** a project structure, write **context** files, **search** for existing solutions, **plan** implementation before coding, generate feature **prompts**, **update** failing prompts, **review** AI-generated output (with automated quality checks), and **evaluate** prompt reliability over time.
+PDD treats prompts as first-class artifacts — not throwaway inputs. This skill gives Claude nine workflows: **scaffold** a new project structure or **init** PDD in an existing project, write **context** files, **search** for existing solutions, **plan** implementation before coding, generate feature **prompts**, **update** failing prompts, **review** AI-generated output (with automated quality checks), and **evaluate** prompt reliability over time.
 
 For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required.
 
@@ -75,6 +75,7 @@ Then invoke them in Claude Code:
 | Command | What it does |
 |---|---|
 | `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
+| `/project:pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
 | `/project:pdd-context` | Write or update `pdd/context/project.md`, `conventions.md`, and `decisions.md` |
 | `/project:pdd-search` | Search for existing solutions before building custom features |
 | `/project:pdd-plan` | Create an implementation plan before writing prompts |
@@ -90,7 +91,8 @@ All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or 
 
 ```mermaid
 flowchart LR
-    A["Scaffold"] --> B["Context"]
+    A["Scaffold (new)"] --> B["Context"]
+    A2["Init (existing)"] --> B
     B --> S{Complex?}
     S -- Yes --> C["Search"] --> D["Plan"] --> E
     S -- No --> E["Prompts"]
@@ -99,13 +101,14 @@ flowchart LR
     G --> H["Commit"]
     H -.-> I["Eval"]
 
+    style A2 fill:#3498db,stroke:#2980b9,color:#fff
     style S fill:#f1c40f,stroke:#d4ac0d,color:#333
     style C fill:#1abc9c,stroke:#17a589,color:#fff
     style D fill:#1abc9c,stroke:#17a589,color:#fff
     style I fill:#f4a460,stroke:#c4824a,color:#fff
 ```
 
-**Quick path**: Context → Prompts → Review → commit. Add Search and Plan for complex features. Eval is optional for tracking prompt reliability.
+**Quick path**: Context → Prompts → Review → commit. Use **Init** instead of Scaffold for existing projects. Add Search and Plan for complex features. Eval is optional for tracking prompt reliability.
 
 Unlike Copilot where you invoke each step manually, Claude Code **auto-triggers** the right workflow based on what you say. After each step, it suggests the natural next one:
 
@@ -124,7 +127,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 
 | Path | Purpose |
 |---|---|
-| `SKILL.md` | Core skill definition — eight workflows, project type detection, prompt templates |
+| `SKILL.md` | Core skill definition — nine workflows, project type detection, prompt templates |
 | `hooks/` | Optional session-start hook for context freshness checks |
 | `references/frontend.md` | Context questions, conventions, and review checklists for frontend/UI projects |
 | `references/backend.md` | Same for backend/API projects |
@@ -132,7 +135,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/data-ml.md` | Same for data science and ML projects |
 | `references/devops.md` | Same for DevOps and infrastructure |
 | `references/fullstack.md` | Same for full-stack projects (also loads frontend + backend refs) |
-| `commands/` | Nine Claude Code slash commands for each workflow + status check |
+| `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 
 The skill auto-detects your project type and loads the right reference file to enrich context questions, conventions, and review checklists.
@@ -143,7 +146,7 @@ See [`examples/task-management-api/`](examples/task-management-api/) for a compl
 
 ## GitHub Copilot Version
 
-This skill is also available for GitHub Copilot Chat. See [`copilot/`](copilot/) for setup instructions and prompt files that map to the same eight workflows.
+This skill is also available for GitHub Copilot Chat. See [`copilot/`](copilot/) for setup instructions and prompt files that map to the same nine workflows.
 
 ## Migrating from the old layout
 
