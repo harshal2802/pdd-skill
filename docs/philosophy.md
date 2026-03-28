@@ -126,6 +126,7 @@ graph TD
 
     row3 --> LB["Library / Package"]
     row3 --> CL["CLI / Dev Tools"]
+    row3 --> GD["Game Dev"]
 
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
@@ -139,6 +140,7 @@ graph TD
     style FS fill:#1abc9c,stroke:#17a589,color:#fff
     style LB fill:#f39c12,stroke:#d68910,color:#fff
     style CL fill:#8e44ad,stroke:#6c3483,color:#fff
+    style GD fill:#2ecc71,stroke:#27ae60,color:#fff
 
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
@@ -155,6 +157,7 @@ graph TD
 | **Full-stack** | Client/server boundary, shared types, API contracts |
 | **Library / Package** | Public API design, semver, dependency policy, tree-shaking, multi-environment support |
 | **CLI / Developer Tools** | Argument parsing, exit codes, signal handling, piped output, cross-platform behavior, shell completions |
+| **Game Development** | Frame budgets, ECS architecture, asset pipelines, physics/rendering integration, platform certification |
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them. The Library flavor is **composable** — a React component library would combine it with the Frontend flavor, a Python ML toolkit with the Data / ML flavor.
 
