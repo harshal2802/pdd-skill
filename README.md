@@ -141,6 +141,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/game-dev.md` | Same for game development projects (frame budgets, ECS, asset pipelines, platform certification) |
 | `references/blockchain.md` | Same for blockchain / smart contract projects (security patterns, gas optimization, upgradeability, audit readiness) |
 | `references/security.md` | Same for security / pentesting tool projects (detection quality, safe defaults, false positive management, SIEM integration) |
+| `references/api-platform.md` | Same for API platform / SDK projects (backward compatibility, SDK generation, error design, rate limiting, webhooks) |
 | `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 
