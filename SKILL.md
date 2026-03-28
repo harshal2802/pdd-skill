@@ -56,6 +56,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, Stainless, Fern, rate limiting, webhooks, API versioning | `references/api-platform.md` |
 | Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF, window management, system tray, code signing, auto-update | `references/desktop-gui.md` |
 | Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST, type checker, codegen, tree-sitter, LLVM, Cranelift | `references/compiler-lang.md` |
+| Robotics / ROS | ROS, ROS2, robot, manipulator, drone, autonomous vehicle, URDF, Gazebo, Isaac Sim, MoveIt, Nav2, ros2_control, sensor fusion, SLAM | `references/robotics.md` |
 | Other / Unrecognized | Anything not above | No reference file — use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.

@@ -27,6 +27,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | API Platform / SDK | Public API, developer platform, API-as-product, OpenAPI, SDK generation, rate limiting, webhooks, API versioning |
 | Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF, window management, system tray, code signing, auto-update |
 | Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST, type checker, codegen, tree-sitter |
+| Robotics / ROS | ROS, ROS2, robot, manipulator, drone, autonomous vehicle, URDF, Gazebo, MoveIt, Nav2, sensor fusion, SLAM |
 
 ## Core Principles
 

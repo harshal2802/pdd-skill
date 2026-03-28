@@ -49,6 +49,7 @@ Your project should end up with:
     api-platform.md
     desktop-gui.md
     compiler-lang.md
+    robotics.md
 ```
 
 ## Usage

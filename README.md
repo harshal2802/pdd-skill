@@ -144,6 +144,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/api-platform.md` | Same for API platform / SDK projects (backward compatibility, SDK generation, error design, rate limiting, webhooks) |
 | `references/desktop-gui.md` | Same for desktop / native GUI projects (window management, OS integration, code signing, auto-updates, cross-platform) |
 | `references/compiler-lang.md` | Same for compiler / language tooling projects (parsing, AST design, type systems, error recovery, LSP integration) |
+| `references/robotics.md` | Same for robotics / ROS projects (real-time control, sensor fusion, simulation-first, safety systems, coordinate frames) |
 | `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 
