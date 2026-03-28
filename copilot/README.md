@@ -45,6 +45,7 @@ Your project should end up with:
     embedded-iot.md
     game-dev.md
     blockchain.md
+    security.md
 ```
 
 ## Usage

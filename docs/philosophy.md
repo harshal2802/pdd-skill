@@ -130,6 +130,7 @@ graph TD
     row3 --> GD["Game Dev"]
 
     row4 --> BC["Blockchain"]
+    row4 --> SC["Security"]
 
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
@@ -147,6 +148,7 @@ graph TD
     style EM fill:#d35400,stroke:#a04000,color:#fff
     style GD fill:#2ecc71,stroke:#27ae60,color:#fff
     style BC fill:#f1c40f,stroke:#d4ac0d,color:#333
+    style SC fill:#c0392b,stroke:#96281b,color:#fff
 
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
@@ -166,6 +168,7 @@ graph TD
 | **Embedded / IoT** | Memory constraints, interrupt safety, power budgets, cross-compilation, OTA updates, real-time behavior |
 | **Game Development** | Frame budgets, ECS architecture, asset pipelines, physics/rendering integration, platform certification |
 | **Blockchain / Smart Contracts** | Security patterns (reentrancy, access control), gas optimization, upgradeability, audit readiness, on-chain math |
+| **Security / Pentesting Tools** | Detection quality, false positive management, safe defaults, responsible disclosure, SIEM integration, adversarial input handling |
 
 A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them. The Library flavor is **composable** — a React component library would combine it with the Frontend flavor, a Python ML toolkit with the Data / ML flavor.
 

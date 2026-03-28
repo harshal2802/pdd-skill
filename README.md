@@ -140,6 +140,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/embedded-iot.md` | Same for embedded systems and IoT projects (memory constraints, real-time, cross-compilation) |
 | `references/game-dev.md` | Same for game development projects (frame budgets, ECS, asset pipelines, platform certification) |
 | `references/blockchain.md` | Same for blockchain / smart contract projects (security patterns, gas optimization, upgradeability, audit readiness) |
+| `references/security.md` | Same for security / pentesting tool projects (detection quality, safe defaults, false positive management, SIEM integration) |
 | `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 

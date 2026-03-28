@@ -23,6 +23,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware |
 | Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget, sprites, shaders |
 | Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Move, Hardhat, Foundry, EVM, Solana, DeFi, NFT, smart contract |
+| Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest, red team, blue team, vulnerability |
 
 ## Core Principles
 
