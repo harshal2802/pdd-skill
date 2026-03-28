@@ -49,7 +49,8 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | Full-stack | Frontend + backend together, Next.js, Nuxt, SvelteKit | `references/fullstack.md` + `references/frontend.md` + `references/backend.md` |
 | Library / Package | npm package, PyPI library, crate, gem, Go module, SDK, reusable component lib | `references/library.md` (+ domain flavor if applicable) |
 | CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing (clap, cobra, yargs, argparse), subcommands, shell completions | `references/cli-devtools.md` |
-| Other / Unrecognized | Embedded, game dev, firmware, desktop, or anything not above | No reference file ��� use base workflows only |
+| Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware, cross-compilation | `references/embedded-iot.md` |
+| Other / Unrecognized | Game dev, desktop, or anything not above | No reference file ��� use base workflows only |
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
