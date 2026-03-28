@@ -48,6 +48,7 @@ Your project should end up with:
     security.md
     api-platform.md
     desktop-gui.md
+    compiler-lang.md
 ```
 
 ## Usage
