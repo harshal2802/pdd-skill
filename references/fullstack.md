@@ -21,7 +21,7 @@ Ask these after the base questions in `project.md`:
 - How is state shared between server and client? (RSC, server actions, hydration, API calls)
 - Deployment target? (Vercel, Netlify, Fly.io, self-hosted, edge)
 
-### Extended `context/project.md` sections for full-stack
+### Extended `pdd/context/project.md` sections for full-stack
 
 ```markdown
 ## Framework & rendering

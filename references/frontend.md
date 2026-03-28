@@ -18,7 +18,7 @@ Ask these after the base questions in `project.md`:
 - What browsers and devices must be supported?
 - Is there a Storybook or component sandbox?
 
-### Extended `context/project.md` sections for frontend
+### Extended `pdd/context/project.md` sections for frontend
 
 ```markdown
 ## UI / Design system
@@ -95,7 +95,7 @@ Ask these after the base questions in `project.md`:
 # Prompt: <ComponentName>
 
 ## Context
-[Reference context/project.md — stack, design system, conventions]
+[Reference pdd/context/project.md — stack, design system, conventions]
 
 ## Task
 Create a <ComponentName> component that <does what>.

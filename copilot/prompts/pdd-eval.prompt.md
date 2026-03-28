@@ -13,11 +13,11 @@ If the user specifies a prompt, evaluate that one. Otherwise, scan for prompts w
 
 ## Step 2 — Check for existing eval
 
-Look in `evals/` for a matching eval file (`<prompt-name>-eval.md`). If none exists, create one:
+Look in `pdd/evals/` for a matching eval file (`<prompt-name>-eval.md`). If none exists, create one:
 
 ```markdown
 # Eval: <prompt name>
-**Prompt**: prompts/features/<area>/<prompt-file>.md
+**Prompt**: pdd/prompts/features/<area>/<prompt-file>.md
 **Created**: <date>
 **Level**: 1 — Manual checklist
 
@@ -49,8 +49,8 @@ After 3+ runs, calculate:
 
 | Level | Trigger | Action |
 |---|---|---|
-| 1 → 2 | 5+ runs | Save good output to `evals/baselines/` — diff future runs against it |
-| 2 → 3 | Prompt is stable | Write a validation script in `evals/scripts/` |
+| 1 → 2 | 5+ runs | Save good output to `pdd/evals/baselines/` — diff future runs against it |
+| 2 → 3 | Prompt is stable | Write a validation script in `pdd/evals/scripts/` |
 
 ## Step 5 — Report
 

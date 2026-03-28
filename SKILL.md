@@ -31,7 +31,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 
 ### How to detect
 
-1. **Check `context/project.md`** if it exists — look at the tech stack section
+1. **Check `pdd/context/project.md`** if it exists — look at the tech stack section
 2. **Infer from what the user says** — framework names, tools, or domain language
 3. **If still unclear**, ask: *"What kind of project is this — web frontend, backend API, mobile app, data/ML pipeline, infrastructure, or full-stack?"*
 
@@ -49,7 +49,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 
 Once the type is identified, read the corresponding reference file and use it to enrich: context file questions and templates, conventions starter content, prompt patterns, and the review checklist.
 
-If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `context/decisions.md`.
+If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `pdd/context/decisions.md`.
 
 **Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap (e.g., naming, project structure, API design). Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
 
@@ -61,6 +61,7 @@ If the project spans multiple types, load all relevant reference files. When con
 |---|---|
 | "Start a new PDD project", "Set up folder structure", "How do I get started?" | → **Scaffold** |
 | "Help me write my project.md", "What should my context file say?" | → **Context** |
+| "How do I migrate to the new PDD structure?" | → See `docs/migration.md` |
 | "Is there a library for this?", "Does something already do this?" | → **Search** |
 | "Plan this feature", "How should I break this down?" | → **Plan** |
 | "Write a prompt for this feature", "Help me prompt this" | → **Prompts** |
@@ -81,7 +82,7 @@ After completing any workflow, suggest the natural next step:
 
 | Just finished | Suggest next |
 |---|---|
-| **Scaffold** | → Context: *"Structure is ready. Want to write `context/project.md`?"* |
+| **Scaffold** | → Context: *"Structure is ready. Want to write `pdd/context/project.md`?"* |
 | **Context** | → Search or Plan: *"Context is set. Before writing prompts — want to search for existing solutions or plan the implementation?"* |
 | **Search** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
 | **Search** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
@@ -97,31 +98,33 @@ After completing any workflow, suggest the natural next step:
 
 ## Workflow 1: Scaffold Project Structure
 
-Ask or infer the **project name**, then scaffold:
+Ask or infer the **project name**, then scaffold.
+
+**Source directory**: Default to `src/`. Ask the user: *"I'll use `src/` for your source code directory. Want a different name (e.g., `app/`, `lib/`)?"* Use their choice in the scaffold command.
 
 ```bash
-mkdir -p <project-name>/{prompts/{features,templates,experiments},context,app,evals/{baselines,scripts}}
+mkdir -p <project-name>/{pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}},src}
 cd <project-name>
 git init
-touch context/project.md context/conventions.md context/decisions.md README.md
+touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md README.md
 ```
 
-Adapt the commands for your platform if not using bash.
+Replace `src` with the user's chosen source directory name. Adapt the commands for your platform if not using bash.
 
 ### Folder reference
 
 | Folder | What goes here |
 |---|---|
-| `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/billing/`) |
-| `prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
-| `prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
-| `context/` | Permanent project briefing files |
-| `app/` | Reviewed, committed AI-generated artifacts |
-| `evals/` | Prompt quality checks and output tests |
-| `evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
-| `evals/scripts/` | Automated validation scripts (Level 3 evals) |
+| `pdd/prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/billing/`) |
+| `pdd/prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
+| `pdd/prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
+| `pdd/context/` | Permanent project briefing files |
+| `src/` | Reviewed, committed AI-generated artifacts (or user-chosen name) |
+| `pdd/evals/` | Prompt quality checks and output tests |
+| `pdd/evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
+| `pdd/evals/scripts/` | Automated validation scripts (Level 3 evals) |
 
-After scaffold say: *"Structure is ready. The most important next step is `context/project.md`. Want me to help write it?"*
+After scaffold say: *"Structure is ready. The most important next step is `pdd/context/project.md`. Want me to help write it?"*
 
 ---
 
@@ -141,7 +144,7 @@ Load the project type reference file first — it contains additional type-speci
 
 Then ask the type-specific questions from the reference file.
 
-### Base `context/project.md` template
+### Base `pdd/context/project.md` template
 
 ```markdown
 # Project: <name>
@@ -171,12 +174,12 @@ Then ask the type-specific questions from the reference file.
 
 *Extend with type-specific sections from the reference file.*
 
-### `context/conventions.md`
+### `pdd/context/conventions.md`
 
 Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
 Draft from their answer, or use the type-specific starter from the reference file. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts.
 
-### `context/decisions.md`
+### `pdd/context/decisions.md`
 
 ```markdown
 ## Decision: <short title>
@@ -192,7 +195,7 @@ Read the existing files, ask what's changed (stack, decisions, constraints), and
 
 ### Edge cases
 
-- **Monorepo**: Root `context/project.md` for the system + `context/` inside each sub-project
+- **Monorepo**: Root `pdd/context/project.md` for the system + `pdd/context/` inside each sub-project
 - **Team project**: Prioritize `conventions.md` — pull from existing style guide or linter config
 - **Context too long**: Split `project.md` (overview) + `architecture.md` (technical depth) at ~300 lines
 - **Partial info**: Draft with placeholders — partial is better than none
@@ -205,7 +208,7 @@ Read the existing files, ask what's changed (stack, decisions, constraints), and
 
 ### Search order
 
-1. **Existing codebase** — search `app/`, `prompts/features/`, and `prompts/templates/` for similar work
+1. **Existing codebase** — search `src/`, `pdd/prompts/features/`, and `pdd/prompts/templates/` for similar work
 2. **Package ecosystem** — npm, PyPI, crates.io, pkg.go.dev, etc.
 3. **MCP servers** — GitHub, Supabase, Vercel, Playwright, Context7, etc.
 4. **Framework built-ins** — check if the project's framework already includes the feature
@@ -219,7 +222,7 @@ Read the existing files, ask what's changed (stack, decisions, constraints), and
 | **Compose** | Combine 2-3 existing pieces | Chain an MCP server with a thin wrapper |
 | **Build** | Nothing exists or doesn't fit constraints | Write a custom prompt for truly novel features |
 
-If the decision is to build, log why existing options were rejected in `context/decisions.md`.
+If the decision is to build, log why existing options were rejected in `pdd/context/decisions.md`.
 
 ---
 
@@ -237,7 +240,7 @@ Skip the plan for single-prompt features — go directly to Workflow 5 (Prompts)
 
 ### How to plan
 
-1. Read context files and scan existing prompts
+1. Read context files (`pdd/context/`) and scan existing prompts (`pdd/prompts/`)
 2. Decompose into ordered phases — each phase produces one testable artifact and maps to one prompt
 3. Identify risks, unknowns, and decisions needed
 4. Map phases to a prompt chain: `feature-01-<phase>.md` through `feature-NN-<phase>.md`
@@ -258,16 +261,16 @@ Skip the plan for single-prompt features — go directly to Workflow 5 (Prompts)
 **Produces**: <artifact>
 **Depends on**: nothing | Phase N
 **Risk**: Low | Medium | High — <why>
-**Prompt**: `prompts/features/<area>/<feature>-01-<phase>.md`
+**Prompt**: `pdd/prompts/features/<area>/<feature>-01-<phase>.md`
 
 ## Risks & Unknowns
 - <risk>
 
 ## Decisions Needed
-- <choice to log in decisions.md>
+- <choice to log in pdd/context/decisions.md>
 ```
 
-Save to `prompts/features/<area>/PLAN-<feature-name>.md`. Review with the user before proceeding to prompts.
+Save to `pdd/prompts/features/<area>/PLAN-<feature-name>.md`. Review with the user before proceeding to prompts.
 
 ---
 
@@ -290,16 +293,16 @@ If spotted: *"This covers a few distinct things — let's split. Which first?"*
 
 ### Step 3 — Write the prompt
 
-Before writing from scratch, check `prompts/templates/` for an existing template that fits this feature type.
+Before writing from scratch, check `pdd/prompts/templates/` for an existing template that fits this feature type.
 
 ```markdown
 # Prompt: <feature name>
-**File**: prompts/features/<area>/<feature-name>.md
+**File**: pdd/prompts/features/<area>/<feature-name>.md
 **Created**: <date>
 **Project type**: <type>
 
 ## Context
-<relevant parts of context/project.md, or inline if no context files exist>
+<relevant parts of pdd/context/project.md, or inline if no context files exist>
 
 ## Task
 <single, clear instruction — one job only>
@@ -319,7 +322,7 @@ Input: <example>
 Output: <example>
 ```
 
-Save to `prompts/features/<area>/<feature-name>.md` and commit alongside the output. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`, `billing/`, `infra/`). Create the subfolder if it doesn't exist.
+Save to `pdd/prompts/features/<area>/<feature-name>.md` and commit alongside the output. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`, `billing/`, `infra/`). Create the subfolder if it doesn't exist.
 
 ### Prompt chaining (multi-step features)
 
@@ -327,7 +330,7 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 **When to chain**: the feature has a natural order of dependencies (e.g., schema → API → UI), or the full task would exceed what a single prompt can do well.
 
-**How to structure**: Number prompts sequentially within the same area subfolder (`<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
+**How to structure**: Number prompts sequentially within the same area subfolder (`pdd/prompts/features/<area>/feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`). Each prompt must be self-contained with a `**Depends on**:` line referencing prior steps' output. Review each step's output before running the next.
 
 **Chain failure recovery**: Fix the failing step (Workflow 6), re-run it, then re-run any downstream steps that depend on it. Don't re-run upstream steps unless they're also broken. If the failure reveals the chain's decomposition was wrong, restructure before continuing.
 
@@ -335,8 +338,8 @@ When a feature requires multiple sequential steps, create a **chain** — a numb
 
 - **Vague goal**: Help break into feature list first, then prompt the first one
 - **Prompt keeps failing**: Move to Workflow 6 (Update)
-- **Exploratory / uncertain approach**: Save to `prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. This signals "temporary — evaluate within a week."
-- **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
+- **Exploratory / uncertain approach**: Save to `pdd/prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. This signals "temporary — evaluate within a week."
+- **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `pdd/prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
 
 ---
 
@@ -372,7 +375,7 @@ Produce the improved version and show what changed and why — not just a new pr
 
 Versioning: *"Keep the old version commented out. If the new one works better across a few runs, delete the old."*
 
-If more than half the prompt needs rewriting, start fresh from Workflow 5 instead. Move the old prompt to `prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
+If more than half the prompt needs rewriting, start fresh from Workflow 5 instead. Move the old prompt to `pdd/prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
 
 ---
 
@@ -435,9 +438,9 @@ Structure your review as: verification results (pass/fail per check), what's goo
 
 ---
 
-## Workflow 8: Evaluate Prompts (`evals/`)
+## Workflow 8: Evaluate Prompts (`pdd/evals/`)
 
-The `evals/` folder tracks whether your prompts produce consistent, quality output over time. Treat evals as the unit tests of AI development — define expected behavior, run continuously, track regressions.
+The `pdd/evals/` folder tracks whether your prompts produce consistent, quality output over time. Treat evals as the unit tests of AI development — define expected behavior, run continuously, track regressions.
 
 ### Three levels of evaluation
 
@@ -445,7 +448,7 @@ The `evals/` folder tracks whether your prompts produce consistent, quality outp
 
 ```markdown
 # Eval: <prompt name>
-**Prompt**: prompts/features/<area>/<prompt-file>.md
+**Prompt**: pdd/prompts/features/<area>/<prompt-file>.md
 **Created**: <date>
 **Level**: 1 — Manual checklist
 
@@ -463,11 +466,11 @@ The `evals/` folder tracks whether your prompts produce consistent, quality outp
 | 1 | | | |
 ```
 
-Save to `evals/<prompt-name>-eval.md`.
+Save to `pdd/evals/<prompt-name>-eval.md`.
 
-**Level 2 — Baseline comparison**: Save known-good outputs to `evals/baselines/`. Diff new output against the baseline to catch regressions.
+**Level 2 — Baseline comparison**: Save known-good outputs to `pdd/evals/baselines/`. Diff new output against the baseline to catch regressions.
 
-**Level 3 — Automated validation**: Write scripts that check output structure, valid syntax, required sections, and forbidden patterns. Save to `evals/scripts/`.
+**Level 3 — Automated validation**: Write scripts that check output structure, valid syntax, required sections, and forbidden patterns. Save to `pdd/evals/scripts/`.
 
 ### Pass rate tracking
 
@@ -485,8 +488,8 @@ These metrics tell you whether the prompt is reliable or needs work.
 
 ### When to level up
 
-- **Level 1 → Level 2**: After 5+ runs, save a known-good output to `evals/baselines/`
-- **Level 2 → Level 3**: When the prompt is stable and used regularly — write a validation script in `evals/scripts/`
+- **Level 1 → Level 2**: After 5+ runs, save a known-good output to `pdd/evals/baselines/`
+- **Level 2 → Level 3**: When the prompt is stable and used regularly — write a validation script in `pdd/evals/scripts/`
 
 ---
 
@@ -495,7 +498,7 @@ These metrics tell you whether the prompt is reliable or needs work.
 - **One prompt, one job.** Split if multiple concerns.
 - **Commit prompts alongside outputs.** The prompt is part of the codebase.
 - **Update context after every significant decision.** Stale context degrades future prompts.
-- **Timebox experiments.** Name with a date prefix (`YYYY-MM-DD-`). After one week: promote to `prompts/features/` if it worked, delete if it didn't.
+- **Timebox experiments.** Name with a date prefix (`YYYY-MM-DD-`). After one week: promote to `pdd/prompts/features/` if it worked, delete if it didn't.
 - **Never commit unreviewed output.** Treat it like a PR.
 - **Context must reflect reality.** Aspirational `project.md` actively misleads.
 
@@ -505,11 +508,11 @@ These metrics tell you whether the prompt is reliable or needs work.
 
 **"I don't know where to start"** → Ask if they have a project in mind, then Scaffold + Context or define the project first.
 
-**"This is too complicated"** → Start with just `context/project.md`. Everything else can come later.
+**"This is too complicated"** → Start with just `pdd/context/project.md`. Everything else can come later.
 
 **"I'm mid-project and things are messy"** → Write context files for what exists now. Apply full workflow to new work only.
 
-**"My team doesn't know about PDD"** → Start with `context/` layer — reads as plain docs, no workflow change required.
+**"My team doesn't know about PDD"** → Start with `pdd/context/` layer — reads as plain docs, no workflow change required.
 
 **"The prompt didn't work at all"** → Workflow 6 (Update). Diagnose before rewriting.
 

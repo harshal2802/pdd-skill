@@ -18,7 +18,7 @@ Ask these after the base questions in `project.md`:
 - What's the deployment target? (serverless, containers, VM, managed platform)
 - Any rate limiting, caching, or queue systems in use?
 
-### Extended `context/project.md` sections for backend
+### Extended `pdd/context/project.md` sections for backend
 
 ```markdown
 ## API design

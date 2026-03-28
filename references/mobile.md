@@ -19,7 +19,7 @@ Ask these after the base questions in `project.md`:
 - Are there device permissions required? (camera, location, notifications, biometrics)
 - Any platform-specific features? (widgets, deep links, push notifications, in-app purchases)
 
-### Extended `context/project.md` sections for mobile
+### Extended `pdd/context/project.md` sections for mobile
 
 ```markdown
 ## Platform targets

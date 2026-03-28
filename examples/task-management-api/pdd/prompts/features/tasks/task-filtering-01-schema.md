@@ -2,7 +2,7 @@
 
 # Prompt: Task filtering — database query layer
 
-**File**: prompts/features/tasks/task-filtering-01-schema.md
+**File**: pdd/prompts/features/tasks/task-filtering-01-schema.md
 **Created**: 2026-02-10
 **Project type**: Backend / API
 

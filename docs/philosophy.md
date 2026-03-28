@@ -158,8 +158,8 @@ A React app and a Python data pipeline both need a `project.md` and versioned pr
 ```bash
 mkdir my-project && cd my-project
 git init
-mkdir -p prompts/{features,templates,experiments} context app evals/{baselines,scripts}
-touch context/project.md context/conventions.md context/decisions.md README.md
+mkdir -p pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}} src
+touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md README.md
 ```
 
 ```mermaid
@@ -191,15 +191,15 @@ flowchart LR
 
 The **quick path** for simple features is Context → Prompt → Review → Commit. For complex features, add Search and Plan before prompting — they catch missing dependencies, wrong decomposition, and "don't build what already exists" moments.
 
-Then invest 30 minutes writing `context/project.md`. Answer these questions:
+Then invest 30 minutes writing `pdd/context/project.md`. Answer these questions:
 - What are we building and why?
 - What's the tech stack and why those choices?
 - What does good output look like here?
 - What should the AI never do or suggest?
 
-Follow that with a lean `context/conventions.md` — even 10 lines covering naming, file structure, and error handling. You'll grow it over time.
+Follow that with a lean `pdd/context/conventions.md` — even 10 lines covering naming, file structure, and error handling. You'll grow it over time.
 
-For each new feature: write a prompt in `prompts/features/<area>/`, run it, review the output, and commit both. If you made any architectural decision in the process, capture it in `context/decisions.md`.
+For each new feature: write a prompt in `pdd/prompts/features/<area>/`, run it, review the output, and commit both. If you made any architectural decision in the process, capture it in `pdd/context/decisions.md`.
 
 **The ongoing discipline**: every session starts by asking — *is my context still current?*
 
@@ -227,7 +227,7 @@ gantt
 
 **Week 1 — observe before changing**: Run your normal workflow, but log what you ask the AI, which prompts work well, and what context you re-explain repeatedly.
 
-**Week 2 — build the context layer**: Write `context/project.md` describing the project *as it currently is*. Then write `context/decisions.md` retroactively — capturing the big decisions already made.
+**Week 2 — build the context layer**: Write `pdd/context/project.md` describing the project *as it currently is*. Then write `pdd/context/decisions.md` retroactively — capturing the big decisions already made.
 
 **Week 3 onward — apply the full workflow to new work only**: Don't PDD-ify your entire existing codebase. Apply the full workflow only to new features and significant changes.
 
@@ -253,7 +253,7 @@ gantt
 
 Building a long, tangled single conversation and treating it as your project. Context windows end. Models get updated. Teammates can't see your chat history.
 
-Anything important that emerges in a session — a decision, a pattern that worked, a constraint you discovered — needs to be extracted into your `context/` or `prompts/` directories before the session ends. Otherwise it's gone.
+Anything important that emerges in a session — a decision, a pattern that worked, a constraint you discovered — needs to be extracted into your `pdd/context/` or `pdd/prompts/` directories before the session ends. Otherwise it's gone.
 
 ---
 

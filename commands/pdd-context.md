@@ -6,7 +6,7 @@ You are helping the user create or update their PDD context layer. **Write what 
 
 ## Detect project type first
 
-Check `context/project.md` (if it exists) or infer from user input. Load the matching reference file from this skill's `references/` folder to get type-specific questions and templates:
+Check `pdd/context/project.md` (if it exists) or infer from user input. Load the matching reference file from this skill's `references/` folder to get type-specific questions and templates:
 
 | Type | Signals | Reference |
 |---|---|---|
@@ -29,7 +29,7 @@ Ask these questions conversationally (not all at once):
 
 Then ask type-specific questions from the reference file.
 
-### Generate `context/project.md`
+### Generate `pdd/context/project.md`
 
 ```markdown
 # Project: <name>
@@ -58,13 +58,13 @@ Then ask type-specific questions from the reference file.
 
 Extend with type-specific sections from the reference file.
 
-### Generate `context/conventions.md`
+### Generate `pdd/context/conventions.md`
 
 Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
 
 Draft from their answer, or use the type-specific starter from the reference file. Even 10 lines covering naming, file structure, and error handling is valuable. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts.
 
-### Generate `context/decisions.md`
+### Generate `pdd/context/decisions.md`
 
 ```markdown
 ## Decision: <short title>
@@ -84,7 +84,7 @@ Draft from their answer, or use the type-specific starter from the reference fil
 
 ## Edge cases
 
-- **Monorepo**: Root `context/project.md` for the system + `context/` inside each sub-project
+- **Monorepo**: Root `pdd/context/project.md` for the system + `pdd/context/` inside each sub-project
 - **Team project**: Prioritize `conventions.md` — pull from existing linter config or style guide
 - **Context too long**: Split at ~300 lines into `project.md` (overview) + `architecture.md` (depth)
 - **Partial info**: Draft with placeholders — partial context is better than none

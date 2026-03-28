@@ -1,12 +1,12 @@
 # Prompt: <METHOD> /api/v1/<resource>
 
-**File**: prompts/features/<area>/<feature-name>.md
+**File**: pdd/prompts/features/<area>/<feature-name>.md
 **Created**: <date>
 **Project type**: Backend / API
 
 ## Context
 
-<paste relevant section from context/project.md — tech stack, existing models, auth approach>
+<paste relevant section from pdd/context/project.md — tech stack, existing models, auth approach>
 
 ## Task
 

@@ -17,7 +17,7 @@ Ask:
 ## Step 2 — Search systematically
 
 ### Existing codebase
-Search `app/`, `prompts/features/`, and source directories for similar functionality. Check `prompts/templates/` for matching patterns.
+Search `src/`, `pdd/prompts/features/`, and source directories for similar functionality. Check `pdd/prompts/templates/` for matching patterns.
 
 ### Package ecosystem
 Search the relevant package registry (npm, PyPI, crates.io, pkg.go.dev, etc.) for well-maintained options.
@@ -59,7 +59,7 @@ Present findings:
 - **Compose**: Create a prompt chain wiring pieces together
 - **Build**: Proceed to `/pdd-plan` or `/pdd-prompts`
 
-If building, log why alternatives were rejected in `context/decisions.md`.
+If building, log why alternatives were rejected in `pdd/context/decisions.md`.
 
 ## Next step
 

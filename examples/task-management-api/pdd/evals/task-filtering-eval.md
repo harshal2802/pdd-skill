@@ -1,6 +1,6 @@
 # Eval: task-filtering (chain)
 
-**Prompts**: prompts/features/tasks/task-filtering-01-schema.md, task-filtering-02-api.md
+**Prompts**: pdd/prompts/features/tasks/task-filtering-01-schema.md, task-filtering-02-api.md
 **Level**: 2 (diff comparison)
 **Last run**: 2026-02-15
 **Baseline**: Run from 2026-02-10

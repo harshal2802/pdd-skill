@@ -83,10 +83,10 @@
 | 4.2 | Windows CMD scaffold | User on Windows CMD | `mkdir` with backslashes | |
 | 4.3 | Non-technical user | "I don't use the terminal" | Folder diagram for manual creation | |
 | 4.4 | Custom project name | User says "call it task-api" | `<project-name>` replaced correctly | |
-| 4.5 | Post-scaffold prompt | After scaffold completes | Suggests writing `context/project.md` | |
+| 4.5 | Post-scaffold prompt | After scaffold completes | Suggests writing `pdd/context/project.md` | |
 | 4.6 | Git init included | Any scaffold | `git init` is part of commands | |
-| 4.7 | All folders created | Any scaffold | features/, templates/, experiments/, context/, app/, evals/{baselines,scripts} | |
-| 4.8 | Evals subdirectories | Any scaffold | `evals/baselines/` and `evals/scripts/` created | |
+| 4.7 | All folders created | Any scaffold | pdd/{prompts/{features/,templates/,experiments/},context/,evals/{baselines,scripts}}, src/ | |
+| 4.8 | Evals subdirectories | Any scaffold | `pdd/evals/baselines/` and `pdd/evals/scripts/` created | |
 | 4.9 | PowerShell support | User on Windows PowerShell | PowerShell-compatible commands | |
 | 4.10 | Team vs solo | User says "team project" | Notes team-specific considerations | |
 
@@ -133,7 +133,7 @@
 | 7.1 | Phase decomposition | Multi-file feature | Ordered phases, each with one artifact | |
 | 7.2 | Prompt chain mapping | 3-phase plan | Maps to `feature-01-`, `-02-`, `-03-` | |
 | 7.3 | Risks identified | Unknown dependency | Flagged in Risks & Unknowns section | |
-| 7.4 | Plan saved | Plan confirmed | Saved to `prompts/features/<area>/PLAN-<name>.md` | |
+| 7.4 | Plan saved | Plan confirmed | Saved to `pdd/prompts/features/<area>/PLAN-<name>.md` | |
 | 7.5 | Trivial feature skip | Single-prompt feature | Suggests skipping plan, go to Prompts | |
 | 7.6 | User review before proceeding | Plan generated | User confirms before any prompts are written | |
 | 7.7 | Unknowns dominate | Too many unknowns | Suggests experiment prompt first | |
@@ -147,13 +147,13 @@
 | 8.1 | Single-job prompt | "Add user search" | One focused prompt generated | |
 | 8.2 | Multi-concern detected | "Build auth AND user profiles" | Suggests splitting | |
 | 8.3 | Prompt template used | Any feature prompt | Follows template structure | |
-| 8.4 | File path convention | Feature prompt | Saved to `prompts/features/<area>/<feature-name>.md` | |
+| 8.4 | File path convention | Feature prompt | Saved to `pdd/prompts/features/<area>/<feature-name>.md` | |
 | 8.5 | Context referenced | Context files exist | Prompt references project.md | |
 | 8.6 | No context files | Fresh project | Inline context + suggest creating files | |
 | 8.7 | Prompt chaining | Multi-step feature | Numbered chain: -01-, -02- | |
 | 8.8 | Chain independence | Each prompt in chain | Self-contained, independently runnable | |
 | 8.9 | Vague goal | "Make the app better" | Break into feature list first | |
-| 8.10 | Reusable template | Pattern emerging | Save to `prompts/templates/` | |
+| 8.10 | Reusable template | Pattern emerging | Save to `pdd/prompts/templates/` | |
 | 8.11 | Chain failure recovery | Step 2 of 3 fails | Fix failing step, re-run, verify downstream | |
 
 ---
@@ -199,8 +199,8 @@
 | # | Test Case | Scenario | Expected | Result |
 |---|---|---|---|---|
 | 11.1 | Level 1 — checklist | New prompt | Pass/fail criteria checklist created | |
-| 11.2 | Level 2 — baseline | 5+ runs | Known-good output saved to `evals/baselines/` | |
-| 11.3 | Level 3 — automated | Stable prompt | Validation script in `evals/scripts/` | |
+| 11.2 | Level 2 — baseline | 5+ runs | Known-good output saved to `pdd/evals/baselines/` | |
+| 11.3 | Level 3 — automated | Stable prompt | Validation script in `pdd/evals/scripts/` | |
 | 11.4 | Run log tracked | Each eval run | Logged in run log table | |
 | 11.5 | Pass rate calculated | 3+ runs | pass@1 and pass@3 percentages | |
 | 11.6 | Eval after new prompt | Workflow 5 completed | Suggest creating Level 1 eval | |
@@ -278,7 +278,7 @@ Every `/project:pdd-*` or `/pdd-*` reference points to an existing command.
 
 | # | Test Case | Scenario | Expected | Result |
 |---|---|---|---|---|
-| 14.1 | Context files missing | Any workflow without context/ | Don't block — proceed and suggest afterward | |
+| 14.1 | Context files missing | Any workflow without pdd/context/ | Don't block — proceed and suggest afterward | |
 | 14.2 | Quick path works | Simple feature | Context → Prompts → Review is sufficient | |
 | 14.3 | Complex path works | Multi-layer feature | Search → Plan → Prompts → Review | |
 | 14.4 | Workflow transitions | Finish any workflow | Suggests the natural next step | |

@@ -13,30 +13,32 @@ You are setting up a new Prompt Driven Development project structure.
 
 2. Detect or ask the **project type** (frontend, backend, mobile, data/ML, DevOps, full-stack).
 
-3. Create the following structure:
+3. Ask the user what they want to call their **source directory** (default: `src`): *"What should the source/output directory be called? (default: `src`)"*
+
+4. Create the following structure:
 
 ```bash
-mkdir -p {{project-name}}/{prompts/{features,templates,experiments},context,app,evals/{baselines,scripts}}
+mkdir -p {{project-name}}/{pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}},src}
 cd {{project-name}}
 git init
-touch context/project.md context/conventions.md context/decisions.md README.md
+touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md README.md
 ```
 
-4. Explain the folder structure:
+5. Explain the folder structure:
 
 | Folder | Purpose |
 |---|---|
-| `prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/tasks/`) |
-| `prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
-| `prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
-| `context/` | Permanent project briefing files |
-| `app/` | Reviewed, committed AI-generated artifacts |
-| `evals/` | Prompt quality checks and output tests |
-| `evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
-| `evals/scripts/` | Automated validation scripts (Level 3 evals) |
+| `pdd/prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/tasks/`) |
+| `pdd/prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
+| `pdd/prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
+| `pdd/context/` | Permanent project briefing files |
+| `src/` | Reviewed, committed AI-generated artifacts |
+| `pdd/evals/` | Prompt quality checks and output tests |
+| `pdd/evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
+| `pdd/evals/scripts/` | Automated validation scripts (Level 3 evals) |
 
-5. After creating the structure, say:
-*"Structure is ready. The most important next step is `context/project.md` — want me to help write it? Use `/pdd-context` to get started."*
+6. After creating the structure, say:
+*"Structure is ready. The most important next step is `pdd/context/project.md` — want me to help write it? Use `/pdd-context` to get started."*
 
 ## Important
 

@@ -20,8 +20,8 @@ Ask:
 Check these sources in order:
 
 ### 2a. Existing codebase
-- Does this project already have something similar? Search `app/`, `prompts/features/`, and source directories
-- Is there a pattern in `prompts/templates/` that covers this?
+- Does this project already have something similar? Search `src/`, `pdd/prompts/features/`, and source directories
+- Is there a pattern in `pdd/prompts/templates/` that covers this?
 
 ### 2b. Package ecosystem
 - Search the relevant package registry:
@@ -77,11 +77,11 @@ Present findings as:
 - **Compose**: Create a prompt chain that wires existing pieces together
 - **Build**: Proceed to `/project:pdd-plan` or `/project:pdd-prompts` for the custom implementation
 
-If the decision is to build, log *why* existing options were rejected in `context/decisions.md`.
+If the decision is to build, log *why* existing options were rejected in `pdd/context/decisions.md`.
 
 ## Edge cases
 
-- **User wants to build anyway**: Respect their choice, but log the alternatives in `context/decisions.md` for future reference
+- **User wants to build anyway**: Respect their choice, but log the alternatives in `pdd/context/decisions.md` for future reference
 - **Multiple good options**: Present a comparison table and let the user decide
 - **No results found**: Confirm the search was thorough, then proceed to build
 - **Existing code is close but outdated**: Suggest updating existing code vs. building from scratch

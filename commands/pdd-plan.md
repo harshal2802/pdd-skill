@@ -15,7 +15,7 @@ A plan catches these issues before any code is generated.
 
 ## Step 1 — Load context
 
-If `context/project.md` exists, read it along with `conventions.md` and `decisions.md`. Scan `prompts/features/` to see what's already been built. If no context files exist, proceed but flag this as a risk.
+If `pdd/context/project.md` exists, read it along with `conventions.md` and `decisions.md`. Scan `pdd/prompts/features/` to see what's already been built. If no context files exist, proceed but flag this as a risk.
 
 Detect the project type and load the matching reference file from `references/` for type-specific patterns.
 
@@ -46,7 +46,7 @@ Break the feature into ordered phases. Each phase should produce one concrete, t
 **Produces**: <concrete artifact>
 **Depends on**: nothing | Phase N | existing code
 **Risk**: Low | Medium | High — <why>
-**Prompt**: `prompts/features/<area>/<feature>-01-<phase>.md`
+**Prompt**: `pdd/prompts/features/<area>/<feature>-01-<phase>.md`
 
 ### Phase 2: <name>
 ...
@@ -69,12 +69,12 @@ Don't proceed to prompts until the user confirms the plan.
 
 ## Step 5 — Save the plan
 
-Save to `prompts/features/<area>/PLAN-<feature-name>.md`. This becomes the reference for the prompt chain.
+Save to `pdd/prompts/features/<area>/PLAN-<feature-name>.md`. This becomes the reference for the prompt chain.
 
 ## Edge cases
 
 - **Trivial feature**: Skip the plan — suggest going directly to `/project:pdd-prompts`
-- **Unknowns dominate**: Suggest an experiment prompt first (`prompts/experiments/`)
+- **Unknowns dominate**: Suggest an experiment prompt first (`pdd/prompts/experiments/`)
 - **Plan changes mid-implementation**: Update the plan file and adjust remaining prompts
 - **Multiple features**: Create separate plans — don't combine unrelated work
 
