@@ -135,6 +135,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 | `references/data-ml.md` | Same for data science and ML projects |
 | `references/devops.md` | Same for DevOps and infrastructure |
 | `references/fullstack.md` | Same for full-stack projects (also loads frontend + backend refs) |
+| `references/library.md` | Same for library / installable package projects (composable with domain flavors) |
 | `commands/` | Ten Claude Code slash commands for each workflow + status check |
 | `examples/` | Complete PDD example for a Task Management API |
 

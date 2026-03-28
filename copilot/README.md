@@ -40,6 +40,7 @@ Your project should end up with:
     data-ml.md
     devops.md
     fullstack.md
+    library.md
 ```
 
 ## Usage

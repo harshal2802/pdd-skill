@@ -114,7 +114,7 @@ The core PDD structure is universal — it works for any kind of project. But wh
 graph TD
     PDD((PDD Core))
 
-    PDD --> row1[ ] & row2[ ]
+    PDD --> row1[ ] & row2[ ] & row3[ ]
 
     row1 --> FE["Frontend / UI"]
     row1 --> BE["Backend / API"]
@@ -124,8 +124,11 @@ graph TD
     row2 --> DO["DevOps / Infra"]
     row2 --> FS["Full-stack"]
 
+    row3 --> LB["Library / Package"]
+
     style row1 fill:none,stroke:none
     style row2 fill:none,stroke:none
+    style row3 fill:none,stroke:none
     style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
     style FE fill:#3498db,stroke:#2471a3,color:#fff
     style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
@@ -133,9 +136,11 @@ graph TD
     style DA fill:#27ae60,stroke:#1e8449,color:#fff
     style DO fill:#e74c3c,stroke:#c0392b,color:#fff
     style FS fill:#1abc9c,stroke:#17a589,color:#fff
+    style LB fill:#f39c12,stroke:#d68910,color:#fff
 
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
+    linkStyle 2 stroke:none
 ```
 
 | Flavor | Key concerns |
@@ -146,8 +151,9 @@ graph TD
 | **Data / ML** | Dataset provenance, model selection, eval metrics, pipeline idempotency |
 | **DevOps / Infra** | IaC conventions, blast radius, secret management, change safety |
 | **Full-stack** | Client/server boundary, shared types, API contracts |
+| **Library / Package** | Public API design, semver, dependency policy, tree-shaking, multi-environment support |
 
-A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them.
+A React app and a Python data pipeline both need a `project.md` and versioned prompts. What changes is what goes inside them. The Library flavor is **composable** — a React component library would combine it with the Frontend flavor, a Python ML toolkit with the Data / ML flavor.
 
 ---
 

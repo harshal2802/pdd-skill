@@ -18,6 +18,7 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 | Data / ML / AI | Python, Jupyter, pandas, PyTorch, pipelines |
 | DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, cloud providers |
 | Full-stack | Frontend + backend together, Next.js, Nuxt, SvelteKit |
+| Library / Package | npm package, PyPI library, crate, gem, Go module, SDK, "publish", `exports` map |
 
 ## Core Principles
 
