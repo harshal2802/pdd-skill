@@ -207,7 +207,7 @@ For each new feature: write a prompt in `pdd/prompts/features/<area>/`, run it, 
 
 ## Integrating Into an Existing Project
 
-Retrofitting PDD is trickier, but very doable if you resist doing it all at once.
+Retrofitting PDD is trickier, but very doable if you resist doing it all at once. The **Init** workflow (`/project:pdd-init` in Claude Code, `/pdd-init` in Copilot) automates the first step — it scans your existing project, detects the tech stack, conventions, and source layout, then creates the `pdd/` structure without touching your code.
 
 ```mermaid
 gantt
@@ -218,8 +218,8 @@ gantt
     section Observe
         Log prompts & pain points           :active, w1, 1, 2
 
-    section Build Context
-        Write project.md & decisions.md     :w2, 2, 3
+    section Initialize
+        Run pdd-init & write context files  :w2, 2, 3
 
     section Apply
         PDD on new features only            :w3, 3, 5
@@ -227,7 +227,7 @@ gantt
 
 **Week 1 — observe before changing**: Run your normal workflow, but log what you ask the AI, which prompts work well, and what context you re-explain repeatedly.
 
-**Week 2 — build the context layer**: Write `pdd/context/project.md` describing the project *as it currently is*. Then write `pdd/context/decisions.md` retroactively — capturing the big decisions already made.
+**Week 2 — initialize and build context**: Run `pdd-init` to create the `pdd/` structure and detect your project's stack. Then fill in `pdd/context/project.md` describing the project *as it currently is* and `pdd/context/decisions.md` retroactively — capturing the big decisions already made.
 
 **Week 3 onward — apply the full workflow to new work only**: Don't PDD-ify your entire existing codebase. Apply the full workflow only to new features and significant changes.
 
