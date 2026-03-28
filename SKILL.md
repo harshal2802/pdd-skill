@@ -83,6 +83,7 @@ If the project spans multiple types, load all relevant reference files. When con
 | "This prompt isn't working", "Can you improve this prompt?" | → **Update** |
 | "Check this code", "Run the quality checks", "Is this ready to commit?", "Review this output", pastes code without instructions | → **Review** |
 | "How is my prompt performing?", "Run the eval", "Track prompt quality" | → **Eval** |
+| "What commands are there?", "Help me with PDD", "What can you do?", "How does PDD work?" | → **Help**: run `/project:pdd-help` |
 | Vague or unclear | → Ask: *"Are you starting a new project, working on a feature prompt, or reviewing something the AI generated?"* |
 
 **If context files don't exist yet:** Don't block the user. Proceed with the requested workflow and suggest context files afterward.
