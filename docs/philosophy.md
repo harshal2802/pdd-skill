@@ -171,17 +171,17 @@ touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md
 ```
 
 ```mermaid
-flowchart LR
-    A["1. Scaffold\nDirectories & files"] --> B["2. Write context\nproject.md\nconventions.md"]
-    B --> S{"Complex\nfeature?"}
-    S -- Yes --> R["3. Search\nExisting solutions?"]
-    R --> P["4. Plan\nDecompose into phases"]
+flowchart TD
+    A["1. Scaffold"] --> B["2. Write Context"]
+    B --> S{"Complex feature?"}
+    S -- Yes --> R["3. Search"]
+    R --> P["4. Plan"]
     P --> C
-    S -- No --> C["5. Write prompt\nprompts/features/area/"]
-    C --> D["6. Review\nVerify + review"]
-    D --> E["7. Commit both\nPrompt + output"]
-    E --> F{"Decision\nmade?"}
-    F -- Yes --> G["Log in\ndecisions.md"]
+    S -- No --> C["5. Write Prompt"]
+    C --> D["6. Review"]
+    D --> E["7. Commit"]
+    E --> F{"Decision made?"}
+    F -- Yes --> G["Log in decisions.md"]
     F -- No --> C
     G --> C
 
