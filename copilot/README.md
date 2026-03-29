@@ -4,17 +4,17 @@ The same Prompt Driven Development workflows, adapted for GitHub Copilot Chat in
 
 ## Setup
 
-Copy these files into your project:
+From the repo root, copy these files into your project:
 
 ```bash
 # Copy the always-on instructions
-cp copilot-instructions.md <your-project>/.github/copilot-instructions.md
+cp copilot/copilot-instructions.md <your-project>/.github/copilot-instructions.md
 
 # Copy the prompt files
-cp -r prompts/ <your-project>/.github/prompts/
+cp -r copilot/prompts/ <your-project>/.github/prompts/
 
 # Copy the reference files (project type flavors)
-cp -r ../references/ <your-project>/.github/references/
+cp -r references/ <your-project>/.github/references/
 ```
 
 Your project should end up with:
