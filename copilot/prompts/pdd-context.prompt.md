@@ -14,11 +14,21 @@ Check `pdd/context/project.md` (if it exists) or infer from the user's language.
 | Type | Signals | Reference |
 |---|---|---|
 | Frontend / UI | React, Vue, Angular, Svelte, CSS, Tailwind | `#file:references/frontend.md` |
-| Backend / API | Node, FastAPI, Django, Rails, REST, GraphQL | `#file:references/backend.md` |
-| Mobile | iOS, Android, Swift, Kotlin, React Native, Flutter | `#file:references/mobile.md` |
-| Data / ML / AI | Python, Jupyter, pandas, PyTorch, pipelines | `#file:references/data-ml.md` |
-| DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS | `#file:references/devops.md` |
-| Full-stack | Frontend + backend, Next.js, Nuxt, SvelteKit | `#file:references/fullstack.md` |
+| Backend / API | Node, FastAPI, Django, Rails, REST, GraphQL, gRPC, databases | `#file:references/backend.md` |
+| Mobile | iOS, Android, Swift, Kotlin, React Native, Flutter, Expo | `#file:references/mobile.md` |
+| Data / ML / AI | Python, Jupyter, pandas, PyTorch, scikit-learn, pipelines | `#file:references/data-ml.md` |
+| DevOps / Infra | Terraform, Docker, Kubernetes, CI/CD, AWS, GCP, Azure | `#file:references/devops.md` |
+| Full-stack | Frontend + backend, Next.js, Nuxt, SvelteKit | `#file:references/fullstack.md` + `#file:references/frontend.md` + `#file:references/backend.md` |
+| Library / Package | npm package, PyPI library, crate, gem, Go module, SDK | `#file:references/library.md` (+ domain flavor if applicable) |
+| CLI / Developer Tools | CLI app, terminal tool, code generator, REPL, arg parsing, subcommands | `#file:references/cli-devtools.md` |
+| Embedded / IoT | MCU, RTOS, bare-metal, Arduino, ESP32, STM32, Zephyr, FreeRTOS, firmware | `#file:references/embedded-iot.md` |
+| Game Development | Unity, Unreal, Godot, Bevy, game engine, ECS, frame budget | `#file:references/game-dev.md` |
+| Blockchain / Smart Contracts | Solidity, Vyper, Rust/Anchor, Hardhat, Foundry, EVM, Solana, DeFi | `#file:references/blockchain.md` |
+| Security / Pentesting Tools | Scanner, fuzzer, exploit framework, SIEM, detection rules, pentest | `#file:references/security.md` |
+| API Platform / SDK | Public API, developer platform, OpenAPI, SDK generation, rate limiting, webhooks | `#file:references/api-platform.md` |
+| Desktop / Native GUI | Tauri, Electron, Flutter desktop, SwiftUI macOS, Qt, .NET MAUI, WPF | `#file:references/desktop-gui.md` |
+| Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST | `#file:references/compiler-lang.md` |
+| Robotics / ROS | ROS, ROS2, robot, drone, autonomous vehicle, URDF, Gazebo, MoveIt, Nav2 | `#file:references/robotics.md` |
 
 ## If creating new context files
 

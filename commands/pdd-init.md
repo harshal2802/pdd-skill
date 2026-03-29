@@ -20,6 +20,16 @@ You are adding Prompt Driven Development structure to an existing project that a
 | `requirements.txt` with pandas/torch/scikit-learn, `setup.py` with ML deps, Jupyter notebooks | Data / ML |
 | `Dockerfile`, `terraform/`, `k8s/`, `.github/workflows/`, `Pulumi.yaml` | DevOps |
 | `next.config.*`, `nuxt.config.*`, `svelte.config.*`, or frontend + backend signals together | Full-stack |
+| `exports` map in `package.json`, `[lib]` in `Cargo.toml`, `pyproject.toml` with build system, `prepublishOnly` script | Library / Package |
+| CLI entry point (`bin` in `package.json`), `clap`/`cobra`/`yargs`/`argparse` deps, subcommand patterns | CLI / Developer Tools |
+| Arduino/PlatformIO configs, `CMakeLists.txt` with MCU targets, Zephyr/FreeRTOS deps, `.ino` files | Embedded / IoT |
+| Unity `ProjectSettings/`, Unreal `.uproject`, Godot `project.godot`, Bevy in `Cargo.toml` deps | Game Development |
+| `hardhat.config.*`, `foundry.toml`, Solidity `.sol` files, Anchor `programs/`, Move `.move` files | Blockchain / Smart Contracts |
+| Security tool configs, nuclei templates, Burp extensions, detection rules, YARA/Sigma files | Security / Pentesting Tools |
+| OpenAPI/Swagger specs, SDK generation configs (Stainless, Fern), API versioning patterns | API Platform / SDK |
+| `tauri.conf.json`, Electron `main.js`/`preload.js`, Qt `.pro`/`CMakeLists.txt`, `.NET MAUI` configs | Desktop / Native GUI |
+| Parser generators (tree-sitter, ANTLR), AST definitions, LSP server configs, LLVM/Cranelift deps | Compiler / Language Tooling |
+| ROS `package.xml`, `CMakeLists.txt` with `ament_cmake`/`catkin`, URDF/XACRO files, launch files | Robotics / ROS |
 
 If multiple types match, mention all and ask the user to confirm the primary type.
 
