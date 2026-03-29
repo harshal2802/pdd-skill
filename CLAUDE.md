@@ -35,13 +35,13 @@ Run these checks before opening a PR. The goal is to catch cross-file consistenc
 diff <(ls commands/ | sed 's/.md//' | sort) <(ls copilot/prompts/ | sed 's/.prompt.md//' | sort)
 
 # All referenced reference files exist
-for f in frontend backend mobile data-ml devops fullstack; do
+for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
   [ -f "references/$f.md" ] && echo "OK: $f" || echo "MISSING: $f"
 done
 
 # Copilot setup covers references
 grep -q 'cp.*references/' copilot/README.md && echo "OK: references/ copy instruction" || echo "MISSING: references/ copy"
-for f in frontend backend mobile data-ml devops fullstack; do
+for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
   grep -q "$f.md" copilot/README.md && echo "OK: $f.md listed" || echo "MISSING: $f.md"
 done
 ```
