@@ -11,9 +11,11 @@ You are helping the user create an implementation plan before writing any PDD pr
 
 Jumping straight to prompts leads to missing dependencies, wrong decomposition, and implicit architectural decisions. A plan catches these before any code is generated.
 
-## Step 1 — Load context
+## Step 1 — Load context and detect project type
 
 If `pdd/context/project.md` exists, read it along with `conventions.md` and `decisions.md`. Scan `pdd/prompts/features/` to see what already exists.
+
+Detect the project type and load the matching reference file (use `#file:references/<type>.md`) for type-specific patterns that inform decomposition.
 
 ## Step 2 — Understand the feature
 
