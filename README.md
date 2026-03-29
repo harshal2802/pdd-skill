@@ -8,6 +8,16 @@ For simple features, you only need **Context → Prompts → Review**. Search, P
 
 ## Installation
 
+### Quick install (one command)
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill && mkdir -p .claude && cat <<'EOF' >> .claude/settings.json
+{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }
+EOF
+```
+
+> **Already have a `.claude/settings.json`?** Just add `".claude/skills/pdd-skill/SKILL.md"` to your existing `skills` array instead of running the full command.
+
 ### Option 1 — Clone into your project (recommended)
 
 ```bash
@@ -35,6 +45,12 @@ Add to your global settings (`~/.claude/settings.json`):
 {
   "skills": ["~/pdd-skill/SKILL.md"]
 }
+```
+
+### Pin to a specific version
+
+```bash
+git clone --branch v1.2.0 https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
 ```
 
 ## Project Structure
@@ -165,7 +181,9 @@ If you have an existing PDD project using the old layout (with `prompts/`, `cont
 
 ## Learn More
 
-For the philosophy behind PDD, integration guides, and further reading, see [`docs/philosophy.md`](docs/philosophy.md).
+- **[Philosophy](docs/philosophy.md)** — Why PDD exists, the four layers, project type flavors, and how to get started
+- **[Efficiency Tips](docs/efficiency-tips.md)** — Practical habits for reducing token usage and cost
+- **[Migration Guide](docs/migration.md)** — Moving from the old layout to the `pdd/` structure
 
 ## License
 
