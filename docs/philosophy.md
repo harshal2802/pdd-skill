@@ -116,36 +116,43 @@ This doesn't apply to every feature. Simple, single-prompt tasks should skip str
 The core PDD structure is universal — it works for any kind of project. But where projects genuinely differ is in the *content* of those files and the *criteria* for good output.
 
 ```mermaid
-graph TD
-    PDD((PDD Core))
+block-beta
+    columns 4
 
-    PDD --> row1[ ] & row2[ ] & row3[ ] & row4[ ]
+    space:4
+    block:core:4
+        PDD["PDD Core"]
+    end
+    space:4
 
-    row1 --> FE["Frontend / UI"]
-    row1 --> BE["Backend / API"]
-    row1 --> MO["Mobile"]
+    block:supported:4
+        FE["Frontend / UI"]
+        BE["Backend / API"]
+        MO["Mobile"]
+        DA["Data / ML"]
+        DO["DevOps / Infra"]
+        FS["Full-stack"]
+        LB["Library / Package"]
+        CL["CLI / Dev Tools"]
+    end
 
-    row2 --> DA["Data / ML"]
-    row2 --> DO["DevOps / Infra"]
-    row2 --> FS["Full-stack"]
+    block:community:4
+        EM["Embedded / IoT"]
+        GD["Game Dev"]
+        BC["Blockchain"]
+        SC["Security"]
+        AP["API Platform"]
+        DG["Desktop GUI"]
+        CO["Compiler"]
+        RO["Robotics"]
+    end
 
-    row3 --> LB["Library / Package"]
-    row3 --> CL["CLI / Dev Tools"]
-    row3 --> EM["Embedded / IoT"]
-    row3 --> GD["Game Dev"]
+    PDD --> supported
+    PDD --> community
 
-    row4 --> BC["Blockchain"]
-    row4 --> SC["Security"]
-    row4 --> AP["API Platform"]
-    row4 --> DG["Desktop GUI"]
-    row4 --> CO["Compiler"]
-    row4 --> RO["Robotics"]
-
-    style row1 fill:none,stroke:none
-    style row2 fill:none,stroke:none
-    style row3 fill:none,stroke:none
-    style row4 fill:none,stroke:none
     style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
+    style supported fill:none,stroke:#3498db,stroke-width:2px
+    style community fill:none,stroke:#95a5a6,stroke-width:2px,stroke-dasharray:5
     style FE fill:#3498db,stroke:#2471a3,color:#fff
     style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
     style MO fill:#e67e22,stroke:#ca6f1e,color:#fff
@@ -162,10 +169,6 @@ graph TD
     style DG fill:#16a085,stroke:#0e7a63,color:#fff
     style CO fill:#7f8c8d,stroke:#5d6d6e,color:#fff
     style RO fill:#e67e22,stroke:#b8620d,color:#fff
-
-    linkStyle 0 stroke:none
-    linkStyle 1 stroke:none
-    linkStyle 2 stroke:none
 ```
 
 | Flavor | Key concerns |
