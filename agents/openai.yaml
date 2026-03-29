@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prompt Driven Development"
+  short_description: "Structure AI-assisted projects with prompt workflows"
+  default_prompt: "Use $pdd-skill to scaffold a Prompt Driven Development workflow, write context files, generate prompts, and review AI-generated output."
