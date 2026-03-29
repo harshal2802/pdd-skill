@@ -5,7 +5,7 @@ description: >-
 url: "https://harshal2802.github.io"
 baseurl: "/pdd-skill"
 
-remote_theme: pages-themes/minimal@v0.2.0
+remote_theme: pages-themes/cayman@v0.2.0
 
 plugins:
   - jekyll-seo-tag
@@ -17,9 +17,10 @@ author: Harshal
 twitter:
   card: summary_large_image
 social:
-  name: Harshal
+  name: Harshal Chourasiya
   links:
     - https://github.com/harshal2802
+    - https://www.linkedin.com/in/harshal-chourasiya-39bb0426
 
 defaults:
   - scope:
