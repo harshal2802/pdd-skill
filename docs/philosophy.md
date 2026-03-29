@@ -116,59 +116,24 @@ This doesn't apply to every feature. Simple, single-prompt tasks should skip str
 The core PDD structure is universal — it works for any kind of project. But where projects genuinely differ is in the *content* of those files and the *criteria* for good output.
 
 ```mermaid
-block-beta
-    columns 4
-
-    space:4
-    block:core:4
-        PDD["PDD Core"]
-    end
-    space:4
-
-    block:supported:4
-        FE["Frontend / UI"]
-        BE["Backend / API"]
-        MO["Mobile"]
-        DA["Data / ML"]
-        DO["DevOps / Infra"]
-        FS["Full-stack"]
-        LB["Library / Package"]
-        CL["CLI / Dev Tools"]
-    end
-
-    block:community:4
-        EM["Embedded / IoT"]
-        GD["Game Dev"]
-        BC["Blockchain"]
-        SC["Security"]
-        AP["API Platform"]
-        DG["Desktop GUI"]
-        CO["Compiler"]
-        RO["Robotics"]
-    end
-
-    PDD --> supported
-    PDD --> community
-
-    style PDD fill:#2c3e50,stroke:#1a252f,color:#fff
-    style supported fill:none,stroke:#3498db,stroke-width:2px
-    style community fill:none,stroke:#95a5a6,stroke-width:2px,stroke-dasharray:5
-    style FE fill:#3498db,stroke:#2471a3,color:#fff
-    style BE fill:#9b59b6,stroke:#7d3c98,color:#fff
-    style MO fill:#e67e22,stroke:#ca6f1e,color:#fff
-    style DA fill:#27ae60,stroke:#1e8449,color:#fff
-    style DO fill:#e74c3c,stroke:#c0392b,color:#fff
-    style FS fill:#1abc9c,stroke:#17a589,color:#fff
-    style LB fill:#f39c12,stroke:#d68910,color:#fff
-    style CL fill:#8e44ad,stroke:#6c3483,color:#fff
-    style EM fill:#d35400,stroke:#a04000,color:#fff
-    style GD fill:#2ecc71,stroke:#27ae60,color:#fff
-    style BC fill:#f1c40f,stroke:#d4ac0d,color:#333
-    style SC fill:#c0392b,stroke:#96281b,color:#fff
-    style AP fill:#2980b9,stroke:#1f6da0,color:#fff
-    style DG fill:#16a085,stroke:#0e7a63,color:#fff
-    style CO fill:#7f8c8d,stroke:#5d6d6e,color:#fff
-    style RO fill:#e67e22,stroke:#b8620d,color:#fff
+mindmap
+  root((PDD Core))
+    Frontend / UI
+    Backend / API
+    Mobile
+    Data / ML
+    DevOps / Infra
+    Full-stack
+    Library / Package
+    CLI / Dev Tools
+    Embedded / IoT
+    Game Dev
+    Blockchain
+    Security
+    API Platform
+    Desktop GUI
+    Compiler
+    Robotics
 ```
 
 | Flavor | Key concerns |
