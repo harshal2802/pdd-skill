@@ -28,19 +28,24 @@ PDD gives you four layers:
 
 ## Quick Start
 
-```bash
-# Install the Claude Code skill
-git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
+**Claude Code (plugin):** Run inside Claude Code:
 
-# Add to your .claude/settings.json
-echo '{ "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"] }' > .claude/settings.json
-
-# Start using PDD
-# Claude auto-detects your intent, or use slash commands:
-#   /project:pdd-scaffold  — new project
-#   /project:pdd-init      — existing project
-#   /project:pdd-help      — see all commands
 ```
+/plugin marketplace add harshal2802/pdd-skill
+/plugin install pdd-skill
+```
+
+**Claude Code (manual):**
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
+echo '{ "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"] }' > .claude/settings.json
+```
+
+Then use PDD — Claude auto-detects your intent, or use slash commands:
+- `/project:pdd-scaffold` — new project
+- `/project:pdd-init` — existing project
+- `/project:pdd-help` — see all commands
 
 ## Learn More
 

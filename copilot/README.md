@@ -100,7 +100,7 @@ Each prompt file suggests the next step at the end, so you don't need to memoriz
 
 ## Differences from the Claude Code version
 
-| Aspect | Claude Code (SKILL.md) | Copilot (prompt files) |
+| Aspect | Claude Code (skills/pdd/SKILL.md) | Copilot (prompt files) |
 |---|---|---|
 | Activation | Auto-triggers on keywords | User invokes manually via `/` |
 | Reference files | Loaded dynamically by type | Use `#file:` references in prompts |
