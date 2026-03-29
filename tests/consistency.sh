@@ -18,12 +18,12 @@ else
 fi
 
 # ── 2. Reference files exist ──
-for f in frontend backend mobile data-ml devops fullstack; do
+for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
   [ -f "references/$f.md" ] && pass "references/$f.md" || fail "references/$f.md missing"
 done
 
 # ── 3. Copilot README covers all references ──
-for f in frontend backend mobile data-ml devops fullstack; do
+for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
   grep -q "$f.md" copilot/README.md \
     && pass "$f.md in copilot/README.md" \
     || fail "$f.md missing from copilot/README.md setup"
