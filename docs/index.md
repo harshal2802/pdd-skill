@@ -44,6 +44,6 @@ echo '{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }' > .claude/settings.js
 
 ## Learn More
 
-- **[The Philosophy Behind PDD](docs/philosophy)** — Why structure matters, the four layers, project type flavors, and how to get started
+- **[The Philosophy Behind PDD](philosophy)** — Why structure matters, the four layers, project type flavors, and how to get started
 - **[GitHub Repository](https://github.com/harshal2802/pdd-skill)** — Source code, installation instructions, and examples
 - **[Copilot Version](https://github.com/harshal2802/pdd-skill/tree/main/copilot)** — Same workflows adapted for GitHub Copilot Chat

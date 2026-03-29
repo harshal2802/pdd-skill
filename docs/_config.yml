@@ -28,16 +28,6 @@ defaults:
       layout: "default"
       image: false
 
-# Only publish these pages — exclude skill internals from the site
+# Exclude non-page files within docs/
 exclude:
-  - commands/
-  - copilot/
-  - references/
-  - hooks/
-  - tests/
-  - examples/
-  - SKILL.md
-  - CLAUDE.md
-  - LICENSE
-  - Gemfile
-  - Gemfile.lock
+  - migration.md
