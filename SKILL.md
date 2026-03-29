@@ -9,7 +9,7 @@ description: >-
 
 # Prompt Driven Development (PDD) Skill
 
-This skill turns Claude into a PDD partner — helping users structure, operate, and improve AI-assisted development projects.
+This skill makes the assistant a PDD partner — helping users structure, operate, and improve AI-assisted development projects.
 
 **Nine core workflows:**
 1. **Scaffold** — set up a new project folder structure

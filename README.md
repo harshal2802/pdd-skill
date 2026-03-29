@@ -1,12 +1,31 @@
 # Prompt Driven Development (PDD) Skill
 
-A Claude Code skill for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
+A Claude Code, Codex, and GitHub Copilot skill for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
 
-PDD treats prompts as first-class artifacts — not throwaway inputs. This skill gives Claude nine workflows: **scaffold** a new project structure or **init** PDD in an existing project, write **context** files, **search** for existing solutions, **plan** implementation before coding, generate feature **prompts**, **update** failing prompts, **review** AI-generated output (with automated quality checks), and **evaluate** prompt reliability over time.
+PDD treats prompts as first-class artifacts, not throwaway inputs. This skill provides nine workflows: **scaffold** a new project structure or **init** PDD in an existing project, write **context** files, **search** for existing solutions, **plan** implementation before coding, generate feature **prompts**, **update** failing prompts, **review** AI-generated output (with automated quality checks), and **evaluate** prompt reliability over time.
 
-For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required.
+For simple features, you only need **Context -> Prompts -> Review**. Search, Plan, and Eval add value for complex or critical features but are not required.
 
 ## Installation
+
+### Codex
+
+```bash
+# Install as a user skill so Codex can auto-discover it
+git clone <repository-url> ~/.codex/skills/pdd-skill
+```
+
+This repo's root [`SKILL.md`](SKILL.md) is the Codex skill definition, and [`agents/openai.yaml`](agents/openai.yaml) provides Codex UI metadata.
+Use this repository's clone URL, or your fork's clone URL if you are testing changes before opening a PR.
+
+Use it explicitly in Codex with prompts like:
+
+```text
+Use $pdd-skill to scaffold a new AI-assisted project.
+Use $pdd-skill to review this AI-generated code before I commit it.
+```
+
+### Claude Code
 
 ### Quick install (one command)
 
@@ -18,11 +37,11 @@ EOF
 
 > **Already have a `.claude/settings.json`?** Just add `".claude/skills/pdd-skill/SKILL.md"` to your existing `skills` array instead of running the full command.
 
-### Option 1 — Clone into your project (recommended)
+#### Option 1 - Clone into your project (recommended)
 
 ```bash
 # From your project root
-git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
+git clone <repository-url> .claude/skills/pdd-skill
 ```
 
 Then reference the skill in your `.claude/settings.json`:
@@ -33,10 +52,10 @@ Then reference the skill in your `.claude/settings.json`:
 }
 ```
 
-### Option 2 — Clone standalone and reference globally
+#### Option 2 - Clone standalone and reference globally
 
 ```bash
-git clone https://github.com/harshal2802/pdd-skill.git ~/pdd-skill
+git clone <repository-url> ~/pdd-skill
 ```
 
 Add to your global settings (`~/.claude/settings.json`):
@@ -57,24 +76,24 @@ git clone --branch v1.2.0 https://github.com/harshal2802/pdd-skill.git .claude/s
 
 A PDD project looks like this:
 
-```
+```text
 my-project/
-├── pdd/
-│   ├── prompts/
-│   │   ├── features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
-│   │   │   ├── auth/        #   One subfolder per feature domain, app module, or tool
-│   │   │   └── tasks/
-│   │   ├── templates/       # Reusable prompt patterns
-│   │   └── experiments/     # Exploratory, time-boxed prompts
-│   ├── context/
-│   │   ├── project.md       # What you're building, why, and with what stack
-│   │   ├── conventions.md   # Code style, naming, patterns the AI should follow
-│   │   └── decisions.md     # Architecture decisions and the reasoning behind them
-│   └── evals/               # Tests for prompt quality and output correctness
-│       ├── baselines/       # Known-good outputs for diff comparison
-│       └── scripts/         # Automated validation scripts
-├── src/                     # Reviewed, committed AI-generated artifacts (or user-chosen name)
-└── ...
+|-- pdd/
+|   |-- prompts/
+|   |   |-- features/        # Prompt files grouped by area (e.g., features/auth/, features/tasks/)
+|   |   |   |-- auth/        # One subfolder per feature domain, app module, or tool
+|   |   |   `-- tasks/
+|   |   |-- templates/       # Reusable prompt patterns
+|   |   `-- experiments/     # Exploratory, time-boxed prompts
+|   |-- context/
+|   |   |-- project.md       # What you're building, why, and with what stack
+|   |   |-- conventions.md   # Code style, naming, patterns the AI should follow
+|   |   `-- decisions.md     # Architecture decisions and the reasoning behind them
+|   `-- evals/               # Tests for prompt quality and output correctness
+|       |-- baselines/       # Known-good outputs for diff comparison
+|       `-- scripts/         # Automated validation scripts
+|-- src/                     # Reviewed, committed AI-generated artifacts (or user-chosen name)
+`-- ...
 ```
 
 ## Slash Commands
@@ -91,7 +110,7 @@ Then invoke them in Claude Code:
 | Command | What it does |
 |---|---|
 | `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
-| `/project:pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
+| `/project:pdd-init` | Add PDD to an existing project - auto-detects stack and conventions |
 | `/project:pdd-context` | Write or update `pdd/context/project.md`, `conventions.md`, and `decisions.md` |
 | `/project:pdd-search` | Search for existing solutions before building custom features |
 | `/project:pdd-plan` | Create an implementation plan before writing prompts |
@@ -99,8 +118,8 @@ Then invoke them in Claude Code:
 | `/project:pdd-update` | Diagnose and fix a prompt that isn't producing good results |
 | `/project:pdd-review` | Verify and review AI-generated output before committing |
 | `/project:pdd-eval` | Run prompt evaluations and track pass rates over time |
-| `/project:pdd-status` | Health check — shows what's set up, what's missing, and what's stale |
-| `/project:pdd-help` | Quick reference — lists all commands, workflow order, and usage guidance |
+| `/project:pdd-status` | Health check - shows what's set up, what's missing, and what's stale |
+| `/project:pdd-help` | Quick reference - lists all commands, workflow order, and usage guidance |
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
 
@@ -125,17 +144,17 @@ flowchart LR
     style I fill:#f4a460,stroke:#c4824a,color:#fff
 ```
 
-**Quick path**: Context → Prompts → Review → commit. Use **Init** instead of Scaffold for existing projects. Add Search and Plan for complex features. Eval is optional for tracking prompt reliability.
+**Quick path**: Context -> Prompts -> Review -> commit. Use **Init** instead of Scaffold for existing projects. Add Search and Plan for complex features. Eval is optional for tracking prompt reliability.
 
-Unlike Copilot where you invoke each step manually, Claude Code **auto-triggers** the right workflow based on what you say. After each step, it suggests the natural next one:
+Unlike Copilot where you invoke each step manually, Claude Code auto-triggers the right workflow based on what you say. After each step, it suggests the natural next one:
 
-```
+```text
 You:    "Help me add authentication to my API"
-Claude: detects → Search workflow (checks for existing auth libraries)
-        → suggests Plan (feature spans schema + middleware + routes)
-        → walks through Prompts for each phase
-        → runs Review (verify + review) on generated code
-        → suggests Eval after commit
+Claude: detects -> Search workflow (checks for existing auth libraries)
+        -> suggests Plan (feature spans schema + middleware + routes)
+        -> walks through Prompts for each phase
+        -> runs Review (verify + review) on generated code
+        -> suggests Eval after commit
 ```
 
 You can also jump directly to any workflow with slash commands, or let the skill route you automatically.
@@ -144,7 +163,7 @@ You can also jump directly to any workflow with slash commands, or let the skill
 
 | Path | Purpose |
 |---|---|
-| `SKILL.md` | Core skill definition — nine workflows, project type detection, prompt templates |
+| `SKILL.md` | Core skill definition - nine workflows, project type detection, prompt templates |
 | `hooks/` | Optional session-start hook for context freshness checks |
 | `references/frontend.md` | Context questions, conventions, and review checklists for frontend/UI projects |
 | `references/backend.md` | Same for backend/API projects |
@@ -181,9 +200,7 @@ If you have an existing PDD project using the old layout (with `prompts/`, `cont
 
 ## Learn More
 
-- **[Philosophy](docs/philosophy.md)** — Why PDD exists, the four layers, project type flavors, and how to get started
-- **[Efficiency Tips](docs/efficiency-tips.md)** — Practical habits for reducing token usage and cost
-- **[Migration Guide](docs/migration.md)** — Moving from the old layout to the `pdd/` structure
+For the philosophy behind PDD, integration guides, and further reading, see [`docs/philosophy.md`](docs/philosophy.md).
 
 ## License
 

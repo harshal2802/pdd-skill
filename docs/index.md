@@ -30,7 +30,7 @@ PDD gives you four layers:
 
 ```bash
 # Install the Claude Code skill
-git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
+git clone <repository-url> .claude/skills/pdd-skill
 
 # Add to your .claude/settings.json
 echo '{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }' > .claude/settings.json
@@ -41,6 +41,8 @@ echo '{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }' > .claude/settings.js
 #   /project:pdd-init      — existing project
 #   /project:pdd-help      — see all commands
 ```
+
+Use this repository's clone URL, or your fork's clone URL if you are testing changes before opening a PR.
 
 ## Learn More
 

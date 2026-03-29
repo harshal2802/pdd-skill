@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-A Claude Code skill (and Copilot adaptation) for Prompt Driven Development. The skill definition is in `SKILL.md`. Commands live in `commands/`, Copilot prompt files in `copilot/prompts/`, and project type reference files in `references/`.
+A Claude Code skill with Codex and GitHub Copilot packaging for Prompt Driven Development. The core skill definition is in `SKILL.md`, Codex metadata lives in `agents/openai.yaml`, commands live in `commands/`, Copilot prompt files in `copilot/prompts/`, and project type reference files in `references/`.
 
 ## Pre-PR checklist
 
@@ -12,6 +12,7 @@ Run these checks before opening a PR. The goal is to catch cross-file consistenc
 
 - [ ] Every workflow in SKILL.md has a matching file in `commands/`
 - [ ] Every file in `commands/` has a matching file in `copilot/prompts/`
+- [ ] `agents/openai.yaml` still matches the scope and naming in `SKILL.md`
 - [ ] Workflow count in SKILL.md matches README.md, copilot/README.md, and actual file count
 - [ ] Workflow numbers in SKILL.md cross-references are correct
 
