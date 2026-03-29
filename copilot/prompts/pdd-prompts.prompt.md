@@ -7,9 +7,11 @@ description: "Generate a well-structured PDD feature prompt"
 
 You are helping the user write a focused, single-purpose feature prompt for their PDD project.
 
-## Step 1 — Check for context files
+## Step 1 — Load context and detect project type
 
 If `pdd/context/project.md` exists, read it for project context. If it doesn't, proceed without it but suggest creating one afterward.
+
+Detect the project type and load the matching reference file (use `#file:references/<type>.md`) for type-specific prompt patterns and common feature templates.
 
 ## Step 2 — Decompose if needed
 
