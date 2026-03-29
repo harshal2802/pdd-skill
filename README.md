@@ -8,50 +8,38 @@ For simple features, you only need **Context → Prompts → Review**. Search, P
 
 ## Installation
 
-### Quick install (one command)
+### Claude Code
 
-```bash
-git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill && mkdir -p .claude && cat <<'EOF' >> .claude/settings.json
-{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }
-EOF
+**Plugin install (recommended):**
+
+Run these commands inside Claude Code (not your terminal):
+
+```
+/plugin marketplace add harshal2802/pdd-skill
+/plugin install pdd-skill
 ```
 
-> **Already have a `.claude/settings.json`?** Just add `".claude/skills/pdd-skill/SKILL.md"` to your existing `skills` array instead of running the full command.
+The plugin system auto-discovers the skill and commands. No manual config needed.
 
-### Option 1 — Clone into your project (recommended)
+**Manual install:**
 
 ```bash
-# From your project root
 git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
 ```
 
-Then reference the skill in your `.claude/settings.json`:
+Then add the skill to `.claude/settings.json` (create the file if it doesn't exist):
 
 ```json
 {
-  "skills": [".claude/skills/pdd-skill/SKILL.md"]
+  "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"]
 }
 ```
 
-### Option 2 — Clone standalone and reference globally
+> **Tip:** To pin a specific version, add `--branch v1.3.0` to the clone command. To install globally instead of per-project, clone to `~/pdd-skill` and reference it in `~/.claude/settings.json`.
 
-```bash
-git clone https://github.com/harshal2802/pdd-skill.git ~/pdd-skill
-```
+### GitHub Copilot
 
-Add to your global settings (`~/.claude/settings.json`):
-
-```json
-{
-  "skills": ["~/pdd-skill/SKILL.md"]
-}
-```
-
-### Pin to a specific version
-
-```bash
-git clone --branch v1.2.0 https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
-```
+PDD is also available for GitHub Copilot Chat. See [`copilot/README.md`](copilot/) for setup instructions — it uses a separate set of prompt files with the same nine workflows.
 
 ## Project Structure
 
@@ -79,14 +67,14 @@ my-project/
 
 ## Slash Commands
 
-PDD includes slash commands for Claude Code. Copy the `commands/` folder into your project's `.claude/commands/` directory:
+PDD includes slash commands for Claude Code. If you installed via plugin, they're available automatically. For manual installs, copy them into your project:
 
 ```bash
-# From your project root (assuming skill is at .claude/skills/pdd-skill/)
+# Only needed for manual installs
 cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
 ```
 
-Then invoke them in Claude Code:
+Invoke them in Claude Code:
 
 | Command | What it does |
 |---|---|
@@ -144,7 +132,8 @@ You can also jump directly to any workflow with slash commands, or let the skill
 
 | Path | Purpose |
 |---|---|
-| `SKILL.md` | Core skill definition — nine workflows, project type detection, prompt templates |
+| `skills/pdd/SKILL.md` | Core skill definition — nine workflows, project type detection, prompt templates |
+| `.claude-plugin/plugin.json` | Plugin manifest for distribution via the Claude Code plugin system |
 | `hooks/` | Optional session-start hook for context freshness checks |
 | `references/frontend.md` | Context questions, conventions, and review checklists for frontend/UI projects |
 | `references/backend.md` | Same for backend/API projects |
@@ -170,10 +159,6 @@ The skill auto-detects your project type and loads the right reference file to e
 ## Example
 
 See [`examples/task-management-api/`](examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
-
-## GitHub Copilot Version
-
-This skill is also available for GitHub Copilot Chat. See [`copilot/`](copilot/) for setup instructions and prompt files that map to the same nine workflows.
 
 ## Migrating from the old layout
 

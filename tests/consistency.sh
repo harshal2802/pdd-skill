@@ -50,14 +50,14 @@ for f in $(ls copilot/prompts/ | sed 's/.prompt.md//'); do
 done
 
 # ── 7. Workflow count sanity ──
-skill_count=$(grep -c '^## Workflow' SKILL.md)
+skill_count=$(grep -c '^## Workflow' skills/pdd/SKILL.md)
 cmd_count=$(ls commands/pdd-*.md | wc -l | tr -d ' ')
 # commands include help + status, so cmd_count = skill_count + 2
 expected=$((skill_count + 2))
 if [ "$cmd_count" -eq "$expected" ]; then
   pass "Workflow count: $skill_count workflows, $cmd_count commands (includes help+status)"
 else
-  fail "Workflow count mismatch: SKILL.md has $skill_count, commands/ has $cmd_count (expected $expected)"
+  fail "Workflow count mismatch: skills/pdd/SKILL.md has $skill_count, commands/ has $cmd_count (expected $expected)"
 fi
 
 echo ""
