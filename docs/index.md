@@ -33,7 +33,7 @@ PDD gives you four layers:
 git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
 
 # Add to your .claude/settings.json
-echo '{ "skills": [".claude/skills/pdd-skill/SKILL.md"] }' > .claude/settings.json
+echo '{ "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"] }' > .claude/settings.json
 
 # Start using PDD
 # Claude auto-detects your intent, or use slash commands:

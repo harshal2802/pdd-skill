@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-A Claude Code skill (and Copilot adaptation) for Prompt Driven Development. The skill definition is in `SKILL.md`. Commands live in `commands/`, Copilot prompt files in `copilot/prompts/`, and project type reference files in `references/`.
+A Claude Code skill (and Copilot adaptation) for Prompt Driven Development. The skill definition is in `skills/pdd/SKILL.md`. Plugin manifest is at `.claude-plugin/plugin.json`. Commands live in `commands/`, Copilot prompt files in `copilot/prompts/`, and project type reference files in `references/`.
 
 ## Pre-PR checklist
 
@@ -10,14 +10,14 @@ Run these checks before opening a PR. The goal is to catch cross-file consistenc
 
 ### Workflow parity
 
-- [ ] Every workflow in SKILL.md has a matching file in `commands/`
+- [ ] Every workflow in skills/pdd/SKILL.md has a matching file in `commands/`
 - [ ] Every file in `commands/` has a matching file in `copilot/prompts/`
-- [ ] Workflow count in SKILL.md matches README.md, copilot/README.md, and actual file count
-- [ ] Workflow numbers in SKILL.md cross-references are correct
+- [ ] Workflow count in skills/pdd/SKILL.md matches README.md, copilot/README.md, and actual file count
+- [ ] Workflow numbers in skills/pdd/SKILL.md cross-references are correct
 
 ### File references resolve
 
-- [ ] Every `references/*.md` path in SKILL.md and commands exists in the repo
+- [ ] Every `references/*.md` path in skills/pdd/SKILL.md and commands exists in the repo
 - [ ] Every `#file:references/*.md` in Copilot prompts has a copy instruction in `copilot/README.md` setup
 - [ ] Every `/project:pdd-*` in commands points to an existing command file
 - [ ] Every `/pdd-*` in Copilot prompts points to an existing prompt file
@@ -48,7 +48,7 @@ done
 
 ## Conventions
 
-- When adding a new workflow: update SKILL.md, create a command file, create a Copilot prompt file, update both READMEs, update copilot-instructions.md routing table
+- When adding a new workflow: update skills/pdd/SKILL.md, create a command file, create a Copilot prompt file, update both READMEs, update copilot-instructions.md routing table
 - When a command references `references/`: the Copilot version must have a `#file:` equivalent and the setup instructions must include copying that file
 - Copilot prompt frontmatter uses `agent: agent` (not `mode: "agent"`)
 - Commit messages: imperative mood, describe the why not just the what
