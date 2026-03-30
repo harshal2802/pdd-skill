@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "pdd-skill",
-      "source": ".",
+      "source": "./",
       "description": "Prompt Driven Development — structure AI-assisted projects with versioned prompts, persistent context, and automated review",
       "version": "1.3.0",
       "author": {
