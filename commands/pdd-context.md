@@ -27,6 +27,12 @@ Check `pdd/context/project.md` (if it exists) or infer from user input. Load the
 | Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST | `references/compiler-lang.md` |
 | Robotics / ROS | ROS, ROS2, robot, drone, autonomous vehicle, URDF, Gazebo, MoveIt, Nav2 | `references/robotics.md` |
 
+**Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap. Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
+
+**Library is composable**: A project can be both a library and a domain type (e.g., a React component library = `library.md` + `frontend.md`). When combined, `library.md` takes precedence for API surface, versioning, and distribution; the domain flavor takes precedence for implementation patterns.
+
+If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `pdd/context/decisions.md`.
+
 ## If creating new context files
 
 Ask these questions conversationally (not all at once):

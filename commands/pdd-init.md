@@ -31,7 +31,7 @@ You are adding Prompt Driven Development structure to an existing project that a
 | Parser generators (tree-sitter, ANTLR), AST definitions, LSP server configs, LLVM/Cranelift deps | Compiler / Language Tooling |
 | ROS `package.xml`, `CMakeLists.txt` with `ament_cmake`/`catkin`, URDF/XACRO files, launch files | Robotics / ROS |
 
-If multiple types match, mention all and ask the user to confirm the primary type.
+If multiple types match, mention all and ask the user to confirm the primary type. **Full-stack merge priority**: `fullstack.md` conventions take precedence over `frontend.md`/`backend.md` where they overlap. **Library is composable**: a project can be both a library and a domain type — `library.md` takes precedence for API surface and versioning, domain flavor for implementation patterns.
 
 4. **Auto-detect the tech stack.** Read dependency files (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile`, `pubspec.yaml`, etc.) and identify:
    - Language(s)

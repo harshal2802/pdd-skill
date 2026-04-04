@@ -50,7 +50,8 @@ for f in $(ls copilot/prompts/ | sed 's/.prompt.md//'); do
 done
 
 # ── 7. Workflow count sanity ──
-skill_count=$(grep -c '^## Workflow' skills/pdd/SKILL.md)
+# Count numbered workflows in the SKILL.md intro list (e.g. "1. **Scaffold**")
+skill_count=$(grep -cE '^[0-9]+\. \*\*' skills/pdd/SKILL.md)
 cmd_count=$(ls commands/pdd-*.md | wc -l | tr -d ' ')
 # commands include help + status, so cmd_count = skill_count + 2
 expected=$((skill_count + 2))
