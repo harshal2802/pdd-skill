@@ -15,14 +15,14 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 1. **Scaffold** — set up a new project folder structure
 2. **Init** — add PDD to an existing project (auto-detects stack and conventions)
 3. **Context** — write or update context files (`project.md`, `conventions.md`, `decisions.md`)
-4. **Search** — research existing solutions before building custom features
+4. **Research** — explore a problem space, evaluate approaches, and decide what to build
 5. **Plan** — decompose a feature into phases and a prompt chain strategy
 6. **Prompts** — generate well-structured feature prompts
 7. **Update** — improve or refactor an existing prompt
 8. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
 9. **Eval** — run prompt evaluations and track quality over time
 
-**Quick path**: For simple features, you only need **Context → Prompts → Review**. Search, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
+**Quick path**: For simple features, you only need **Context → Prompts → Review**. Research, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
 
 ---
 
@@ -34,7 +34,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 | "Add PDD to my project", "Initialize PDD here", "Set up PDD in this repo" | → **Init**: run `/project:pdd-init` |
 | "Help me write my project.md", "What should my context file say?" | → **Context**: run `/project:pdd-context` |
 | "How do I migrate to the new PDD structure?" | → See `docs/migration.md` |
-| "Is there a library for this?", "Does something already do this?" | → **Search**: run `/project:pdd-search` |
+| "Is there a library for this?", "Does something already do this?", "What should I build?", "Help me think through this", "I'm not sure what approach to take" | → **Research**: run `/project:pdd-research` |
 | "Plan this feature", "How should I break this down?" | → **Plan**: run `/project:pdd-plan` |
 | "Write a prompt for this feature", "Help me prompt this" | → **Prompts**: run `/project:pdd-prompts` |
 | "This prompt isn't working", "Can you improve this prompt?" | → **Update**: run `/project:pdd-update` |
@@ -57,9 +57,9 @@ After completing any workflow, suggest the natural next step:
 |---|---|
 | **Scaffold** | → Context: *"Structure is ready. Want to write `pdd/context/project.md`?"* |
 | **Init** | → Context: *"PDD structure is ready. Run `/project:pdd-context` to fill in your context files — I'll use what I detected as a starting point."* |
-| **Context** | → Search or Plan: *"Context is set. Before writing prompts — want to search for existing solutions or plan the implementation?"* |
-| **Search** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
-| **Search** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
+| **Context** | → Research or Plan: *"Context is set. Before writing prompts — want to research the problem space or plan the implementation?"* |
+| **Research** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
+| **Research** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
 | **Plan** | → Prompts: *"Plan is set. Ready to write the first prompt? Start with Phase 1."* |
 | **Prompts** | → Run the prompt 2–3 times, then → Review: *"Run this prompt, then `/project:pdd-review` to verify and review the output."* For critical prompts, create a Level 1 eval first. |
 | **Update** | → Re-run the prompt, then → Review: *"Try the updated prompt and run `/project:pdd-review` on the output."* |
