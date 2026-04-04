@@ -27,7 +27,7 @@ Show the full quick reference below.
 
 ### Quick start
 
-> **Quick start**: For most features, you only need three commands: **Context → Prompts → Review**. Add Search, Plan, and Eval for complex or critical features.
+> **Quick start**: For most features, you only need three commands: **Context → Prompts → Review**. Add Research, Plan, and Eval for complex or critical features.
 
 ### All commands
 
@@ -45,7 +45,7 @@ Show the full quick reference below.
 | Command | What it does |
 |---|---|
 | `/pdd-context` | Write or update context files (project.md, conventions.md, decisions.md) |
-| `/pdd-search` | Research existing solutions before building custom |
+| `/pdd-research` | Explore problem space, evaluate approaches, decide what to build |
 | `/pdd-plan` | Decompose a feature into phases and prompt chain strategy |
 | `/pdd-prompts` | Generate well-structured feature prompts |
 | `/pdd-update` | Improve or refactor an existing prompt |
@@ -63,7 +63,7 @@ Show the full quick reference below.
 |---|---|
 | Start a brand new project | `/pdd-scaffold` → `/pdd-context` |
 | Add PDD to an existing codebase | `/pdd-init` → `/pdd-context` |
-| Build a new feature (complex) | `/pdd-context` → `/pdd-search` → `/pdd-plan` → `/pdd-prompts` → `/pdd-review` |
+| Build a new feature (complex) | `/pdd-context` → `/pdd-research` → `/pdd-plan` → `/pdd-prompts` → `/pdd-review` |
 | Build a new feature (simple) | `/pdd-context` → `/pdd-prompts` → `/pdd-review` |
 | Fix a prompt that isn't working | `/pdd-update` |
 | Check if my project setup is complete | `/pdd-status` |
@@ -77,8 +77,8 @@ Use this table when the user asks about a specific command.
 |---|---|---|---|---|
 | `pdd-scaffold` | Starting a brand new project from scratch | Project name (optional) | Folder structure with context stubs | `/pdd-context` |
 | `pdd-init` | Adding PDD to a project that already has code | Existing project directory | PDD folders + auto-detected context | `/pdd-context` |
-| `pdd-context` | Before writing prompts, or when the project changes | Answers to context questions | `pdd/context/project.md`, `conventions.md`, `decisions.md` | `/pdd-search` or `/pdd-prompts` |
-| `pdd-search` | Before building something that might already exist | Feature description | Summary of existing solutions + build/buy recommendation | `/pdd-plan` or `/pdd-prompts` |
+| `pdd-context` | Before writing prompts, or when the project changes | Answers to context questions | `pdd/context/project.md`, `conventions.md`, `decisions.md` | `/pdd-research` or `/pdd-prompts` |
+| `pdd-research` | Before building — clarify the problem, evaluate approaches | Problem description or feature idea | Research summary + approach recommendation | `/pdd-plan` or `/pdd-prompts` |
 | `pdd-plan` | Feature spans multiple files, modules, or phases | Feature description + context files | Phased implementation plan with prompt chain strategy | `/pdd-prompts` |
 | `pdd-prompts` | Ready to write the actual feature prompt | Feature description + context files | Prompt file(s) in `pdd/prompts/features/` | Run the prompt, then `/pdd-review` |
 | `pdd-update` | A prompt isn't producing good results | The failing prompt + what went wrong | Updated prompt file | Run the prompt again, then `/pdd-review` |

@@ -26,7 +26,7 @@ Your project should end up with:
     pdd-scaffold.prompt.md
     pdd-init.prompt.md
     pdd-context.prompt.md
-    pdd-search.prompt.md
+    pdd-research.prompt.md
     pdd-plan.prompt.md
     pdd-prompts.prompt.md
     pdd-update.prompt.md
@@ -62,7 +62,7 @@ In VS Code Copilot Chat, type `/` to see available prompt files, then select one
 | `/pdd-scaffold` | Set up PDD folder structure for a new project |
 | `/pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
 | `/pdd-context` | Write or update context files (pdd/context/project.md, conventions.md, decisions.md) |
-| `/pdd-search` | Search for existing solutions before building custom features |
+| `/pdd-research` | Explore problem space, evaluate approaches, and decide what to build |
 | `/pdd-plan` | Create an implementation plan before writing prompts |
 | `/pdd-prompts` | Generate a focused feature prompt |
 | `/pdd-update` | Diagnose and fix a prompt that isn't working |
@@ -80,7 +80,7 @@ flowchart LR
     A["/pdd-scaffold (new)"] --> B["/pdd-context"]
     A2["/pdd-init (existing)"] --> B
     B --> S{Complex?}
-    S -- Yes --> C["/pdd-search"] --> D["/pdd-plan"] --> E
+    S -- Yes --> C["/pdd-research"] --> D["/pdd-plan"] --> E
     S -- No --> E["/pdd-prompts"]
     E --> F["Run prompt"]
     F --> G["/pdd-review"]
@@ -94,7 +94,7 @@ flowchart LR
     style I fill:#f4a460,stroke:#c4824a,color:#fff
 ```
 
-**Quick path**: `/pdd-context` → `/pdd-prompts` → `/pdd-review` → commit. Use `/pdd-init` instead of `/pdd-scaffold` for existing projects. Add `/pdd-search` and `/pdd-plan` for complex features. Use `/pdd-eval` to track prompt reliability over time.
+**Quick path**: `/pdd-context` → `/pdd-prompts` → `/pdd-review` → commit. Use `/pdd-init` instead of `/pdd-scaffold` for existing projects. Add `/pdd-research` and `/pdd-plan` for complex features. Use `/pdd-eval` to track prompt reliability over time.
 
 Each prompt file suggests the next step at the end, so you don't need to memorize the flow.
 
