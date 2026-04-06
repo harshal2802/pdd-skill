@@ -5,38 +5,58 @@ description: "Generate a well-structured PDD feature prompt"
 
 # Generate a Feature Prompt
 
-This is the Copilot adapter for the shared `Prompts` workflow in `core/workflows/prompts.md`. Keep shared prompt-authoring behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` reference wording, and `/pdd-*` command wording.
+This is the Copilot adapter for the shared `Prompts` workflow in `core/workflows/prompts.md`. Keep shared workflow behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` references, and `/pdd-*` command wording.
 
-You are helping the user write a focused, single-purpose feature prompt for their PDD project.
+## Purpose
 
-## Step 1 — Load context and detect project type
+Create focused, versionable prompt artifacts that ask the AI to do one job well.
 
-If `pdd/context/project.md` exists, read it for project context. If it doesn't, proceed without it but suggest creating one afterward.
+Prompts should be durable project artifacts, not one-off chat messages. Each prompt should have a single job, a clear file path, and a reviewable output expectation.
 
-Detect the project type and load the matching reference file (use `#file:references/<type>.md`) for type-specific prompt patterns and common feature templates.
+## Use When
 
-## Step 2 — Decompose if needed
+- The team is ready to implement a planned change.
+- Context is already in place or good enough to proceed.
+- A feature is small enough to prompt directly or already decomposed into clear phases.
 
-Watch for signs a task needs splitting:
-- "Build auth AND user profiles"
-- "Create API AND frontend"
-- "Write tests AND fix bugs"
+## Inputs
 
-If spotted: *"This covers a few distinct things — let's split into separate prompts. Which part first?"*
+- feature description
+- current context files
+- plan or research notes if they exist
 
-## Step 3 — Gather task details
+## Step 1: Load Context
 
-Ask conversationally:
-- What does this feature do?
-- What are the inputs and expected outputs?
-- Edge cases or constraints?
-- Existing code it needs to fit into?
+Read the relevant project context first. If `pdd/context/project.md` exists, use it. Pull in conventions and decisions if they affect the requested feature.
 
-## Step 4 — Write the prompt
+Load the matching project-type reference file for prompt patterns, common feature concerns, and type-specific expectations.
 
-Before writing from scratch, check `pdd/prompts/templates/` for an existing template that fits this feature type.
+If context is missing, continue but note that a later `/pdd-context` pass would improve prompt quality.
 
-Generate a prompt file using this structure:
+## Step 2: Decompose If Needed
+
+Watch for work that should be split before writing prompts:
+
+- multiple unrelated outputs
+- backend and frontend bundled together
+- implementation plus tests plus refactor all in one ask
+
+If the task is too broad, split it into smaller prompts before writing anything.
+
+## Step 3: Gather Task Details
+
+Ask for the details needed to make the prompt precise:
+
+- what the feature does
+- inputs and expected outputs
+- constraints and edge cases
+- surrounding code or modules it must fit into
+
+## Step 4: Write The Prompt
+
+Before writing from scratch, check whether an existing template in `pdd/prompts/templates/` already fits.
+
+Use a structure like:
 
 ```markdown
 # Prompt: <feature name>
@@ -45,45 +65,55 @@ Generate a prompt file using this structure:
 **Project type**: <detected type>
 
 ## Context
-<relevant parts of pdd/context/project.md, or inline context if no files exist>
+<relevant context>
 
 ## Task
-<single, clear instruction — one job only>
+<single, clear instruction>
 
 ## Input
 <what the AI is working with>
 
 ## Output format
-<what should be returned — be specific about structure>
+<what should be returned>
 
 ## Constraints
--
--
+- <constraint>
 
 ## Examples (optional but recommended)
 Input: <example>
 Output: <example>
 ```
 
-Save to `pdd/prompts/features/<area>/<feature-name>.md`. The `<area>` is a broad grouping — feature domain, app module, or tool (e.g., `auth/`, `tasks/`). Create the subfolder if it doesn't exist.
+Save prompts under `pdd/prompts/features/<area>/`, `pdd/prompts/templates/`, or `pdd/prompts/experiments/` depending on maturity and reuse.
 
-## Prompt chaining (multi-step features)
+## Prompt Chaining
 
-When a feature has sequential dependencies (e.g., schema → API → UI):
+For multi-step features with dependencies:
 
-- Number prompts: `feature-name-01-schema.md`, `-02-api.md`, `-03-ui.md`
-- Each prompt includes a `**Depends on**:` line referencing prior steps
-- Review each step's output before running the next
+- number prompts in order
+- include dependencies between steps
+- review each step before running the next
 
-**Chain failure recovery**: Fix the failing step, re-run it, then re-run downstream steps. Don't re-run upstream unless also broken.
+If one step fails, fix it and re-run downstream steps as needed instead of restarting the entire chain.
 
-## Edge cases
+## Produces
 
-- **Vague goal**: Help break it into a feature list first, then prompt the first one
-- **Prompt keeps failing**: Suggest using `/pdd-update` to diagnose
-- **Exploratory / uncertain approach**: Save to `pdd/prompts/experiments/YYYY-MM-DD-<name>.md` instead of `features/`. Signals "temporary — evaluate within a week."
-- **Reusable pattern emerging**: If you've written 2+ prompts with the same structure, extract a template to `pdd/prompts/templates/<pattern-name>.template.md` with `<placeholder>` notation for the parts that change
+- prompt files under `pdd/prompts/features/`, `templates/`, or `experiments/`
+- clear run instructions and expected review follow-up
 
-## Next step
+## Edge Cases
 
-After writing the prompt: *"Run this prompt and paste the output — I'll review it. Use `/pdd-review` when ready."* For critical prompts, also suggest creating a Level 1 eval checklist in `pdd/evals/`.
+- **Vague goal**: break it into a feature list first
+- **Prompt keeps failing**: route to `/pdd-update`
+- **Exploratory work**: save to `pdd/prompts/experiments/` with a date prefix
+- **Recurring structure**: extract a reusable template
+
+## Default Storage Guidance
+
+- stable implementation work -> `pdd/prompts/features/`
+- repeated pattern -> `pdd/prompts/templates/`
+- exploratory or uncertain work -> `pdd/prompts/experiments/`
+
+## Default Next Step
+
+Run the prompt, inspect the output, and move to `/pdd-review` before committing anything.

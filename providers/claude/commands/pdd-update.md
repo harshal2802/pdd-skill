@@ -1,51 +1,85 @@
 # Update an Existing Prompt
 
-This is the Claude adapter for the shared `Update` workflow in `core/workflows/update.md`. Keep shared prompt-improvement behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
-
-You are helping the user fix a PDD prompt that isn't producing good results. **Diagnose before rewriting.**
+This is the Claude adapter for the shared `Update` workflow in `core/workflows/update.md`. Keep shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and `$ARGUMENTS` handling.
 
 **User input**: $ARGUMENTS
 
-## Step 1 — Identify the root cause
+## Purpose
 
-Ask the user to share the prompt and its output (if not already provided). Then diagnose:
+Improve a prompt that is underperforming instead of immediately rewriting it from scratch.
+
+Default to diagnosis before replacement. Most weak prompts need a few targeted fixes, not a full rewrite.
+
+## Use When
+
+- The prompt produces wrong output.
+- The results are inconsistent, incomplete, or too broad.
+- The user can describe what went wrong.
+- The prompt worked once but is no longer reliable enough to trust.
+
+## Inputs
+
+- the existing prompt
+- observed failure mode
+- desired behavior
+
+## Step 1: Identify The Root Cause
+
+Ask for the prompt and the resulting output if they are not already available.
+
+Use this symptom table to guide the diagnosis:
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Output is too generic | Missing context | Add project/tech context |
-| Output ignores constraints | Constraints buried or vague | Move constraints higher, make explicit |
-| Output does too many things | Task too broad | Split into multiple prompts |
-| Output format is wrong | No format specified | Add explicit output format section |
-| Output drifts across runs | Prompt is ambiguous | Add concrete examples |
-| Output contradicts conventions | No conventions reference | Add or paste from `pdd/context/conventions.md` |
+| Output is too generic | Missing context | Add project or tech context |
+| Output ignores constraints | Constraints are vague or buried | Move constraints higher and make them explicit |
+| Output does too many things | Task is too broad | Split into multiple prompts |
+| Output format is wrong | Format is underspecified | Add an explicit output format section |
+| Output drifts across runs | Prompt is ambiguous | Add concrete examples or tighter language |
+| Output contradicts conventions | No conventions reference | Pull in `pdd/context/conventions.md` |
 
-Run the prompt 2-3 times if possible:
-- **Consistent errors** → the prompt is wrong
-- **Inconsistent output** → the prompt is ambiguous
-- **Correct but unusable** → the format spec is off
+If possible, run the prompt 2 to 3 times:
 
-## Step 2 — Apply targeted fixes
+- **Consistent errors** usually mean the prompt is wrong
+- **Inconsistent output** usually means the prompt is ambiguous
+- **Correct but unusable output** usually means the format or scope is wrong
 
-Don't rewrite from scratch. Make the smallest effective change:
-- Add missing context
-- Elevate buried constraints above the task section
-- Add a concrete input/output example
-- Narrow the task by splitting
+## Step 2: Apply Targeted Fixes
 
-## Step 3 — Show what changed
+Prefer the smallest effective change:
 
-Produce the improved version and explain what changed and why. Show a before/after diff of the key changes — not just a new prompt without reasoning.
+- add missing context
+- elevate buried constraints
+- add a concrete example
+- narrow the task
+- split one overloaded prompt into smaller prompts
 
-## Step 4 — Verify and version
+Only recommend a full rewrite when more than half the prompt needs to change.
 
-- Suggest running the updated prompt 2-3 times to confirm improvement
-- Commit the new version with a message noting what was fixed
-- Keep the old version commented out temporarily; delete once the new one proves better
+## Step 3: Show What Changed
 
-## When to start fresh
+Do not just hand back a replacement prompt. Explain what changed and why.
 
-If more than half the prompt needs rewriting, suggest starting from scratch with `/project:pdd-prompts` and moving the old prompt to `pdd/prompts/experiments/` with a date prefix: `YYYY-MM-DD-<descriptive-name>.md`.
+Where possible, show a before/after diff of the key sections so the user can learn from the change.
 
-## Next step
+## Produces
 
-After updating: *"Try the updated prompt and I'll review the new output. Run `/project:pdd-review` when ready."*
+- a revised prompt
+- clearer scope or constraints
+- a recommendation for how to re-run and verify it
+
+## Step 4: Verify And Version
+
+- suggest re-running the updated prompt 2 to 3 times
+- recommend reviewing the new output with `/project:pdd-review`
+- keep version history clear so the team knows what was fixed
+
+If the old prompt is effectively abandoned, move it to `pdd/prompts/experiments/` with a date prefix instead of silently losing that history.
+
+## When To Start Fresh
+
+Start from scratch only when the prompt is fundamentally the wrong shape for the job. In that case, route back to `/project:pdd-prompts` and preserve the old prompt as an experiment or historical reference.
+
+## Default Next Step
+
+Re-run the prompt, then move to `/project:pdd-review` on the resulting output.

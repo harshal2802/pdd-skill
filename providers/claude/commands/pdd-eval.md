@@ -1,30 +1,44 @@
 # Run Prompt Evaluations
 
-This is the Claude adapter for the shared `Eval` workflow in `core/workflows/eval.md`. Keep shared eval behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
-
-You are helping the user evaluate their PDD prompts by running evals and tracking results over time.
+This is the Claude adapter for the shared `Eval` workflow in `core/workflows/eval.md`. Keep shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and `$ARGUMENTS` handling.
 
 **User input**: $ARGUMENTS
 
-## Step 1 — Identify what to evaluate
+## Purpose
 
-If the user specifies a prompt, evaluate that one. Otherwise, scan for prompts without evals:
+Track prompt quality over time with explicit criteria instead of relying on memory or one successful run.
 
-```
-# Find prompts in features/ that don't have a matching eval
-# pdd/prompts/features/auth/login.md → pdd/evals/login-eval.md
-```
+An eval turns "this felt good once" into something measurable. It gives the team a repeatable signal for prompt reliability and helps catch drift early.
 
-Suggest starting with the prompt that has the most runs or is most critical.
+## Use When
 
-## Step 2 — Check for existing eval
+- A prompt matters enough to measure repeatedly.
+- The team wants a baseline or regression signal.
+- A once-good prompt has started to drift.
+- The team wants confidence before reusing or promoting a prompt.
 
-Look in `pdd/evals/` for a matching eval file (`<prompt-name>-eval.md`).
+## Inputs
 
-- **Eval exists**: Load it, run the checklist against the latest output
-- **No eval exists**: Create one using the template below
+- prompt under test
+- expected outputs or acceptance criteria
+- baseline artifacts when available
 
-### Eval template (Level 1 — Manual checklist)
+## Step 1: Identify What To Evaluate
+
+If the user names a prompt, evaluate that one.
+
+Otherwise, prefer prompts that are:
+
+- high-impact
+- used often
+- not yet covered by an eval
+- suspected of drifting
+
+## Step 2: Check For An Existing Eval
+
+Look in `pdd/evals/` for a matching eval file, usually named `<prompt-name>-eval.md`.
+
+If none exists, create a Level 1 manual checklist like:
 
 ```markdown
 # Eval: <prompt name>
@@ -36,7 +50,7 @@ Look in `pdd/evals/` for a matching eval file (`<prompt-name>-eval.md`).
 - [ ] Output compiles / runs without errors
 - [ ] Matches the specified output format
 - [ ] Handles the listed edge cases
-- [ ] Follows project conventions (from conventions.md)
+- [ ] Follows project conventions
 - [ ] No hallucinated imports, APIs, or functions
 - [ ] Integrates with existing code without conflicts
 
@@ -48,85 +62,65 @@ Look in `pdd/evals/` for a matching eval file (`<prompt-name>-eval.md`).
 | Run | Date | Result | Notes |
 |---|---|---|---|
 | 1 | <date> | <pass/fail> | <what happened> |
-| 2 | | | |
-| 3 | | | |
 ```
 
-Save to `pdd/evals/<prompt-name>-eval.md`.
+## Step 3: Run The Evaluation
 
-## Step 3 — Run the evaluation
+Use the latest prompt output or ask the user to run the prompt if no output is available.
 
-Ask the user to run the prompt (or provide output from a recent run). Then:
+For each evaluation run:
 
-1. Check each criterion in the eval checklist
-2. Mark pass/fail for each
-3. Log the run in the run log table
-4. Calculate overall result
+1. check every criterion
+2. mark pass or fail
+3. log the run
+4. summarize the overall result
 
-### Pass/fail rules
+## Pass-Rate Tracking
 
-- **All criteria pass** → PASS
-- **Any criterion fails** → FAIL (list which ones)
-- **Track pass rate**: After 3+ runs, calculate pass@1 (passes on first try) and pass@3 (passes at least once in 3 tries)
+After 3 or more runs, track useful signals such as:
 
-## Step 4 — Level up if ready
+- **pass@1**: passes on the first try
+- **pass@3**: passes at least once within three tries
+
+## Step 4: Level Up When Ready
 
 | Current level | Trigger to level up | Action |
 |---|---|---|
-| **Level 1** (checklist) | 5+ runs of the same prompt | Save a known-good output to `pdd/evals/baselines/<prompt-name>-baseline.md` → Level 2 |
-| **Level 2** (baseline diff) | Prompt is stable and used regularly | Write a validation script in `pdd/evals/scripts/` → Level 3 |
+| **Level 1** | 5+ runs of the same prompt | Save a known-good baseline |
+| **Level 2** | Stable, frequently used prompt | Add scripted validation |
 
-### Level 2 — Baseline comparison
+### Level 2
 
-When a good output is saved as a baseline, future evals diff against it:
-- What sections changed?
-- Are the changes improvements or regressions?
-- Does the new output still pass all Level 1 criteria?
+Save a known-good output under `pdd/evals/baselines/` and compare future outputs against it.
 
-### Level 3 — Automated validation
+### Level 3
 
-For mature, frequently-used prompts:
+For mature prompts, add validation scripts under `pdd/evals/scripts/`.
 
-```markdown
-# Eval script: <prompt name>
-**Script**: pdd/evals/scripts/<prompt-name>-eval.sh
-**Checks**:
-- Output is valid <language> (syntax check)
-- Required imports/sections present
-- No forbidden patterns (hardcoded values, TODO placeholders)
-- Output structure matches expected format
-```
+## Produces
 
-## Step 5 — Report
+- evaluation notes or files under `pdd/evals/`
+- pass/fail signals
+- follow-up recommendations when quality drops
 
-```markdown
-## Eval Report: <prompt name>
+## Reporting
 
-**Level**: 1 | 2 | 3
-**Run**: #<N>
-**Date**: <date>
-**Result**: PASS | FAIL
+Use a compact report that includes:
 
-### Criteria results
-- [x] <passing criterion>
-- [ ] <failing criterion> — <why it failed>
+- eval level
+- run number and date
+- pass/fail result
+- criteria results
+- pass-rate summary when enough runs exist
+- recommendation
 
-### Pass rate
-- pass@1: <X/Y> (<percentage>)
-- pass@3: <X/Y> (<percentage>)
+## Edge Cases
 
-### Recommendation
-<keep prompt as-is | update prompt via /project:pdd-update | promote eval to next level>
-```
+- **No prompt output available**: ask the user to run it first, or run it if possible
+- **No eval exists yet**: create Level 1 and perform the first run
+- **All prompts already have evals**: report coverage and suggest the least recently evaluated prompt
+- **Criteria are outdated**: update the eval to match what quality now means for that prompt
 
-## Edge cases
+## Default Next Step
 
-- **No prompt output available**: Ask the user to run the prompt first, or run it if possible
-- **Prompt has never been evaluated**: Create a Level 1 eval and run the first evaluation
-- **All prompts already have evals**: Report coverage summary and suggest running the least-recently-evaluated prompt
-- **Eval criteria feel wrong**: Update the eval — criteria should evolve as the prompt matures
-
-## Next step
-
-- If eval passes: *"Prompt is healthy. Consider leveling up the eval if you have 5+ runs."*
-- If eval fails: *"These criteria failed. Run `/project:pdd-update` to fix the prompt, then re-evaluate."*
+If the eval fails, move to `/project:pdd-update`. If it passes consistently, keep the prompt in active use.

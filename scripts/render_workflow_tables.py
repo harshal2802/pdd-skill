@@ -2,16 +2,29 @@
 import argparse
 import json
 import pathlib
+import re
 import sys
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+ADAPTER_DOCS_PATH = ROOT / "core/metadata/adapter-docs.json"
 CLAUDE_SKILL_PATH = ROOT / "core/metadata/claude-skill.json"
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
 HELP_PATH = ROOT / "core/metadata/help.json"
 PRINCIPLES_PATH = ROOT / "core/metadata/principles.json"
 ROUTING_PATH = ROOT / "core/metadata/routing.json"
 STATUS_PATH = ROOT / "core/metadata/status.json"
+WORKFLOW_RENDER_IDS = (
+    "scaffold",
+    "init",
+    "context",
+    "research",
+    "plan",
+    "prompts",
+    "update",
+    "review",
+    "eval",
+)
 TARGET_SPECS = {
     "README.md": (
         "claude-command-table",
@@ -59,7 +72,31 @@ TARGET_SPECS = {
         "codex-complex-flow",
         "codex-routing-table",
     ),
+    "providers/claude/commands/pdd-scaffold.md": (),
+    "providers/claude/commands/pdd-init.md": (),
+    "providers/claude/commands/pdd-context.md": (),
+    "providers/claude/commands/pdd-research.md": (),
+    "providers/claude/commands/pdd-plan.md": (),
+    "providers/claude/commands/pdd-prompts.md": (),
+    "providers/claude/commands/pdd-update.md": (),
+    "providers/claude/commands/pdd-review.md": (),
+    "providers/claude/commands/pdd-eval.md": (),
+    "providers/copilot/prompts/pdd-scaffold.prompt.md": (),
+    "providers/copilot/prompts/pdd-init.prompt.md": (),
+    "providers/copilot/prompts/pdd-context.prompt.md": (),
+    "providers/copilot/prompts/pdd-research.prompt.md": (),
+    "providers/copilot/prompts/pdd-plan.prompt.md": (),
+    "providers/copilot/prompts/pdd-prompts.prompt.md": (),
+    "providers/copilot/prompts/pdd-update.prompt.md": (),
+    "providers/copilot/prompts/pdd-review.prompt.md": (),
+    "providers/copilot/prompts/pdd-eval.prompt.md": (),
 }
+INLINE_CODE_RE = re.compile(r"`([^`\n]+)`")
+
+
+def load_adapter_docs():
+    with ADAPTER_DOCS_PATH.open() as fh:
+        return json.load(fh)
 
 
 def load_claude_skill():
@@ -90,6 +127,10 @@ def load_routing():
 def load_status():
     with STATUS_PATH.open() as fh:
         return json.load(fh)
+
+
+def workflow_by_id(workflows):
+    return {workflow["id"]: workflow for workflow in workflows}
 
 
 def markdown_table(rows):
@@ -375,6 +416,72 @@ def render_claude_transitions(claude_skill_meta):
     return "\n".join(lines)
 
 
+def strip_h1(text):
+    lines = text.strip().splitlines()
+    if lines and lines[0].startswith("# "):
+        lines = lines[1:]
+        if lines and not lines[0].strip():
+            lines = lines[1:]
+    return "\n".join(lines).strip()
+
+
+def transform_inline_code(text, workflows, provider_id):
+    workflow_map = workflow_by_id(workflows)
+
+    def replace(match):
+        code = match.group(1)
+        if code in workflow_map:
+            return f"`{workflow_map[code]['providers'][provider_id]}`"
+        if provider_id == "copilot" and code.startswith("references/"):
+            return f"`#file:{code}`"
+        return match.group(0)
+
+    return INLINE_CODE_RE.sub(replace, text)
+
+
+def render_shared_workflow_body(workflow_id, workflows, provider_id):
+    text = (ROOT / f"core/workflows/{workflow_id}.md").read_text()
+    body = strip_h1(text)
+    return transform_inline_code(body, workflows, provider_id)
+
+
+def render_workflow_adapter_document(workflow, adapter_meta, workflows, provider_id):
+    body = render_shared_workflow_body(workflow["id"], workflows, provider_id)
+    title = adapter_meta["title"]
+
+    if provider_id == "claude":
+        adapter_note = (
+            f"This is the Claude adapter for the shared `{workflow['label']}` workflow in "
+            f"`core/workflows/{workflow['id']}.md`. Keep shared workflow behavior aligned there; "
+            "this file exists to preserve Claude-specific command wording and `$ARGUMENTS` handling."
+        )
+        return (
+            f"# {title}\n\n"
+            f"{adapter_note}\n\n"
+            "**User input**: $ARGUMENTS\n\n"
+            f"{body}\n"
+        )
+
+    if provider_id == "copilot":
+        adapter_note = (
+            f"This is the Copilot adapter for the shared `{workflow['label']}` workflow in "
+            f"`core/workflows/{workflow['id']}.md`. Keep shared workflow behavior aligned there; "
+            "this file exists to preserve Copilot-specific frontmatter, `#file:` references, "
+            "and `/pdd-*` command wording."
+        )
+        return (
+            "---\n"
+            "agent: agent\n"
+            f'description: "{adapter_meta["copilot_description"]}"\n'
+            "---\n\n"
+            f"# {title}\n\n"
+            f"{adapter_note}\n\n"
+            f"{body}\n"
+        )
+
+    raise ValueError(f"Unsupported workflow adapter provider_id: {provider_id}")
+
+
 def replace_block(text, marker, body):
     start = f"<!-- GENERATED:{marker}:start -->"
     end = f"<!-- GENERATED:{marker}:end -->"
@@ -392,12 +499,14 @@ def target_paths():
 
 
 def render_files():
+    adapter_docs = load_adapter_docs()
     claude_skill_meta = load_claude_skill()
     workflows = load_workflows()
     help_meta = load_help()
     principles_meta = load_principles()
     routing_meta = load_routing()
     status_meta = load_status()
+    workflow_map = workflow_by_id(workflows)
     rendered_blocks = {
         ROOT / "README.md": {
             "claude-command-table": markdown_table(provider_rows(workflows, "claude")),
@@ -432,6 +541,15 @@ def render_files():
         ROOT / "providers/claude/commands/pdd-status.md": render_status_document(status_meta, "claude"),
         ROOT / "providers/copilot/prompts/pdd-status.prompt.md": render_status_document(status_meta, "copilot"),
     }
+    for workflow_id in WORKFLOW_RENDER_IDS:
+        workflow = workflow_map[workflow_id]
+        adapter_meta = adapter_docs["workflows"][workflow_id]
+        fully_rendered_targets[
+            ROOT / f"providers/claude/commands/pdd-{workflow_id}.md"
+        ] = render_workflow_adapter_document(workflow, adapter_meta, workflows, "claude")
+        fully_rendered_targets[
+            ROOT / f"providers/copilot/prompts/pdd-{workflow_id}.prompt.md"
+        ] = render_workflow_adapter_document(workflow, adapter_meta, workflows, "copilot")
 
     expected_paths = set(target_paths())
     actual_paths = set(rendered_blocks) | set(fully_rendered_targets)

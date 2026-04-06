@@ -97,6 +97,23 @@ def validate_help(workflow_ids):
     ok("help next-step placeholders only reference known workflows")
 
 
+def validate_adapter_docs(workflows):
+    adapter_docs = load_json("core/metadata/adapter-docs.json")["workflows"]
+    expected_ids = [workflow["id"] for workflow in workflows if workflow["kind"] == "workflow"]
+
+    assert_equal(
+        tuple(adapter_docs),
+        tuple(expected_ids),
+        "adapter doc metadata covers every non-utility workflow in workflow order",
+    )
+    for workflow_id, entry in adapter_docs.items():
+        assert_true(bool(entry["title"].strip()), f"adapter doc title present for {workflow_id}")
+        assert_true(
+            bool(entry["copilot_description"].strip()),
+            f"adapter doc Copilot description present for {workflow_id}",
+        )
+
+
 def validate_routing(workflow_ids):
     routing_meta = load_json("core/metadata/routing.json")
     route_ids = [route["workflow_id"] for route in routing_meta["routes"]]
@@ -208,6 +225,7 @@ def validate_generated_markers():
 
 def main():
     workflows, workflow_ids, provider_ids = validate_workflows()
+    validate_adapter_docs(workflows)
     validate_help(workflow_ids)
     validate_routing(workflow_ids)
     validate_principles(provider_ids)

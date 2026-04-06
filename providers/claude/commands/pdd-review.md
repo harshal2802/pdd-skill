@@ -1,76 +1,108 @@
 # Review AI-Generated Output
 
-This is the Claude adapter for the shared `Review` workflow in `core/workflows/review.md`. Keep shared review behavior aligned there; this file exists to preserve Claude-specific command wording and execution examples.
-
-You are a critical code reviewer for AI-generated output. Your job is to verify quality and catch issues before they get committed. This combines automated checks with subjective review in a single pass.
+This is the Claude adapter for the shared `Review` workflow in `core/workflows/review.md`. Keep shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and `$ARGUMENTS` handling.
 
 **User input**: $ARGUMENTS
 
-## Before reviewing
+## Purpose
 
-- If `pdd/context/project.md` exists, read it for project standards and tech stack
-- If `pdd/context/conventions.md` exists, read it for style rules
-- If neither exists, ask: *"What was this supposed to do?"* then note that context files would make future reviews more thorough
+Treat AI-generated output like a PR by verifying correctness, identifying regressions, and calling out missing tests or checks.
 
-If the user pastes code without explanation, ask: *"What did you prompt to get this, and what were you expecting?"*
+Review should combine objective verification with judgment. The goal is not just "does it run?" but "is this safe, understandable, and worth committing?"
 
-Detect the project type and load the matching reference file from `references/` for the type-specific review checklist.
+## Use When
 
-## Phase 1: Automated verification
+- The AI generated code, docs, config, or another artifact that may be committed.
+- The user asks if something is ready to commit.
+- The team needs a quick risk assessment before merging or shipping.
 
-Run these checks in order. Stop at the first failure — fix before continuing.
+## Inputs
 
-| Check | What it checks | Tools |
-|---|---|---|
-| **Build** | Code compiles/builds without errors | `npm run build`, `tsc`, `go build`, `cargo build`, etc. |
-| **Type check** | Passes static type checking (if applicable) | `tsc --noEmit`, `mypy`, `pyright` |
-| **Lint** | No new lint warnings | ESLint, Biome, Ruff, golangci-lint, clippy |
-| **Test** | Existing tests pass, new code has tests | `npm test`, `pytest`, `go test`, `cargo test` |
-| **Security** | No hardcoded secrets, injection vulnerabilities, or dependency issues | Pattern scan, `npm audit`, `pip audit` |
+- generated output
+- relevant files or diffs
+- expected behavior
 
-Skip checks that don't apply (e.g., no build system, no static types). If all checks pass, proceed to Phase 2. If any fail, fix first.
+## Before Reviewing
 
-## Phase 2: Subjective review
+- Read `pdd/context/project.md` if it exists for project standards and stack context.
+- Read `pdd/context/conventions.md` if it exists for style and architectural rules.
+- If no context exists, ask what the output was supposed to do and note that future reviews will be stronger with context files.
+
+If the user pastes code without explaining the goal, ask what they prompted and what they expected.
+
+Load the matching project-type reference file to apply the right checklist for that domain.
+
+## Phase 1: Verification
+
+Run the relevant checks in order. Skip checks that do not apply to the project.
+
+| Check | What it checks |
+|---|---|
+| **Build** | Code compiles or builds without errors |
+| **Type check** | Static type checks pass, if applicable |
+| **Lint** | No new lint violations |
+| **Test** | Existing tests pass and new code has adequate coverage |
+| **Security** | No hardcoded secrets, obvious injection risks, or dependency red flags |
+
+If a verification step fails, surface it clearly before spending time on lower-priority polish.
+
+## Phase 2: Subjective Review
+
+Evaluate the output from four angles:
 
 ### 1. Correctness
-Does it do what was asked? Unhandled edge cases? Obvious bugs?
 
-### 2. Project fit *(if context files exist)*
-Matches the stated tech stack? Follows conventions? Contradicts any logged decisions?
+Does it do what was requested? Are there obvious bugs, broken flows, or missing edge-case handling?
+
+### 2. Project Fit
+
+Does it match the documented stack, conventions, and prior decisions?
 
 ### 3. Maintainability
-Readable code? Anti-patterns? Would a teammate understand this without explanation?
 
-### 4. Prompt signal
-What does this output reveal about the prompt quality? Could the issues be fixed with better prompting?
+Will a teammate understand this later? Is the structure clear? Are there anti-patterns or unnecessary complexity?
 
-Then apply the type-specific checklist from the reference file.
+### 4. Prompt Signal
 
-## Issue severity
+What does this output say about the prompt quality? Should the next fix happen in code, in the prompt, or both?
 
-Tag every issue:
+Then apply the project-type review checklist from the relevant reference file.
+
+## Issue Severity
+
+Tag findings with a severity level:
 
 | Severity | Meaning | Action |
 |---|---|---|
 | **Blocking** | Broken, insecure, or violates a hard constraint | Must fix before committing |
-| **Should fix** | Wrong pattern, missing edge case, convention violation | Fix before or soon after committing |
-| **Consider** | Style nit, minor improvement, optional enhancement | Fix if time allows |
+| **Should fix** | Missing edge case, wrong pattern, or convention violation | Fix before or soon after committing |
+| **Consider** | Optional improvement or low-risk polish | Fix if time allows |
 
-## Output format
+## Produces
 
-Structure your review as:
+- review findings
+- verification results
+- fix guidance or a commit-ready recommendation
 
-1. **Verification** — pass/fail per automated check
-2. **What's good** — concrete strengths (not generic praise)
-3. **Issues** — tagged with severity, highest first
+## Output Format
+
+Structure the review like this:
+
+1. **Verification** — pass/fail per relevant check
+2. **What's good** — specific strengths
+3. **Issues** — ordered by severity, highest risk first
 4. **Suggestions** — optional improvements
-5. **Prompt feedback** — how to improve the prompt that generated this
+5. **Prompt feedback** — how to improve the prompt that generated the output
 6. **Next step** — one clear action
 
-## Edge cases
+## Edge Cases
 
-- **Mostly good**: Say so directly — recommend committing after minor fixes
-- **Fundamentally wrong**: Name the root cause, offer to rewrite the prompt with `/project:pdd-update`
-- **Very large output**: Focus on highest-risk areas (business logic, data handling, security) — flag what wasn't reviewed
-- **User disagrees with feedback**: Acknowledge their reasoning, explain once, let them decide
-- **First review of a new prompt**: Suggest creating an eval checklist in `pdd/evals/` so future reviews have a consistent benchmark
+- **Mostly good**: say so clearly and recommend commit after any small fixes
+- **Fundamentally wrong**: name the root cause and route to `/project:pdd-update`
+- **Very large output**: focus on the highest-risk areas and explicitly note what was not reviewed
+- **User disagrees**: explain once, stay concrete, and let them decide
+- **First review of a new prompt**: suggest capturing an eval checklist in `pdd/evals/`
+
+## Default Next Step
+
+If issues are found, iterate on code or prompts. If the output is solid, commit it and consider `/project:pdd-eval`.

@@ -1,37 +1,50 @@
 # Plan Before Prompting
 
-This is the Claude adapter for the shared `Plan` workflow in `core/workflows/plan.md`. Keep shared planning behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
-
-You are helping the user create an implementation plan before writing any PDD prompts. **Plan first, prompt second.**
+This is the Claude adapter for the shared `Plan` workflow in `core/workflows/plan.md`. Keep shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and `$ARGUMENTS` handling.
 
 **User input**: $ARGUMENTS
 
-## Why plan first
+## Purpose
 
-Jumping straight to prompts often leads to:
-- Missing dependencies between features
-- Wrong decomposition (prompts too large or too granular)
-- Architectural decisions made implicitly instead of explicitly
+Break a feature into phases and decide the prompt-chain strategy before generating implementation prompts.
 
-A plan catches these issues before any code is generated.
+Planning prevents oversized prompts, hidden dependencies, and accidental architecture decisions. The goal is to make implementation sequencing explicit before code generation begins.
 
-## Step 1 — Load context
+## Use When
 
-If `pdd/context/project.md` exists, read it along with `conventions.md` and `decisions.md`. Scan `pdd/prompts/features/` to see what's already been built. If no context files exist, proceed but flag this as a risk.
+- The feature spans multiple files, layers, or phases.
+- A single prompt would mix too many concerns.
+- The team needs sequencing before coding.
+- The work has enough ambiguity or risk that a prompt chain should be designed intentionally.
 
-Detect the project type and load the matching reference file from `references/` for type-specific patterns.
+## Inputs
 
-## Step 2 — Understand the feature
+- feature goal
+- current context files
+- research results if available
+
+## Step 1: Load Context
+
+Read `pdd/context/project.md`, `conventions.md`, and `decisions.md` if they exist. Scan existing prompts in `pdd/prompts/features/` to see what already exists.
+
+Load the matching project-type reference file to pick the right decomposition patterns for the stack.
+
+If context is missing, proceed carefully but flag that as a planning risk.
+
+## Step 2: Understand The Feature
 
 Ask conversationally:
+
 - What are you trying to build?
 - What does "done" look like?
 - What already exists that this connects to?
-- Any unknowns or things you're unsure about?
+- What unknowns or decisions are still open?
 
-## Step 3 — Decompose into phases
+## Step 3: Decompose Into Phases
 
 Break the feature into ordered phases. Each phase should produce one concrete, testable artifact and map to exactly one prompt.
+
+Use a structure like:
 
 ```markdown
 # Implementation Plan: <feature name>
@@ -57,29 +70,36 @@ Break the feature into ordered phases. Each phase should produce one concrete, t
 - <anything that needs investigation or a decision before proceeding>
 
 ## Decisions Needed
-- <architectural choices the user must make — log in decisions.md once resolved>
+- <architectural choices to log in decisions.md>
 ```
 
-## Step 4 — Review the plan with the user
+## Step 4: Review The Plan
 
-Present the plan and ask:
-- *"Does this decomposition feel right?"*
-- *"Any phases that should be experiments first?"*
-- *"Any decisions we should log before starting?"*
+Before writing prompts, check whether:
 
-Don't proceed to prompts until the user confirms the plan.
+- the decomposition feels right
+- any phases should start as experiments
+- any decisions should be resolved first
 
-## Step 5 — Save the plan
+Do not rush into prompts if the phase boundaries or dependencies are still unclear.
 
-Save to `pdd/prompts/features/<area>/PLAN-<feature-name>.md`. This becomes the reference for the prompt chain.
+## Produces
 
-## Edge cases
+- phased implementation outline
+- prompt-chain order
+- checkpoints for review and validation
 
-- **Trivial feature**: Skip the plan — suggest going directly to `/project:pdd-prompts`
-- **Unknowns dominate**: Suggest an experiment prompt first (`pdd/prompts/experiments/`)
-- **Plan changes mid-implementation**: Update the plan file and adjust remaining prompts
-- **Multiple features**: Create separate plans — don't combine unrelated work
+## Step 5: Save The Plan
 
-## Next step
+Save the plan to `pdd/prompts/features/<area>/PLAN-<feature-name>.md` so it becomes the reference for the prompt chain.
 
-After the plan is confirmed: *"Plan is set. Ready to write the first prompt? Run `/project:pdd-prompts` — start with Phase 1."*
+## Edge Cases
+
+- **Trivial feature**: skip planning and go directly to `/project:pdd-prompts`
+- **Unknowns dominate**: suggest an experiment prompt first
+- **Plan changes mid-implementation**: update the plan file and adjust remaining prompts
+- **Multiple unrelated features**: create separate plans instead of combining them
+
+## Default Next Step
+
+Move to `/project:pdd-prompts` and generate the first focused implementation prompt.

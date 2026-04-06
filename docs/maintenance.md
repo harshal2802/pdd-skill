@@ -16,6 +16,7 @@ Use `core/` as the starting point when changing shared PDD behavior:
 
 Current metadata files:
 
+- `adapter-docs.json`
 - `workflows.json`
 - `help.json`
 - `status.json`
@@ -44,7 +45,7 @@ Both are rendered by:
 python3 scripts/render_workflow_tables.py
 ```
 
-Today, the `help` and `status` provider wrappers are rendered as complete documents, while files like the skill entrypoints and provider READMEs still use generated blocks inside hand-authored files.
+Today, all Claude and Copilot workflow wrappers are rendered as complete documents from shared workflow sources, while files like the skill entrypoints and provider READMEs still use generated blocks inside hand-authored files.
 
 To verify that generated sections are current:
 

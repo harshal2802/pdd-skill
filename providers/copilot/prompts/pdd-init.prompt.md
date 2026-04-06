@@ -5,63 +5,105 @@ description: "Initialize PDD in an existing project — detect stack, create pdd
 
 # Initialize PDD in an Existing Project
 
-This is the Copilot adapter for the shared `Init` workflow in `core/workflows/init.md`. Keep shared initialization behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+This is the Copilot adapter for the shared `Init` workflow in `core/workflows/init.md`. Keep shared workflow behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` references, and `/pdd-*` command wording.
 
-You are adding Prompt Driven Development structure to an existing project that already has code and a git repository.
+## Purpose
 
-## Steps
+Add PDD structure to an existing repository without pretending the project is starting fresh.
 
-1. **Verify this is an existing project.** Check for a git repo and existing source files. If the directory is empty or has no git history, suggest: *"This looks like a new project — use `/pdd-scaffold` instead."*
+Init should preserve reality. It adds the PDD layer to an existing codebase, detects what already exists, and hands off into `/pdd-context` with a truthful starting point.
 
-2. **Guard against overwrite.** If `pdd/` already exists, warn: *"This project already has a `pdd/` directory. Want me to continue and fill in anything missing, or stop?"* Do not overwrite existing files without confirmation.
+## Use When
 
-3. **Auto-detect the project type** by scanning for:
+- The codebase already exists.
+- The user wants to introduce PDD incrementally.
+- The repo already has source layout, tooling, and conventions worth detecting instead of recreating.
 
-| Files / directories | Inferred type |
-|---|---|
-| `package.json` with React/Vue/Angular/Svelte | Frontend |
-| `package.json` with Express/Fastify/Hono, or `requirements.txt` with Flask/FastAPI/Django, or `go.mod`, `Cargo.toml` with server frameworks | Backend |
-| `Podfile`, `build.gradle` with Android, `pubspec.yaml`, `app.json` (Expo) | Mobile |
-| `requirements.txt` with pandas/torch/scikit-learn, `setup.py` with ML deps, Jupyter notebooks | Data / ML |
-| `Dockerfile`, `terraform/`, `k8s/`, `.github/workflows/`, `Pulumi.yaml` | DevOps |
-| `next.config.*`, `nuxt.config.*`, `svelte.config.*`, or frontend + backend signals together | Full-stack |
-| `exports` map in `package.json`, `[lib]` in `Cargo.toml`, `pyproject.toml` with build system, `prepublishOnly` script | Library / Package |
-| CLI entry point (`bin` in `package.json`), `clap`/`cobra`/`yargs`/`argparse` deps, subcommand patterns | CLI / Developer Tools |
-| Arduino/PlatformIO configs, `CMakeLists.txt` with MCU targets, Zephyr/FreeRTOS deps, `.ino` files | Embedded / IoT |
-| Unity `ProjectSettings/`, Unreal `.uproject`, Godot `project.godot`, Bevy in `Cargo.toml` deps | Game Development |
-| `hardhat.config.*`, `foundry.toml`, Solidity `.sol` files, Anchor `programs/`, Move `.move` files | Blockchain / Smart Contracts |
-| Security tool configs, nuclei templates, Burp extensions, detection rules, YARA/Sigma files | Security / Pentesting Tools |
-| OpenAPI/Swagger specs, SDK generation configs (Stainless, Fern), API versioning patterns | API Platform / SDK |
-| `tauri.conf.json`, Electron `main.js`/`preload.js`, Qt `.pro`/`CMakeLists.txt`, `.NET MAUI` configs | Desktop / Native GUI |
-| Parser generators (tree-sitter, ANTLR), AST definitions, LSP server configs, LLVM/Cranelift deps | Compiler / Language Tooling |
-| ROS `package.xml`, `CMakeLists.txt` with `ament_cmake`/`catkin`, URDF/XACRO files, launch files | Robotics / ROS |
+## Inputs
 
-If multiple types match, mention all and ask the user to confirm. **Full-stack merge priority**: `fullstack.md` conventions take precedence over `frontend.md`/`backend.md` where they overlap. **Library is composable**: a project can be both a library and a domain type — `library.md` takes precedence for API surface and versioning, domain flavor for implementation patterns.
+- Existing repository layout
+- detectable stack and conventions
+- any known constraints the AI should follow
 
-4. **Auto-detect the tech stack.** Read dependency files (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile`, `pubspec.yaml`, etc.) and identify language(s), framework(s), database, and deployment target.
+## Step 1: Confirm This Is An Existing Project
 
-5. **Identify the existing source directory.** Look for `src/`, `app/`, `lib/`, `cmd/`, `pkg/`, or code files at the project root.
+Check for signs of an established codebase:
 
-6. **Detect existing conventions.** Scan for linter/formatter configs (`.eslintrc*`, `.prettierrc*`, `biome.json`, `.editorconfig`, `ruff.toml`, `.golangci.yml`, `rustfmt.toml`, `pyproject.toml`) and note key settings.
+- git repository
+- source files
+- dependency manifests
+- existing build or lint configuration
 
-7. **Create the `pdd/` structure:**
+If the directory looks empty or brand new, route to `/pdd-scaffold` instead.
 
-```bash
-mkdir -p pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}}
-touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md
+## Step 2: Guard Against Overwrite
+
+If `pdd/` already exists, do not overwrite it silently. Confirm whether the user wants to fill in missing pieces or stop.
+
+## Step 3: Detect The Project Shape
+
+Infer:
+
+- project type
+- tech stack
+- likely source directories
+- existing conventions from linting and formatting config
+
+If multiple project types match, surface that and ask the user to confirm the primary type instead of guessing.
+
+## Step 4: Create Only The PDD Layer
+
+Create just the `pdd/` structure:
+
+```text
+pdd/
+  prompts/
+    features/
+    templates/
+    experiments/
+  context/
+    project.md
+    conventions.md
+    decisions.md
+  evals/
+    baselines/
+    scripts/
 ```
 
-Only create the `pdd/` tree. Do not create a source directory, README, or run `git init`.
+Do not create a new source directory, do not create a new project root, and do not initialize git.
 
-8. **Present a summary** of what was detected and ask the user to confirm accuracy.
+## Step 5: Present A Detection Summary
 
-9. **Suggest next step:** *"The `pdd/` structure is ready. Use `/pdd-context` to fill in your context files — I'll use what I detected as a starting point."*
+Summarize:
 
-## Important
+- inferred project type
+- detected languages and frameworks
+- likely source directories
+- notable conventions from tool configs
+- what was created under `pdd/`
 
-- Never create a new project directory — work in the current directory
-- Never run `git init` — the project already has a repo
-- Never create or modify source directories — only create `pdd/`
-- Do not overwrite any existing `pdd/` files without explicit confirmation
-- If detection is uncertain, say so and ask — don't guess silently
-- Adapt commands for the user's platform if not bash
+Ask the user to confirm what is correct and what needs adjustment before moving on.
+
+## Produces
+
+- PDD folders added to the repo
+- an initial understanding of the project shape
+- a handoff into context refinement
+
+## Rules
+
+- never create a new project directory
+- never run `git init`
+- never modify source directories during init
+- never overwrite existing `pdd/` files without explicit confirmation
+- if detection is uncertain, say so
+
+## Edge Cases
+
+- **Multiple project types match**: surface all likely matches and ask for confirmation
+- **Monorepo**: initialize the root thoughtfully and note likely sub-project boundaries
+- **Existing partial PDD setup**: fill in gaps instead of pretending the project is uninitialized
+
+## Default Next Step
+
+Move to `/pdd-context` and write what is true today, not what the team hopes to build later.

@@ -5,45 +5,90 @@ description: "Scaffold a new PDD project with folders, context files, and git in
 
 # Scaffold a PDD Project
 
-This is the Copilot adapter for the shared `Scaffold` workflow in `core/workflows/scaffold.md`. Keep shared scaffolding behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+This is the Copilot adapter for the shared `Scaffold` workflow in `core/workflows/scaffold.md`. Keep shared workflow behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` references, and `/pdd-*` command wording.
 
-You are setting up a new Prompt Driven Development project structure.
+## Purpose
 
-## Steps
+Set up a brand new PDD project structure for a project that does not have an established repo layout yet.
 
-1. Ask the user for a **project name** if not provided: *"What should we call this project?"*
+Scaffold is for true greenfield work. It creates the PDD structure, establishes the default source layout, and prepares the repo for the first `/pdd-context` pass.
 
-2. Detect or ask the **project type** (frontend, backend, mobile, data/ML, DevOps, full-stack).
+## Use When
 
-3. Ask the user what they want to call their **source directory** (default: `src`): *"What should the source/output directory be called? (default: `src`)"*
+- The user is starting from scratch.
+- They want folders, starter context stubs, and a clean workflow entrypoint.
+- There is no established repository structure to preserve.
 
-4. Create the following structure:
+## Inputs
 
-```bash
-mkdir -p {{project-name}}/{pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}},src}
-cd {{project-name}}
-git init
-touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md README.md
+- Project name if one is available.
+- High-level project type or stack, if already known.
+
+## Step 1: Gather The Setup Inputs
+
+Confirm:
+
+- project name
+- source directory name, defaulting to `src/`
+- high-level project type if already known
+
+If the user already has a populated project directory or repository, route them to `/pdd-init` instead.
+
+## Step 2: Create The Base Structure
+
+Create a layout like:
+
+```text
+<project-name>/
+  pdd/
+    prompts/
+      features/
+      templates/
+      experiments/
+    context/
+      project.md
+      conventions.md
+      decisions.md
+    evals/
+      baselines/
+      scripts/
+  <source-dir>/
+  README.md
 ```
 
-5. Explain the folder structure:
+Initialize git only if the directory is not already a repository.
 
-| Folder | Purpose |
-|---|---|
-| `pdd/prompts/features/<area>/` | Prompt files grouped by feature area, app, or tool (e.g., `features/auth/`, `features/tasks/`) |
-| `pdd/prompts/templates/` | Reusable prompt patterns (`.template.md` files with `<placeholder>` notation) |
-| `pdd/prompts/experiments/` | Time-boxed exploratory prompts — date-prefixed (`YYYY-MM-DD-name.md`), pruned weekly |
-| `pdd/context/` | Permanent project briefing files |
-| `src/` | Reviewed, committed AI-generated artifacts |
-| `pdd/evals/` | Prompt quality checks and output tests |
-| `pdd/evals/baselines/` | Known-good outputs for diff comparison (Level 2 evals) |
-| `pdd/evals/scripts/` | Automated validation scripts (Level 3 evals) |
+Adapt shell commands to the user's platform when needed.
 
-6. After creating the structure, say:
-*"Structure is ready. The most important next step is `pdd/context/project.md` — want me to help write it? Use `/pdd-context` to get started."*
+## Step 3: Explain The Structure
 
-## Important
+Make it clear what each major folder is for:
 
-- Adapt commands for the user's platform if not bash (e.g., PowerShell on Windows)
-- If the user already has a project directory, scaffold inside it without overwriting existing files
-- Initialize git only if not already a git repo
+- `pdd/prompts/features/` for stable feature prompts
+- `pdd/prompts/templates/` for reusable patterns
+- `pdd/prompts/experiments/` for time-boxed exploratory prompts
+- `pdd/context/` for durable project context
+- source directory for reviewed output and hand-written code
+- `pdd/evals/` for prompt-quality checks
+
+## Step 4: Guardrails
+
+- do not overwrite existing files silently
+- if `pdd/context/project.md` already exists, stop and confirm before replacing anything
+- if the user already has a repo or meaningful source structure, prefer `/pdd-init`
+
+## Produces
+
+- PDD folder structure under `pdd/`
+- starter context files
+- a natural handoff to the context workflow
+
+## Edge Cases
+
+- **User already has a repo**: route to `/pdd-init`
+- **User wants a non-`src` source dir**: honor it consistently
+- **User is unsure about project type**: scaffold first and refine during `/pdd-context`
+
+## Default Next Step
+
+Move to `/pdd-context` and fill in `pdd/context/project.md`, `conventions.md`, and `decisions.md`.

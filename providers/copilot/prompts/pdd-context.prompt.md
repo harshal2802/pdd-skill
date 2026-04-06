@@ -5,13 +5,33 @@ description: "Write or update PDD context files (project.md, conventions.md, dec
 
 # Write PDD Context Files
 
-This is the Copilot adapter for the shared `Context` workflow in `core/workflows/context.md`. Keep the shared workflow behavior aligned there; this file exists to preserve Copilot-specific `#file:` references and `/pdd-*` command wording.
+This is the Copilot adapter for the shared `Context` workflow in `core/workflows/context.md`. Keep shared workflow behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` references, and `/pdd-*` command wording.
 
-You are helping the user create or update their PDD context layer. **Write what is true, not what you hope will be true.**
+## Purpose
 
-## Detect project type first
+Write or update the persistent project context layer so future prompts are grounded in real project constraints.
 
-Check `pdd/context/project.md` (if it exists) or infer from the user's language. Use `#file:` to load the matching reference file for type-specific questions and templates:
+**Write what is true, not what you hope will be true.** Stale or aspirational context makes every later prompt worse.
+
+## Use When
+
+- Context files do not exist yet.
+- The stack, constraints, or architectural decisions have changed.
+- The user wants better prompt quality and consistency.
+- You need to refresh context after research, planning, or a major implementation decision.
+
+## Inputs
+
+- What the project is
+- who it is for
+- the tech stack
+- quality expectations
+- hard constraints and anti-patterns
+- current implementation state
+
+## Detect Project Type First
+
+Load the matching project-type reference file from `#file:references/` to get type-specific questions, conventions, and templates. Provider adapters may translate these paths into provider-specific syntax, but the underlying reference files should stay aligned.
 
 | Type | Signals | Reference |
 |---|---|---|
@@ -32,15 +52,21 @@ Check `pdd/context/project.md` (if it exists) or infer from the user's language.
 | Compiler / Language Tooling | Compiler, interpreter, transpiler, linter, formatter, LSP server, parser, AST | `#file:references/compiler-lang.md` |
 | Robotics / ROS | ROS, ROS2, robot, drone, autonomous vehicle, URDF, Gazebo, MoveIt, Nav2 | `#file:references/robotics.md` |
 
-**Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap. Fall through to the frontend or backend reference only for concerns fullstack.md doesn't address.
+**Full-stack merge priority**: When `fullstack.md`, `frontend.md`, and `backend.md` are loaded together, `fullstack.md` conventions take precedence where they overlap. Fall through to the frontend or backend reference only for concerns `fullstack.md` does not address.
 
-**Library is composable**: A project can be both a library and a domain type (e.g., a React component library = `library.md` + `frontend.md`). When combined, `library.md` takes precedence for API surface, versioning, and distribution; the domain flavor takes precedence for implementation patterns.
+**Library is composable**: A project can be both a library and a domain type. When combined, `library.md` takes precedence for API surface, versioning, and distribution; the domain flavor takes precedence for implementation patterns.
 
-If the project spans multiple types, load all relevant reference files. When conventions conflict, ask the user which to follow and capture the decision in `pdd/context/decisions.md`.
+If the project spans multiple types, load all relevant references. When conventions conflict, surface the conflict and record the decision in `pdd/context/decisions.md`.
 
-## If creating new context files
+## Produces
 
-Ask these questions conversationally (not all at once):
+- `pdd/context/project.md`
+- `pdd/context/conventions.md`
+- `pdd/context/decisions.md`
+
+## If Creating New Context Files
+
+Ask these questions conversationally, not as a single long form:
 
 1. What are you building, and who is it for?
 2. What's the tech stack?
@@ -48,9 +74,11 @@ Ask these questions conversationally (not all at once):
 4. What should the AI never do or suggest?
 5. What's already been built?
 
-Then ask type-specific questions from the reference file.
+Then ask any type-specific questions from the matching reference file.
 
-Generate `pdd/context/project.md` using this template:
+### `pdd/context/project.md`
+
+Use this as the shared base template:
 
 ```markdown
 # Project: <name>
@@ -71,24 +99,23 @@ Generate `pdd/context/project.md` using this template:
 <quality bar, style expectations, standards>
 
 ## Constraints (what the AI should never do or suggest)
--
--
+- <constraint>
 
 ## Current state
 <what's already built, or "Starting from scratch">
 ```
 
-Extend with type-specific sections from the reference file.
+Extend it with type-specific sections from the relevant reference file.
 
-## conventions.md
+### `pdd/context/conventions.md`
 
-Ask: *"Do you have code style preferences or patterns the AI should always follow?"*
+Ask whether the user has code style preferences or patterns the AI should always follow.
 
-Draft from their answer. Even 10 lines covering naming, file structure, and error handling is valuable. This is also the right place for persistent AI instructions — persona definitions, global constraints, or "always/never" rules that apply across all prompts. The user will grow it over time.
+Capture naming, file structure, error handling, testing expectations, and persistent AI instructions. Even a short draft is useful; the file can grow over time.
 
-## decisions.md
+### `pdd/context/decisions.md`
 
-For each architectural decision, use this format:
+Record important architectural decisions using a durable format:
 
 ```markdown
 ## Decision: <short title>
@@ -98,21 +125,21 @@ For each architectural decision, use this format:
 **Don't suggest**: <alternatives to avoid>
 ```
 
-## If updating existing context files
+## If Updating Existing Context Files
 
-1. Read the existing files first
-2. Ask what has changed (stack, decisions, constraints)
-3. Update only the stale sections — surgical updates, not rewrites
-4. Add `**Last updated**: <date>` to modified files
-5. If you can see the codebase, diff what context claims vs. what actually exists
+1. Read the existing files first.
+2. Ask what changed: stack, decisions, constraints, or current state.
+3. Update only stale sections instead of rewriting everything.
+4. Add `**Last updated**: <date>` to modified files.
+5. If the codebase is available, compare what the context claims with what actually exists.
 
-## Edge cases
+## Edge Cases
 
-- **Monorepo**: Root `pdd/context/project.md` for the system + `pdd/context/` inside each sub-project
-- **Team project**: Prioritize `conventions.md` — pull from existing linter config or style guide
-- **Context too long**: Split at ~300 lines into `project.md` (overview) + `architecture.md` (depth)
-- **Partial info**: Draft with placeholders — partial context is better than none
+- **Monorepo**: keep a root `pdd/context/project.md` for the system, plus sub-project context where needed.
+- **Team project**: prioritize `conventions.md` and pull from existing linters or style guides when possible.
+- **Context too long**: split deeper material into `architecture.md` or another supporting doc once the overview becomes hard to scan.
+- **Partial info**: draft with placeholders rather than leaving the project without context.
 
-## Next step
+## Default Next Step
 
-After writing context, suggest: *"Context is set. Ready to write your first feature prompt? Use `/pdd-prompts`."*
+For simple work, move to `/pdd-prompts`. For higher-risk or ambiguous work, move to `/pdd-research` or `/pdd-plan`. Provider adapters should suggest the provider-specific command or workflow name that matches that transition.
