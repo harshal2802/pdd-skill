@@ -1,5 +1,7 @@
 # Run Prompt Evaluations
 
+This is the Claude adapter for the shared `Eval` workflow in `core/workflows/eval.md`. Keep shared eval behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are helping the user evaluate their PDD prompts by running evals and tracking results over time.
 
 **User input**: $ARGUMENTS

@@ -5,6 +5,8 @@ description: "Run prompt evaluations, track pass/fail results, and level up eval
 
 # Run Prompt Evaluations
 
+This is the Copilot adapter for the shared `Eval` workflow in `core/workflows/eval.md`. Keep shared eval behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+
 You are helping the user evaluate their PDD prompts by running evals and tracking results over time.
 
 ## Step 1 — Identify what to evaluate
