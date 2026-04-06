@@ -2,7 +2,15 @@
 
 ## What this repo is
 
-A Claude Code skill (and Copilot adaptation) for Prompt Driven Development. The skill definition is in `skills/pdd/SKILL.md`. Plugin manifest is at `.claude-plugin/plugin.json`. Commands live in `commands/`, Copilot prompt files in `copilot/prompts/`, and project type reference files in `references/`.
+A multi-provider PDD repo with a shared `core/` layer and provider adapters under `providers/`. The compatibility paths `skills/`, `commands/`, `copilot/`, `references/`, and `examples/` still exist, but the canonical homes are:
+
+- `core/workflows/`
+- `core/references/`
+- `core/examples/`
+- `core/metadata/`
+- `providers/claude/`
+- `providers/copilot/`
+- `providers/codex/`
 
 ## Pre-PR checklist
 
@@ -10,46 +18,36 @@ Run these checks before opening a PR. The goal is to catch cross-file consistenc
 
 ### Workflow parity
 
-- [ ] Every workflow in skills/pdd/SKILL.md has a matching file in `commands/`
-- [ ] Every file in `commands/` has a matching file in `copilot/prompts/`
-- [ ] Workflow count in skills/pdd/SKILL.md matches README.md, copilot/README.md, and actual file count
-- [ ] Workflow numbers in skills/pdd/SKILL.md cross-references are correct
+- [ ] Every workflow in `core/metadata/workflows.json` has a matching file in `core/workflows/`
+- [ ] Every workflow id maps to a Claude command and Copilot prompt
+- [ ] Codex plugin manifest and `skills/pdd/SKILL.md` both exist
+- [ ] Compatibility links still point at the intended canonical directories
 
 ### File references resolve
 
-- [ ] Every `references/*.md` path in skills/pdd/SKILL.md and commands exists in the repo
-- [ ] Every `#file:references/*.md` in Copilot prompts has a copy instruction in `copilot/README.md` setup
-- [ ] Every `/project:pdd-*` in commands points to an existing command file
-- [ ] Every `/pdd-*` in Copilot prompts points to an existing prompt file
+- [ ] Every file in `core/references/` exists and is reachable from compatibility paths
+- [ ] Copilot setup still covers `references/`
+- [ ] Claude command references resolve
+- [ ] Copilot prompt references resolve
 
 ### README consistency
 
-- [ ] Every command file appears in the README command table
-- [ ] Every Copilot prompt file appears in the Copilot README command table
-- [ ] `copilot/README.md` setup instructions cover all files that Copilot prompts depend on
+- [ ] Root `README.md` mentions Claude, Copilot, and Codex
+- [ ] Root `README.md` describes the `core/` + `providers/` split
+- [ ] `copilot/README.md` setup instructions still match the compatibility paths
 
 ### Quick verify
 
 ```bash
-# Commands ↔ Copilot prompts match
-diff <(ls commands/ | sed 's/.md//' | sort) <(ls copilot/prompts/ | sed 's/.prompt.md//' | sort)
-
-# All referenced reference files exist
-for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
-  [ -f "references/$f.md" ] && echo "OK: $f" || echo "MISSING: $f"
-done
-
-# Copilot setup covers references
-grep -q 'cp.*references/' copilot/README.md && echo "OK: references/ copy instruction" || echo "MISSING: references/ copy"
-for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
-  grep -q "$f.md" copilot/README.md && echo "OK: $f.md listed" || echo "MISSING: $f.md"
-done
+bash tests/consistency.sh
+bash tests/test-hooks.sh
 ```
 
 ## Conventions
 
-- When adding a new workflow: update skills/pdd/SKILL.md, create a command file, create a Copilot prompt file, update both READMEs, update copilot-instructions.md routing table
-- When a command references `references/`: the Copilot version must have a `#file:` equivalent and the setup instructions must include copying that file
+- When adding a new workflow: update `core/metadata/workflows.json`, add the canonical file in `core/workflows/`, then add or update the provider wrappers that expose it
+- Keep provider-specific files thin whenever possible; shared behavior belongs in `core/`
+- When a command or prompt references `references/`: the Copilot version must have a `#file:` equivalent and the setup instructions must include copying that file
 - Copilot prompt frontmatter uses `agent: agent` (not `mode: "agent"`)
 - Commit messages: imperative mood, describe the why not just the what
 - Never add Co-Authored-By trailer to commits

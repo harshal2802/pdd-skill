@@ -2,6 +2,8 @@
 
 The same Prompt Driven Development workflows, adapted for GitHub Copilot Chat in VS Code.
 
+Canonical repo ownership now lives under `core/` and `providers/`, but the `copilot/` and `references/` paths shown below remain available as compatibility links for copy-based setup.
+
 ## Setup
 
 From the repo root, copy these files into your project:
