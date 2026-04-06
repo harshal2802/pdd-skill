@@ -5,6 +5,8 @@ description: "Initialize PDD in an existing project — detect stack, create pdd
 
 # Initialize PDD in an Existing Project
 
+This is the Copilot adapter for the shared `Init` workflow in `core/workflows/init.md`. Keep shared initialization behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+
 You are adding Prompt Driven Development structure to an existing project that already has code and a git repository.
 
 ## Steps

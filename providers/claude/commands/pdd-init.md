@@ -1,5 +1,7 @@
 # Initialize PDD in an Existing Project
 
+This is the Claude adapter for the shared `Init` workflow in `core/workflows/init.md`. Keep shared initialization behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are adding Prompt Driven Development structure to an existing project that already has code and a git repository.
 
 **User input**: $ARGUMENTS
