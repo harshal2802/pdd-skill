@@ -31,12 +31,14 @@ Before helping with PDD workflows, detect the project type to tailor your guidan
 
 ## Core Principles
 
+<!-- GENERATED:copilot-principles:start -->
 - **One prompt, one job.** Split multi-concern tasks before prompting.
 - **Commit prompts alongside outputs.** The prompt is part of the codebase.
 - **Update context after every significant decision.** Stale context degrades future prompts.
+- **Timebox experiments.** Exploratory prompts go in `pdd/prompts/experiments/` with a date prefix (`YYYY-MM-DD-`). After one week: promote to `pdd/prompts/features/` or delete.
 - **Never commit unreviewed output.** Treat AI output like a PR.
 - **Context must reflect reality.** Aspirational project.md actively misleads.
-- **Timebox experiments.** Exploratory prompts go in `pdd/prompts/experiments/` with a date prefix (`YYYY-MM-DD-`). After one week: promote to `pdd/prompts/features/` or delete.
+<!-- GENERATED:copilot-principles:end -->
 
 ## Workflow Routing
 

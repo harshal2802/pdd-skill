@@ -22,7 +22,9 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 8. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
 9. **Eval** — run prompt evaluations and track quality over time
 
-**Quick path**: For simple features, you only need **Context → Prompts → Review**. Research, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
+<!-- GENERATED:claude-quick-path:start -->
+**Quick path**: For simple features, you only need **Context -> Prompts -> Review**. Research, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
+<!-- GENERATED:claude-quick-path:end -->
 
 ---
 
@@ -74,12 +76,14 @@ After completing any workflow, suggest the natural next step:
 
 ## General Principles
 
+<!-- GENERATED:claude-principles:start -->
 - **One prompt, one job.** Split if multiple concerns.
 - **Commit prompts alongside outputs.** The prompt is part of the codebase.
 - **Update context after every significant decision.** Stale context degrades future prompts.
 - **Timebox experiments.** Name with a date prefix (`YYYY-MM-DD-`). After one week: promote to `pdd/prompts/features/` if it worked, delete if it didn't.
 - **Never commit unreviewed output.** Treat it like a PR.
 - **Context must reflect reality.** Aspirational `project.md` actively misleads.
+<!-- GENERATED:claude-principles:end -->
 
 ---
 

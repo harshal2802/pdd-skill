@@ -8,6 +8,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
 HELP_PATH = ROOT / "core/metadata/help.json"
+PRINCIPLES_PATH = ROOT / "core/metadata/principles.json"
 ROUTING_PATH = ROOT / "core/metadata/routing.json"
 STATUS_PATH = ROOT / "core/metadata/status.json"
 
@@ -19,6 +20,11 @@ def load_workflows():
 
 def load_help():
     with HELP_PATH.open() as fh:
+        return json.load(fh)
+
+
+def load_principles():
+    with PRINCIPLES_PATH.open() as fh:
         return json.load(fh)
 
 
@@ -176,6 +182,10 @@ def render_routing_table(workflows, routing_meta, provider_id):
     return markdown_table_with_headers(headers[provider_id], rows)
 
 
+def render_principles(principles_meta, provider_id):
+    return "\n".join(f"- {entry[provider_id]}" for entry in principles_meta["principles"])
+
+
 def replace_block(text, marker, body):
     start = f"<!-- GENERATED:{marker}:start -->"
     end = f"<!-- GENERATED:{marker}:end -->"
@@ -191,6 +201,7 @@ def replace_block(text, marker, body):
 def render_files():
     workflows = load_workflows()
     help_meta = load_help()
+    principles_meta = load_principles()
     routing_meta = load_routing()
     status_meta = load_status()
     targets = {
@@ -224,12 +235,18 @@ def render_files():
             "copilot-status-output-format": render_status_output(status_meta),
         },
         ROOT / "providers/claude/skills/pdd/SKILL.md": {
+            "claude-quick-path": f"**Quick path**: {principles_meta['claude_quick_path']}",
+            "claude-principles": render_principles(principles_meta, "claude"),
             "claude-routing-table": render_routing_table(workflows, routing_meta, "claude"),
         },
         ROOT / "providers/copilot/copilot-instructions.md": {
+            "copilot-principles": render_principles(principles_meta, "copilot"),
             "copilot-routing-table": render_routing_table(workflows, routing_meta, "copilot"),
         },
         ROOT / "providers/codex/plugin/skills/pdd/SKILL.md": {
+            "codex-principles": render_principles(principles_meta, "codex"),
+            "codex-simple-flow": principles_meta["codex_default_flow"]["simple"],
+            "codex-complex-flow": principles_meta["codex_default_flow"]["complex"],
             "codex-routing-table": render_routing_table(workflows, routing_meta, "codex"),
         },
     }

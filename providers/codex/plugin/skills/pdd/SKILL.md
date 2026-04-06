@@ -68,22 +68,28 @@ When a project spans multiple types, load the relevant references together and s
 
 ## General Principles
 
+<!-- GENERATED:codex-principles:start -->
 - One prompt, one job.
 - Commit prompts alongside outputs.
 - Update context after meaningful decisions.
+- Timebox exploratory prompts.
 - Never commit unreviewed AI output.
 - Keep context truthful and current.
-- Timebox exploratory prompts.
+<!-- GENERATED:codex-principles:end -->
 
 ## Default Flow
 
 For simple work:
 
+<!-- GENERATED:codex-simple-flow:start -->
 `context -> prompts -> review`
+<!-- GENERATED:codex-simple-flow:end -->
 
 For more complex work:
 
+<!-- GENERATED:codex-complex-flow:start -->
 `context -> research -> plan -> prompts -> review -> eval`
+<!-- GENERATED:codex-complex-flow:end -->
 
 ## Output Expectations
 

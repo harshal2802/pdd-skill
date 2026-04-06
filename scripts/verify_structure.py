@@ -43,6 +43,7 @@ def main() -> None:
     assert_file(ROOT / "core/README.md", "core/README.md exists")
     assert_file(ROOT / "docs/architecture.md", "docs/architecture.md exists")
     assert_file(ROOT / "core/metadata/help.json", "core/metadata/help.json exists")
+    assert_file(ROOT / "core/metadata/principles.json", "core/metadata/principles.json exists")
     assert_file(ROOT / "core/metadata/routing.json", "core/metadata/routing.json exists")
     assert_file(ROOT / "core/metadata/status.json", "core/metadata/status.json exists")
 
