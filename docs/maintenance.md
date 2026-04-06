@@ -56,6 +56,8 @@ bash tests/test-hooks.sh
 4. Run `bash tests/test-hooks.sh`.
 5. Commit the metadata change and the regenerated provider wrappers together.
 
+For PR and release prep, see [`release-readiness.md`](release-readiness.md).
+
 ## Compatibility Paths
 
 The top-level paths below are compatibility links for existing installs and docs:
