@@ -67,7 +67,7 @@ For PR and release prep, see [`release-readiness.md`](release-readiness.md).
 
 ## Compatibility Paths
 
-The top-level paths below are compatibility links for existing installs and docs:
+The top-level paths below are deprecated compatibility links for existing installs and docs:
 
 - `commands/`
 - `skills/`
@@ -78,3 +78,5 @@ The top-level paths below are compatibility links for existing installs and docs
 - `examples/`
 
 Their canonical homes live under `providers/` or `core/`.
+
+Do not add new documentation, tests, or automation that targets these shim paths unless you are specifically verifying backward compatibility.

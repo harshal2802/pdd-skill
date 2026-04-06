@@ -2,6 +2,8 @@
 
 This provider adapter packages PDD as a Codex plugin with a `pdd` skill.
 
+The canonical Codex provider lives under `providers/codex/`. The root `plugins/pdd-skill` path is a deprecated compatibility shim that remains in place so existing local marketplace setups do not break.
+
 ## Repo Packaging
 
 This repo already includes the pieces needed for a repo-local Codex plugin setup:
@@ -10,7 +12,7 @@ This repo already includes the pieces needed for a repo-local Codex plugin setup
 - compatibility plugin path at `plugins/pdd-skill`
 - repo-local marketplace metadata at `.agents/plugins/marketplace.json`
 
-That means the repo can be treated as a local plugin source without inventing a second Codex-only project layout.
+That means the repo can be treated as a local plugin source without inventing a second Codex-only project layout, while still steering new docs and tooling toward the canonical `providers/codex/` layout.
 
 ## Layout
 

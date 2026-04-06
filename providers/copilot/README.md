@@ -2,7 +2,7 @@
 
 The same Prompt Driven Development workflows, adapted for GitHub Copilot Chat in VS Code.
 
-Canonical repo ownership now lives under `core/` and `providers/`, but the `copilot/` and `references/` paths shown below remain available as compatibility links for copy-based setup.
+Canonical repo ownership now lives under `core/` and `providers/`, but the `copilot/` and `references/` paths shown below remain available only as deprecated compatibility links for copy-based setup. Prefer `providers/copilot/` and `core/references/` in any new repo docs or automation.
 
 The prompt files themselves are still normal Markdown prompt files, but parts of the surrounding repo docs are now generated from shared metadata so provider terminology stays aligned.
 

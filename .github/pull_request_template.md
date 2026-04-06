@@ -17,6 +17,7 @@
 - [ ] `python3 scripts/render_workflow_tables.py --check`
 - [ ] `bash tests/consistency.sh`
 - [ ] `bash tests/test-hooks.sh`
+- [ ] `python3 tests/test_provider_packaging.py`
 
 ## Release Notes
 
@@ -30,3 +31,4 @@
 - [ ] Generated sections were re-rendered
 - [ ] Docs were updated if install paths or maintainer workflow changed
 - [ ] New provider-facing duplication was avoided or justified
+- [ ] Compatibility links remain documented as deprecated shims, not canonical paths

@@ -75,7 +75,7 @@ pdd-skill/
 └── .agents/plugins/        # Codex repo-local marketplace metadata
 ```
 
-Existing top-level paths such as `commands/`, `skills/`, `copilot/`, `references/`, and `examples/` remain available as compatibility links. See [`docs/architecture.md`](docs/architecture.md) for the migration rationale.
+Existing top-level paths such as `commands/`, `skills/`, `copilot/`, `references/`, and `examples/` remain available as deprecated compatibility links. Prefer `core/` and `providers/` in any new docs, tooling, or integrations. See [`docs/architecture.md`](docs/architecture.md) for the migration rationale and deprecation policy.
 
 ## Maintenance
 
@@ -89,7 +89,7 @@ bash tests/consistency.sh
 bash tests/test-hooks.sh
 ```
 
-See [`docs/maintenance.md`](docs/maintenance.md) for the full maintenance workflow.
+See [`docs/maintenance.md`](docs/maintenance.md) for the full maintenance workflow and [`docs/final-architecture-review.md`](docs/final-architecture-review.md) for the final source-of-truth boundaries.
 
 ## Project Structure
 

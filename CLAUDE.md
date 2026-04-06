@@ -48,6 +48,7 @@ bash tests/test-hooks.sh
 - When adding a new workflow: update `core/metadata/workflows.json`, add the canonical file in `core/workflows/`, then add or update the provider wrappers that expose it
 - Keep provider-specific files thin whenever possible; shared behavior belongs in `core/`
 - Run `python3 scripts/render_workflow_tables.py` after changing workflow metadata, adapter doc metadata, Claude skill metadata, help metadata, principles metadata, routing metadata, status metadata, or provider command names. Claude and Copilot workflow wrappers are rendered as full provider documents, not just partial generated blocks.
+- `tests/consistency.sh` now includes provider packaging smoke tests. If install surfaces or compatibility shims change, make sure that script stays green.
 - When a command or prompt references `references/`: the Copilot version must have a `#file:` equivalent and the setup instructions must include copying that file
 - Copilot prompt frontmatter uses `agent: agent` (not `mode: "agent"`)
 - Commit messages: imperative mood, describe the why not just the what

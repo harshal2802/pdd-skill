@@ -11,12 +11,14 @@ This branch introduces:
 - Codex plugin support
 - compatibility links for existing top-level install paths
 - generated provider sections driven by `core/metadata/`
+- generated Claude and Copilot workflow wrappers driven by shared workflow docs
 
 ## Pre-PR Checklist
 
 - [ ] `python3 scripts/render_workflow_tables.py --check`
 - [ ] `bash tests/consistency.sh`
 - [ ] `bash tests/test-hooks.sh`
+- [ ] Confirm `python3 tests/test_provider_packaging.py` passes directly if packaging changed
 - [ ] Review the diff for compatibility-link changes
 - [ ] Review generated-section changes separately from canonical metadata changes
 
@@ -37,6 +39,7 @@ This branch introduces:
   - `copilot/`
   - `references/`
   - `examples/`
+- [ ] Confirm compatibility links are still documented as deprecated shims, not canonical install paths
 
 ## Reviewer Focus Areas
 
@@ -44,6 +47,7 @@ This branch introduces:
 - Do generated blocks still reflect the intended provider-specific wording?
 - Do Claude, Copilot, and Codex all still expose the same workflow set?
 - Did any provider-specific install path or packaging expectation change?
+- Are new docs and tests targeting canonical `core/` and `providers/` locations first, with shim-path checks only for backward compatibility?
 
 ## Suggested Release Notes
 
@@ -51,11 +55,12 @@ This branch introduces:
 
 - PDD now has a cleaner multi-provider architecture with shared core content and provider adapters.
 - Codex plugin support is scaffolded in-repo.
-- Claude and Copilot content remain available through compatibility paths.
+- Claude and Copilot content remain available through deprecated compatibility paths while new docs point at canonical provider locations.
 
 ### Maintainer-facing
 
 - High-duplication provider sections are now generated from `core/metadata/`.
+- Provider packaging smoke tests now cover Claude, Copilot, and Codex install surfaces.
 - The expected render-and-verify loop is documented in `docs/maintenance.md`.
 - Structural verification now checks shared metadata and compatibility links.
 
