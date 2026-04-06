@@ -12,6 +12,7 @@ description: >-
 This skill turns Claude into a PDD partner — helping users structure, operate, and improve AI-assisted development projects.
 
 **Nine core workflows:**
+<!-- GENERATED:claude-workflow-overview:start -->
 1. **Scaffold** — set up a new project folder structure
 2. **Init** — add PDD to an existing project (auto-detects stack and conventions)
 3. **Context** — write or update context files (`project.md`, `conventions.md`, `decisions.md`)
@@ -21,6 +22,7 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 7. **Update** — improve or refactor an existing prompt
 8. **Review** — verify and review AI-generated output before committing (includes automated quality checks)
 9. **Eval** — run prompt evaluations and track quality over time
+<!-- GENERATED:claude-workflow-overview:end -->
 
 <!-- GENERATED:claude-quick-path:start -->
 **Quick path**: For simple features, you only need **Context -> Prompts -> Review**. Research, Plan, and Eval add value for complex or critical features but are not required for every task. Use **Init** instead of Scaffold when adding PDD to a project that already has code.
@@ -57,20 +59,22 @@ When context files already exist, check freshness first: *"Has anything changed 
 
 After completing any workflow, suggest the natural next step:
 
+<!-- GENERATED:claude-workflow-transitions:start -->
 | Just finished | Suggest next |
 |---|---|
-| **Scaffold** | → Context: *"Structure is ready. Want to write `pdd/context/project.md`?"* |
-| **Init** | → Context: *"PDD structure is ready. Run `/project:pdd-context` to fill in your context files — I'll use what I detected as a starting point."* |
-| **Context** | → Research or Plan: *"Context is set. Before writing prompts — want to research the problem space or plan the implementation?"* |
-| **Research** — adopt/extend/compose | → Help install/configure, or create a prompt adapting the solution |
-| **Research** — build | → Plan: *"Nothing existing fits. Let's plan the implementation."* |
-| **Plan** | → Prompts: *"Plan is set. Ready to write the first prompt? Start with Phase 1."* |
-| **Prompts** | → Run the prompt 2–3 times, then → Review: *"Run this prompt, then `/project:pdd-review` to verify and review the output."* For critical prompts, create a Level 1 eval first. |
-| **Update** | → Re-run the prompt, then → Review: *"Try the updated prompt and run `/project:pdd-review` on the output."* |
-| **Review** — issues found | → Fix code, or → Update if the prompt needs work |
-| **Review** — looks good | → Commit both prompt and output. → Eval: *"Consider running `/project:pdd-eval` to track this prompt's quality over time."* |
-| **Eval** — passes | → Level up the eval if 5+ runs, or continue to next feature |
-| **Eval** — fails | → Update: *"These criteria failed. Fix the prompt first."* |
+| **Scaffold** | -> Context: *"Structure is ready. Want to write `pdd/context/project.md`?"* |
+| **Init** | -> Context: *"PDD structure is ready. Run `/project:pdd-context` to fill in your context files; I'll use what I detected as a starting point."* |
+| **Context** | -> Research or Plan: *"Context is set. Before writing prompts, want to research the problem space or plan the implementation?"* |
+| **Research** - adopt/extend/compose | -> Help install/configure, or create a prompt adapting the solution |
+| **Research** - build | -> Plan: *"Nothing existing fits. Let's plan the implementation."* |
+| **Plan** | -> Prompts: *"Plan is set. Ready to write the first prompt? Start with Phase 1."* |
+| **Prompts** | -> Run the prompt 2 to 3 times, then -> Review: *"Run this prompt, then `/project:pdd-review` to verify and review the output."* For critical prompts, create a Level 1 eval first. |
+| **Update** | -> Re-run the prompt, then -> Review: *"Try the updated prompt and run `/project:pdd-review` on the output."* |
+| **Review** - issues found | -> Fix code, or -> Update if the prompt needs work |
+| **Review** - looks good | -> Commit both prompt and output. -> Eval: *"Consider running `/project:pdd-eval` to track this prompt's quality over time."* |
+| **Eval** - passes | -> Level up the eval if 5 or more runs, or continue to next feature |
+| **Eval** - fails | -> Update: *"These criteria failed. Fix the prompt first."* |
+<!-- GENERATED:claude-workflow-transitions:end -->
 
 ---
 

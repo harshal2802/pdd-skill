@@ -6,11 +6,17 @@ import sys
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+CLAUDE_SKILL_PATH = ROOT / "core/metadata/claude-skill.json"
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
 HELP_PATH = ROOT / "core/metadata/help.json"
 PRINCIPLES_PATH = ROOT / "core/metadata/principles.json"
 ROUTING_PATH = ROOT / "core/metadata/routing.json"
 STATUS_PATH = ROOT / "core/metadata/status.json"
+
+
+def load_claude_skill():
+    with CLAUDE_SKILL_PATH.open() as fh:
+        return json.load(fh)
 
 
 def load_workflows():
@@ -186,6 +192,25 @@ def render_principles(principles_meta, provider_id):
     return "\n".join(f"- {entry[provider_id]}" for entry in principles_meta["principles"])
 
 
+def render_claude_workflow_overview(workflows, claude_skill_meta):
+    workflow_map = {workflow["id"]: workflow for workflow in workflows}
+    lines = []
+    for index, item in enumerate(claude_skill_meta["workflow_overview"], start=1):
+        workflow = workflow_map[item["workflow_id"]]
+        lines.append(f"{index}. **{workflow['label']}** — {item['description']}")
+    return "\n".join(lines)
+
+
+def render_claude_transitions(claude_skill_meta):
+    lines = [
+        "| Just finished | Suggest next |",
+        "|---|---|",
+    ]
+    for item in claude_skill_meta["transitions"]:
+        lines.append(f"| {item['just_finished']} | {item['suggest_next']} |")
+    return "\n".join(lines)
+
+
 def replace_block(text, marker, body):
     start = f"<!-- GENERATED:{marker}:start -->"
     end = f"<!-- GENERATED:{marker}:end -->"
@@ -199,6 +224,7 @@ def replace_block(text, marker, body):
 
 
 def render_files():
+    claude_skill_meta = load_claude_skill()
     workflows = load_workflows()
     help_meta = load_help()
     principles_meta = load_principles()
@@ -235,6 +261,8 @@ def render_files():
             "copilot-status-output-format": render_status_output(status_meta),
         },
         ROOT / "providers/claude/skills/pdd/SKILL.md": {
+            "claude-workflow-overview": render_claude_workflow_overview(workflows, claude_skill_meta),
+            "claude-workflow-transitions": render_claude_transitions(claude_skill_meta),
             "claude-quick-path": f"**Quick path**: {principles_meta['claude_quick_path']}",
             "claude-principles": render_principles(principles_meta, "claude"),
             "claude-routing-table": render_routing_table(workflows, routing_meta, "claude"),
