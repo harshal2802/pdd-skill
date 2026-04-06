@@ -12,6 +12,54 @@ HELP_PATH = ROOT / "core/metadata/help.json"
 PRINCIPLES_PATH = ROOT / "core/metadata/principles.json"
 ROUTING_PATH = ROOT / "core/metadata/routing.json"
 STATUS_PATH = ROOT / "core/metadata/status.json"
+TARGET_SPECS = {
+    "README.md": (
+        "claude-command-table",
+    ),
+    "providers/copilot/README.md": (
+        "copilot-command-table",
+    ),
+    "providers/codex/README.md": (
+        "codex-command-table",
+    ),
+    "providers/claude/commands/pdd-help.md": (
+        "claude-help-quick-start",
+        "claude-help-command-groups",
+        "claude-help-scenarios",
+        "claude-help-command-detail",
+    ),
+    "providers/copilot/prompts/pdd-help.prompt.md": (
+        "copilot-help-quick-start",
+        "copilot-help-command-groups",
+        "copilot-help-scenarios",
+        "copilot-help-command-detail",
+    ),
+    "providers/claude/commands/pdd-status.md": (
+        "claude-status-checks",
+        "claude-status-output-format",
+    ),
+    "providers/copilot/prompts/pdd-status.prompt.md": (
+        "copilot-status-checks",
+        "copilot-status-output-format",
+    ),
+    "providers/claude/skills/pdd/SKILL.md": (
+        "claude-workflow-overview",
+        "claude-workflow-transitions",
+        "claude-quick-path",
+        "claude-principles",
+        "claude-routing-table",
+    ),
+    "providers/copilot/copilot-instructions.md": (
+        "copilot-principles",
+        "copilot-routing-table",
+    ),
+    "providers/codex/plugin/skills/pdd/SKILL.md": (
+        "codex-principles",
+        "codex-simple-flow",
+        "codex-complex-flow",
+        "codex-routing-table",
+    ),
+}
 
 
 def load_claude_skill():
@@ -223,6 +271,10 @@ def replace_block(text, marker, body):
     return before + new_block + after
 
 
+def target_paths():
+    return {ROOT / relative_path: markers for relative_path, markers in TARGET_SPECS.items()}
+
+
 def render_files():
     claude_skill_meta = load_claude_skill()
     workflows = load_workflows()
@@ -230,7 +282,7 @@ def render_files():
     principles_meta = load_principles()
     routing_meta = load_routing()
     status_meta = load_status()
-    targets = {
+    rendered_blocks = {
         ROOT / "README.md": {
             "claude-command-table": markdown_table(provider_rows(workflows, "claude")),
         },
@@ -279,8 +331,18 @@ def render_files():
         },
     }
 
+    if set(rendered_blocks) != set(target_paths()):
+        raise ValueError("Rendered targets do not match TARGET_SPECS")
+    for path, expected_markers in target_paths().items():
+        actual_markers = tuple(rendered_blocks[path])
+        if actual_markers != expected_markers:
+            raise ValueError(
+                f"Marker list mismatch for {path.relative_to(ROOT)}: "
+                f"{actual_markers!r} != {expected_markers!r}"
+            )
+
     rendered = {}
-    for path, blocks in targets.items():
+    for path, blocks in rendered_blocks.items():
         text = path.read_text()
         for marker, body in blocks.items():
             text = replace_block(text, marker, body)
