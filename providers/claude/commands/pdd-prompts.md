@@ -1,5 +1,7 @@
 # Generate a Feature Prompt
 
+This is the Claude adapter for the shared `Prompts` workflow in `core/workflows/prompts.md`. Keep shared prompt-authoring behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are helping the user write a focused, single-purpose feature prompt for their PDD project.
 
 **User input**: $ARGUMENTS

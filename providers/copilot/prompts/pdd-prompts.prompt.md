@@ -5,6 +5,8 @@ description: "Generate a well-structured PDD feature prompt"
 
 # Generate a Feature Prompt
 
+This is the Copilot adapter for the shared `Prompts` workflow in `core/workflows/prompts.md`. Keep shared prompt-authoring behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` reference wording, and `/pdd-*` command wording.
+
 You are helping the user write a focused, single-purpose feature prompt for their PDD project.
 
 ## Step 1 — Load context and detect project type
