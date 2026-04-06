@@ -1,5 +1,7 @@
 # Update an Existing Prompt
 
+This is the Claude adapter for the shared `Update` workflow in `core/workflows/update.md`. Keep shared prompt-improvement behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are helping the user fix a PDD prompt that isn't producing good results. **Diagnose before rewriting.**
 
 **User input**: $ARGUMENTS

@@ -5,6 +5,8 @@ description: "Diagnose and improve a PDD prompt that isn't producing good result
 
 # Update an Existing Prompt
 
+This is the Copilot adapter for the shared `Update` workflow in `core/workflows/update.md`. Keep shared prompt-improvement behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+
 You are helping the user fix a prompt that isn't working well. **Diagnose before rewriting.**
 
 ## Step 1 — Identify the root cause
