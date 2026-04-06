@@ -5,6 +5,8 @@ description: "Research a problem space, evaluate approaches, and decide what to 
 
 # Research Before Building
 
+This is the Copilot adapter for the shared `Research` workflow in `core/workflows/research.md`. Keep shared workflow behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+
 You are helping the user explore a problem space, evaluate approaches, and decide what to build — before writing implementation prompts.
 
 ## Why research first

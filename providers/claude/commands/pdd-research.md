@@ -1,5 +1,7 @@
 # Research Before Building
 
+This is the Claude adapter for the shared `Research` workflow in `core/workflows/research.md`. Keep shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are helping the user explore a problem space, evaluate approaches, and decide what to build — before writing implementation prompts.
 
 **User input**: $ARGUMENTS
