@@ -8,6 +8,14 @@ For simple features, you only need **Context → Prompts → Review**. Research,
 
 ## Installation
 
+PDD is packaged for three surfaces from the same shared core:
+
+| Provider | Adapter | Notes |
+|---|---|---|
+| Claude Code | `providers/claude/` | Claude skill, slash commands, hooks, and plugin metadata |
+| GitHub Copilot | `providers/copilot/` | Copilot prompts plus always-on instructions |
+| Codex | `providers/codex/` | Codex plugin and `pdd` skill adapter |
+
 ### Claude Code
 
 **Plugin install (recommended):**
@@ -43,7 +51,7 @@ PDD is also available for GitHub Copilot Chat. See [`copilot/README.md`](copilot
 
 ### Codex
 
-PDD now includes a Codex plugin adapter. The Codex plugin manifest lives at [`providers/codex/plugin/.codex-plugin/plugin.json`](providers/codex/plugin/.codex-plugin/plugin.json), with a compatibility path at [`plugins/pdd-skill`](plugins/pdd-skill). The provider-specific notes live in [`providers/codex/README.md`](providers/codex/README.md).
+PDD now includes a Codex plugin adapter. The canonical plugin manifest lives at [`providers/codex/plugin/.codex-plugin/plugin.json`](providers/codex/plugin/.codex-plugin/plugin.json), with a compatibility path at [`plugins/pdd-skill`](plugins/pdd-skill). Repo-local marketplace metadata lives at [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The provider-specific notes live in [`providers/codex/README.md`](providers/codex/README.md).
 
 This first pass keeps the Codex provider thin by routing through shared workflow docs in [`core/workflows/`](core/workflows/) and shared project-type references in [`core/references/`](core/references/).
 
@@ -68,6 +76,20 @@ pdd-skill/
 ```
 
 Existing top-level paths such as `commands/`, `skills/`, `copilot/`, `references/`, and `examples/` remain available as compatibility links. See [`docs/architecture.md`](docs/architecture.md) for the migration rationale.
+
+## Maintenance
+
+Shared PDD behavior now lives under `core/metadata/` and `core/workflows/`, while provider wrappers under `providers/` contain generated sections where duplication was previously highest.
+
+When changing shared behavior:
+
+```bash
+python3 scripts/render_workflow_tables.py
+bash tests/consistency.sh
+bash tests/test-hooks.sh
+```
+
+See [`docs/maintenance.md`](docs/maintenance.md) for the full maintenance workflow.
 
 ## Project Structure
 
@@ -190,6 +212,7 @@ If you have an existing PDD project using the old layout (with `prompts/`, `cont
 - **[Efficiency Tips](docs/efficiency-tips.md)** — Practical habits for reducing token usage and cost
 - **[Migration Guide](docs/migration.md)** — Moving from the old layout to the `pdd/` structure
 - **[Architecture](docs/architecture.md)** — How the repo is organized for multiple providers
+- **[Maintenance](docs/maintenance.md)** — How generated sections and shared metadata are maintained
 
 ## License
 

@@ -2,6 +2,16 @@
 
 This provider adapter packages PDD as a Codex plugin with a `pdd` skill.
 
+## Repo Packaging
+
+This repo already includes the pieces needed for a repo-local Codex plugin setup:
+
+- canonical plugin files under `providers/codex/plugin/`
+- compatibility plugin path at `plugins/pdd-skill`
+- repo-local marketplace metadata at `.agents/plugins/marketplace.json`
+
+That means the repo can be treated as a local plugin source without inventing a second Codex-only project layout.
+
 ## Layout
 
 - `plugin/.codex-plugin/plugin.json` contains the Codex plugin manifest.
@@ -31,3 +41,5 @@ Use the `pdd` skill and route into the matching workflow:
 ## Notes
 
 This first pass keeps the Codex adapter thin by leaning on `core/workflows/` and `core/references/` instead of duplicating the full workflow content again.
+
+Generated sections in the wider repo are rendered from shared metadata under `core/metadata/`, then verified by `bash tests/consistency.sh`.
