@@ -104,19 +104,21 @@ cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
 
 Invoke them in Claude Code:
 
+<!-- GENERATED:claude-command-table:start -->
 | Command | What it does |
 |---|---|
-| `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
-| `/project:pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
-| `/project:pdd-context` | Write or update `pdd/context/project.md`, `conventions.md`, and `decisions.md` |
-| `/project:pdd-research` | Explore problem space, evaluate approaches, and decide what to build |
-| `/project:pdd-plan` | Create an implementation plan before writing prompts |
-| `/project:pdd-prompts` | Generate a focused feature prompt (standalone or chained) |
-| `/project:pdd-update` | Diagnose and fix a prompt that isn't producing good results |
-| `/project:pdd-review` | Verify and review AI-generated output before committing |
-| `/project:pdd-eval` | Run prompt evaluations and track pass rates over time |
-| `/project:pdd-status` | Health check — shows what's set up, what's missing, and what's stale |
-| `/project:pdd-help` | Quick reference — lists all commands, workflow order, and usage guidance |
+| `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and starter guidance. |
+| `/project:pdd-init` | Add PDD structure to an existing repository and infer a starting context. |
+| `/project:pdd-context` | Write or update the persistent project context files that future prompts depend on. |
+| `/project:pdd-research` | Explore the problem space, evaluate options, and decide what to build. |
+| `/project:pdd-plan` | Break a feature into phases and decide the prompt chain strategy before coding. |
+| `/project:pdd-prompts` | Generate focused feature prompts and place them in the right PDD folder. |
+| `/project:pdd-update` | Diagnose and improve a prompt that is producing weak or incorrect output. |
+| `/project:pdd-review` | Verify and review AI-generated output before it is committed. |
+| `/project:pdd-eval` | Track prompt quality over time with repeatable evaluation criteria. |
+| `/project:pdd-status` | Check what PDD artifacts exist, what is stale, and what to do next. |
+| `/project:pdd-help` | Show the available workflows, when to use them, and the typical sequence. |
+<!-- GENERATED:claude-command-table:end -->
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
 
