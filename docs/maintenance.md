@@ -3,7 +3,7 @@
 This repo now has two kinds of files:
 
 - canonical source files under `core/`
-- provider wrappers under `providers/`, some of which contain generated sections
+- provider wrappers under `providers/`, some of which contain generated sections or are rendered from shared metadata
 
 ## Source Of Truth
 
@@ -24,9 +24,11 @@ Current metadata files:
 - `claude-skill.json`
 - `providers.json`
 
-## Generated Sections
+## Generated Content
 
-Some provider-facing files are still hand-authored overall, but include generated blocks wrapped in markers like:
+There are two rendering patterns in the repo:
+
+- hand-authored provider files with generated blocks wrapped in markers like:
 
 ```md
 <!-- GENERATED:marker:start -->
@@ -34,11 +36,15 @@ Some provider-facing files are still hand-authored overall, but include generate
 <!-- GENERATED:marker:end -->
 ```
 
-Those blocks are rendered by:
+- fully rendered provider documents generated from shared metadata and provider-specific templates
+
+Both are rendered by:
 
 ```bash
 python3 scripts/render_workflow_tables.py
 ```
+
+Today, the `help` and `status` provider wrappers are rendered as complete documents, while files like the skill entrypoints and provider READMEs still use generated blocks inside hand-authored files.
 
 To verify that generated sections are current:
 

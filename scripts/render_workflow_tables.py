@@ -197,6 +197,82 @@ def render_command_detail(workflows, help_meta, provider_id):
     return "\n".join(lines)
 
 
+def render_help_document(workflows, help_meta, provider_id):
+    if provider_id == "claude":
+        frontmatter = ""
+        user_input = "**User input**: $ARGUMENTS\n\n"
+        specific_heading = "## If the user passed an argument"
+        specific_text = (
+            'If `$ARGUMENTS` names a specific command (e.g., "context", "pdd-context", "review"), '
+            "show detailed help for that command only:"
+        )
+        fallback_heading = "## If no argument was provided"
+        markers = {
+            "quick_start": "claude-help-quick-start",
+            "command_groups": "claude-help-command-groups",
+            "scenarios": "claude-help-scenarios",
+            "command_detail": "claude-help-command-detail",
+        }
+    elif provider_id == "copilot":
+        frontmatter = (
+            "---\n"
+            "agent: agent\n"
+            'description: "Quick reference for all PDD commands, workflow order, and usage guidance"\n'
+            "---\n\n"
+        )
+        user_input = ""
+        specific_heading = "## If the user asked about a specific command"
+        specific_text = (
+            'If the user mentioned a specific command (e.g., "context", "pdd-context", "review"), '
+            "show detailed help for that command only:"
+        )
+        fallback_heading = "## If no specific command was mentioned"
+        markers = {
+            "quick_start": "copilot-help-quick-start",
+            "command_groups": "copilot-help-command-groups",
+            "scenarios": "copilot-help-scenarios",
+            "command_detail": "copilot-help-command-detail",
+        }
+    else:
+        raise ValueError(f"Unsupported help provider_id: {provider_id}")
+
+    return (
+        f"{frontmatter}"
+        "# PDD Help\n\n"
+        "Quick reference for all PDD commands, workflow order, and usage guidance.\n\n"
+        f"{user_input}"
+        f"{specific_heading}\n\n"
+        f"{specific_text}\n\n"
+        "- **What it does** — one-paragraph description\n"
+        "- **When to use it** — the situation that calls for this workflow\n"
+        "- **Inputs it expects** — what the user should provide or have ready\n"
+        "- **What it produces** — the output artifact(s)\n"
+        "- **Typical next step** — what command usually follows\n\n"
+        "Use the command table and routing guide below to compose the answer. "
+        "Give the user just what they asked about — don't dump the full help.\n\n"
+        f"{fallback_heading}\n\n"
+        "Show the full quick reference below.\n\n"
+        "---\n\n"
+        "### Quick start\n\n"
+        f"<!-- GENERATED:{markers['quick_start']}:start -->\n"
+        f"{render_quick_start(help_meta)}\n"
+        f"<!-- GENERATED:{markers['quick_start']}:end -->\n\n"
+        "### All commands\n\n"
+        f"<!-- GENERATED:{markers['command_groups']}:start -->\n"
+        f"{grouped_help_tables(workflows, provider_id)}\n"
+        f"<!-- GENERATED:{markers['command_groups']}:end -->\n\n"
+        "### \"What should I use?\"\n\n"
+        f"<!-- GENERATED:{markers['scenarios']}:start -->\n"
+        f"{render_scenarios(workflows, help_meta, provider_id)}\n"
+        f"<!-- GENERATED:{markers['scenarios']}:end -->\n\n"
+        "### Per-command detail\n\n"
+        "Use this table when the user asks about a specific command.\n\n"
+        f"<!-- GENERATED:{markers['command_detail']}:start -->\n"
+        f"{render_command_detail(workflows, help_meta, provider_id)}\n"
+        f"<!-- GENERATED:{markers['command_detail']}:end -->\n"
+    )
+
+
 def render_status_checks(status_meta, provider_id):
     how_key = f"{provider_id}_how"
     blocks = []
@@ -209,6 +285,46 @@ def render_status_checks(status_meta, provider_id):
 def render_status_output(status_meta):
     code = "\n".join(status_meta["output_format"])
     return f"```text\n{code}\n```\n\n{status_meta['closing_note']}"
+
+
+def render_status_document(status_meta, provider_id):
+    if provider_id == "claude":
+        frontmatter = ""
+        user_input = "**User input**: $ARGUMENTS\n\n"
+        markers = {
+            "checks": "claude-status-checks",
+            "output": "claude-status-output-format",
+        }
+    elif provider_id == "copilot":
+        frontmatter = (
+            "---\n"
+            "agent: agent\n"
+            'description: "Check the health and completeness of your PDD project setup"\n'
+            "---\n\n"
+        )
+        user_input = ""
+        markers = {
+            "checks": "copilot-status-checks",
+            "output": "copilot-status-output-format",
+        }
+    else:
+        raise ValueError(f"Unsupported status provider_id: {provider_id}")
+
+    return (
+        f"{frontmatter}"
+        "# PDD Project Status\n\n"
+        "Check the health and completeness of the current PDD project setup.\n\n"
+        f"{user_input}"
+        "## What to check\n\n"
+        "Scan the current project directory and report on each layer:\n\n"
+        f"<!-- GENERATED:{markers['checks']}:start -->\n"
+        f"{render_status_checks(status_meta, provider_id)}\n"
+        f"<!-- GENERATED:{markers['checks']}:end -->\n\n"
+        "## Output format\n\n"
+        f"<!-- GENERATED:{markers['output']}:start -->\n"
+        f"{render_status_output(status_meta)}\n"
+        f"<!-- GENERATED:{markers['output']}:end -->\n"
+    )
 
 
 def render_routing_table(workflows, routing_meta, provider_id):
@@ -292,26 +408,6 @@ def render_files():
         ROOT / "providers/codex/README.md": {
             "codex-command-table": markdown_table(codex_rows(workflows)),
         },
-        ROOT / "providers/claude/commands/pdd-help.md": {
-            "claude-help-quick-start": render_quick_start(help_meta),
-            "claude-help-command-groups": grouped_help_tables(workflows, "claude"),
-            "claude-help-scenarios": render_scenarios(workflows, help_meta, "claude"),
-            "claude-help-command-detail": render_command_detail(workflows, help_meta, "claude"),
-        },
-        ROOT / "providers/copilot/prompts/pdd-help.prompt.md": {
-            "copilot-help-quick-start": render_quick_start(help_meta),
-            "copilot-help-command-groups": grouped_help_tables(workflows, "copilot"),
-            "copilot-help-scenarios": render_scenarios(workflows, help_meta, "copilot"),
-            "copilot-help-command-detail": render_command_detail(workflows, help_meta, "copilot"),
-        },
-        ROOT / "providers/claude/commands/pdd-status.md": {
-            "claude-status-checks": render_status_checks(status_meta, "claude"),
-            "claude-status-output-format": render_status_output(status_meta),
-        },
-        ROOT / "providers/copilot/prompts/pdd-status.prompt.md": {
-            "copilot-status-checks": render_status_checks(status_meta, "copilot"),
-            "copilot-status-output-format": render_status_output(status_meta),
-        },
         ROOT / "providers/claude/skills/pdd/SKILL.md": {
             "claude-workflow-overview": render_claude_workflow_overview(workflows, claude_skill_meta),
             "claude-workflow-transitions": render_claude_transitions(claude_skill_meta),
@@ -330,11 +426,27 @@ def render_files():
             "codex-routing-table": render_routing_table(workflows, routing_meta, "codex"),
         },
     }
+    fully_rendered_targets = {
+        ROOT / "providers/claude/commands/pdd-help.md": render_help_document(workflows, help_meta, "claude"),
+        ROOT / "providers/copilot/prompts/pdd-help.prompt.md": render_help_document(workflows, help_meta, "copilot"),
+        ROOT / "providers/claude/commands/pdd-status.md": render_status_document(status_meta, "claude"),
+        ROOT / "providers/copilot/prompts/pdd-status.prompt.md": render_status_document(status_meta, "copilot"),
+    }
 
-    if set(rendered_blocks) != set(target_paths()):
+    expected_paths = set(target_paths())
+    actual_paths = set(rendered_blocks) | set(fully_rendered_targets)
+    if actual_paths != expected_paths:
         raise ValueError("Rendered targets do not match TARGET_SPECS")
     for path, expected_markers in target_paths().items():
-        actual_markers = tuple(rendered_blocks[path])
+        if path in rendered_blocks:
+            actual_markers = tuple(rendered_blocks[path])
+        else:
+            text = fully_rendered_targets[path]
+            actual_markers = tuple(
+                marker
+                for marker in expected_markers
+                if f"<!-- GENERATED:{marker}:start -->" in text
+            )
         if actual_markers != expected_markers:
             raise ValueError(
                 f"Marker list mismatch for {path.relative_to(ROOT)}: "
@@ -342,6 +454,8 @@ def render_files():
             )
 
     rendered = {}
+    for path, text in fully_rendered_targets.items():
+        rendered[path] = text
     for path, blocks in rendered_blocks.items():
         text = path.read_text()
         for marker, body in blocks.items():
