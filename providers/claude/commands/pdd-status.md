@@ -8,6 +8,7 @@ Check the health and completeness of the current PDD project setup.
 
 Scan the current project directory and report on each layer:
 
+<!-- GENERATED:claude-status-checks:start -->
 ### 1. Context layer
 
 | Check | How |
@@ -23,16 +24,16 @@ Scan the current project directory and report on each layer:
 |---|---|
 | `pdd/prompts/features/` has prompt files | Glob for `pdd/prompts/features/**/*.md` |
 | Prompts follow the template structure | Spot-check for `## Task`, `## Context`, `## Constraints` sections |
-| `pdd/prompts/experiments/` has stale entries | Flag any experiment files older than 7 days — suggest "Promote to `pdd/prompts/features/` or delete" |
-| Prompt chains are complete | Check numbered sequences for gaps (e.g., `-01-` exists but `-02-` is missing) |
-| Templates available | Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3+ feature prompts exist with similar structure, suggest extracting a template. |
+| `pdd/prompts/experiments/` has stale entries | Flag any experiment files older than 7 days; suggest "Promote to `pdd/prompts/features/` or delete" |
+| Prompt chains are complete | Check numbered sequences for gaps (for example, `-01-` exists but `-02-` is missing) |
+| Templates available | Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3 or more feature prompts exist with similar structure, suggest extracting a template. |
 
 ### 3. Evals layer
 
 | Check | How |
 |---|---|
 | `pdd/evals/` has eval files | Glob for `pdd/evals/*.md` |
-| Eval coverage | Compare prompts in `pdd/prompts/features/` vs evals — flag prompts without evals |
+| Eval coverage | Compare prompts in `pdd/prompts/features/` vs evals; flag prompts without evals |
 
 ### 4. Output layer
 
@@ -40,10 +41,12 @@ Scan the current project directory and report on each layer:
 |---|---|
 | `src/` has committed artifacts | Check if `src/` has files |
 | Uncommitted AI output | Check git status for untracked files outside the PDD structure |
+<!-- GENERATED:claude-status-checks:end -->
 
 ## Output format
 
-```
+<!-- GENERATED:claude-status-output-format:start -->
+```text
 ## PDD Status: <project name>
 
 ### Context  [OK / NEEDS ATTENTION]
@@ -66,3 +69,4 @@ Scan the current project directory and report on each layer:
 ```
 
 Keep the output concise. Only flag problems and suggest the single most impactful next action.
+<!-- GENERATED:claude-status-output-format:end -->

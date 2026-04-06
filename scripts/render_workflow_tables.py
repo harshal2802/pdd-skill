@@ -8,6 +8,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
 HELP_PATH = ROOT / "core/metadata/help.json"
+STATUS_PATH = ROOT / "core/metadata/status.json"
 
 
 def load_workflows():
@@ -17,6 +18,11 @@ def load_workflows():
 
 def load_help():
     with HELP_PATH.open() as fh:
+        return json.load(fh)
+
+
+def load_status():
+    with STATUS_PATH.open() as fh:
         return json.load(fh)
 
 
@@ -125,6 +131,20 @@ def render_command_detail(workflows, help_meta, provider_id):
     return "\n".join(lines)
 
 
+def render_status_checks(status_meta, provider_id):
+    how_key = f"{provider_id}_how"
+    blocks = []
+    for layer in status_meta["layers"]:
+        rows = [(item["check"], item[how_key]) for item in layer["checks"]]
+        blocks.append(f"### {layer['title']}\n\n{markdown_table_with_headers(('Check', 'How'), rows)}")
+    return "\n\n".join(blocks)
+
+
+def render_status_output(status_meta):
+    code = "\n".join(status_meta["output_format"])
+    return f"```text\n{code}\n```\n\n{status_meta['closing_note']}"
+
+
 def replace_block(text, marker, body):
     start = f"<!-- GENERATED:{marker}:start -->"
     end = f"<!-- GENERATED:{marker}:end -->"
@@ -140,6 +160,7 @@ def replace_block(text, marker, body):
 def render_files():
     workflows = load_workflows()
     help_meta = load_help()
+    status_meta = load_status()
     targets = {
         ROOT / "README.md": {
             "claude-command-table": markdown_table(provider_rows(workflows, "claude")),
@@ -161,6 +182,14 @@ def render_files():
             "copilot-help-command-groups": grouped_help_tables(workflows, "copilot"),
             "copilot-help-scenarios": render_scenarios(workflows, help_meta, "copilot"),
             "copilot-help-command-detail": render_command_detail(workflows, help_meta, "copilot"),
+        },
+        ROOT / "providers/claude/commands/pdd-status.md": {
+            "claude-status-checks": render_status_checks(status_meta, "claude"),
+            "claude-status-output-format": render_status_output(status_meta),
+        },
+        ROOT / "providers/copilot/prompts/pdd-status.prompt.md": {
+            "copilot-status-checks": render_status_checks(status_meta, "copilot"),
+            "copilot-status-output-format": render_status_output(status_meta),
         },
     }
 
