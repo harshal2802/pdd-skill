@@ -5,6 +5,8 @@ description: "Write or update PDD context files (project.md, conventions.md, dec
 
 # Write PDD Context Files
 
+This is the Copilot adapter for the shared `Context` workflow in `core/workflows/context.md`. Keep the shared workflow behavior aligned there; this file exists to preserve Copilot-specific `#file:` references and `/pdd-*` command wording.
+
 You are helping the user create or update their PDD context layer. **Write what is true, not what you hope will be true.**
 
 ## Detect project type first

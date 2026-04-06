@@ -1,5 +1,7 @@
 # Write PDD Context Files
 
+This is the Claude adapter for the shared `Context` workflow in `core/workflows/context.md`. Keep the shared workflow behavior aligned there; this file exists to preserve Claude-specific command wording and local reference paths.
+
 You are helping the user create or update their PDD context layer. **Write what is true, not what you hope will be true.**
 
 **User input**: $ARGUMENTS
