@@ -1,5 +1,7 @@
 # Scaffold a PDD Project
 
+This is the Claude adapter for the shared `Scaffold` workflow in `core/workflows/scaffold.md`. Keep shared scaffolding behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are setting up a new Prompt Driven Development project structure.
 
 **User input**: $ARGUMENTS

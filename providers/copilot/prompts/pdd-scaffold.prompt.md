@@ -5,6 +5,8 @@ description: "Scaffold a new PDD project with folders, context files, and git in
 
 # Scaffold a PDD Project
 
+This is the Copilot adapter for the shared `Scaffold` workflow in `core/workflows/scaffold.md`. Keep shared scaffolding behavior aligned there; this file exists to preserve Copilot-specific frontmatter and `/pdd-*` command wording.
+
 You are setting up a new Prompt Driven Development project structure.
 
 ## Steps
