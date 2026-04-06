@@ -8,6 +8,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
 HELP_PATH = ROOT / "core/metadata/help.json"
+ROUTING_PATH = ROOT / "core/metadata/routing.json"
 STATUS_PATH = ROOT / "core/metadata/status.json"
 
 
@@ -18,6 +19,11 @@ def load_workflows():
 
 def load_help():
     with HELP_PATH.open() as fh:
+        return json.load(fh)
+
+
+def load_routing():
+    with ROUTING_PATH.open() as fh:
         return json.load(fh)
 
 
@@ -145,6 +151,31 @@ def render_status_output(status_meta):
     return f"```text\n{code}\n```\n\n{status_meta['closing_note']}"
 
 
+def render_routing_table(workflows, routing_meta, provider_id):
+    workflow_map = {workflow["id"]: workflow for workflow in workflows}
+    headers = {
+        "claude": ("If the user says...", "Use workflow"),
+        "copilot": ("User intent", "Suggest"),
+        "codex": ("If the user wants to...", "Use"),
+    }
+    rows = []
+    for route in routing_meta["routes"]:
+        workflow = workflow_map[route["workflow_id"]]
+        if provider_id == "claude":
+            left = route["claude_signal"]
+            right = f"-> **{workflow['label']}**: run `{workflow['providers']['claude']}`"
+        elif provider_id == "copilot":
+            left = route["copilot_intent"]
+            right = f"Use `{workflow['providers']['copilot']}`"
+        elif provider_id == "codex":
+            left = route["codex_intent"]
+            right = f"`{workflow['providers']['codex']}`"
+        else:
+            raise ValueError(f"Unsupported provider_id: {provider_id}")
+        rows.append((left, right))
+    return markdown_table_with_headers(headers[provider_id], rows)
+
+
 def replace_block(text, marker, body):
     start = f"<!-- GENERATED:{marker}:start -->"
     end = f"<!-- GENERATED:{marker}:end -->"
@@ -160,6 +191,7 @@ def replace_block(text, marker, body):
 def render_files():
     workflows = load_workflows()
     help_meta = load_help()
+    routing_meta = load_routing()
     status_meta = load_status()
     targets = {
         ROOT / "README.md": {
@@ -190,6 +222,15 @@ def render_files():
         ROOT / "providers/copilot/prompts/pdd-status.prompt.md": {
             "copilot-status-checks": render_status_checks(status_meta, "copilot"),
             "copilot-status-output-format": render_status_output(status_meta),
+        },
+        ROOT / "providers/claude/skills/pdd/SKILL.md": {
+            "claude-routing-table": render_routing_table(workflows, routing_meta, "claude"),
+        },
+        ROOT / "providers/copilot/copilot-instructions.md": {
+            "copilot-routing-table": render_routing_table(workflows, routing_meta, "copilot"),
+        },
+        ROOT / "providers/codex/plugin/skills/pdd/SKILL.md": {
+            "codex-routing-table": render_routing_table(workflows, routing_meta, "codex"),
         },
     }
 

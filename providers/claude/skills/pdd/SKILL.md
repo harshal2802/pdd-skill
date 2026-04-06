@@ -28,19 +28,21 @@ This skill turns Claude into a PDD partner — helping users structure, operate,
 
 ## Step 0: Identify what the user needs
 
+<!-- GENERATED:claude-routing-table:start -->
 | If the user says... | Use workflow |
 |---|---|
-| "Start a new PDD project", "Set up folder structure", "How do I get started?" | → **Scaffold**: run `/project:pdd-scaffold` |
-| "Add PDD to my project", "Initialize PDD here", "Set up PDD in this repo" | → **Init**: run `/project:pdd-init` |
-| "Help me write my project.md", "What should my context file say?" | → **Context**: run `/project:pdd-context` |
-| "How do I migrate to the new PDD structure?" | → See `docs/migration.md` |
-| "Is there a library for this?", "Does something already do this?", "What should I build?", "Help me think through this", "I'm not sure what approach to take" | → **Research**: run `/project:pdd-research` |
-| "Plan this feature", "How should I break this down?" | → **Plan**: run `/project:pdd-plan` |
-| "Write a prompt for this feature", "Help me prompt this" | → **Prompts**: run `/project:pdd-prompts` |
-| "This prompt isn't working", "Can you improve this prompt?" | → **Update**: run `/project:pdd-update` |
-| "Check this code", "Run the quality checks", "Is this ready to commit?", "Review this output", pastes code without instructions | → **Review**: run `/project:pdd-review` |
-| "How is my prompt performing?", "Run the eval", "Track prompt quality" | → **Eval**: run `/project:pdd-eval` |
-| "What commands are there?", "Help me with PDD", "What can you do?", "How does PDD work?" | → **Help**: run `/project:pdd-help` |
+| "Start a new PDD project", "Set up folder structure", "How do I get started?" | -> **Scaffold**: run `/project:pdd-scaffold` |
+| "Add PDD to my project", "Initialize PDD here", "Set up PDD in this repo" | -> **Init**: run `/project:pdd-init` |
+| "Help me write my project.md", "What should my context file say?" | -> **Context**: run `/project:pdd-context` |
+| "Is there a library for this?", "Does something already do this?", "What should I build?", "Help me think through this", "I'm not sure what approach to take" | -> **Research**: run `/project:pdd-research` |
+| "Plan this feature", "How should I break this down?" | -> **Plan**: run `/project:pdd-plan` |
+| "Write a prompt for this feature", "Help me prompt this" | -> **Prompts**: run `/project:pdd-prompts` |
+| "This prompt isn't working", "Can you improve this prompt?" | -> **Update**: run `/project:pdd-update` |
+| "Check this code", "Run the quality checks", "Is this ready to commit?", "Review this output", pastes code without instructions | -> **Review**: run `/project:pdd-review` |
+| "How is my prompt performing?", "Run the eval", "Track prompt quality" | -> **Eval**: run `/project:pdd-eval` |
+| "What's set up?", "What's missing?", "Show me the project health" | -> **Status**: run `/project:pdd-status` |
+| "What commands are there?", "Help me with PDD", "What can you do?", "How does PDD work?" | -> **Help**: run `/project:pdd-help` |
+<!-- GENERATED:claude-routing-table:end -->
 | Vague or unclear | → Ask: *"Are you starting a new project, working on a feature prompt, or reviewing something the AI generated?"* |
 
 **If context files don't exist yet:** Don't block the user. Proceed with the requested workflow and suggest context files afterward.

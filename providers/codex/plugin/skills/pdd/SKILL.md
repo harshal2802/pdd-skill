@@ -27,6 +27,7 @@ The canonical workflow descriptions live here:
 
 Map user intent to the matching workflow:
 
+<!-- GENERATED:codex-routing-table:start -->
 | If the user wants to... | Use |
 |---|---|
 | Start a brand new PDD project | `scaffold` |
@@ -40,6 +41,7 @@ Map user intent to the matching workflow:
 | Measure prompt quality over time | `eval` |
 | See what is set up or what is missing | `status` |
 | Get workflow guidance | `help` |
+<!-- GENERATED:codex-routing-table:end -->
 
 ## Project Type References
 
