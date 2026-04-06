@@ -5,6 +5,8 @@ description: "Create an implementation plan before writing PDD prompts"
 
 # Plan Before Prompting
 
+This is the Copilot adapter for the shared `Plan` workflow in `core/workflows/plan.md`. Keep shared planning behavior aligned there; this file exists to preserve Copilot-specific frontmatter, `#file:` reference wording, and `/pdd-*` command wording.
+
 You are helping the user create an implementation plan before writing any PDD prompts. **Plan first, prompt second.**
 
 ## Why plan first

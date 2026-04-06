@@ -1,5 +1,7 @@
 # Plan Before Prompting
 
+This is the Claude adapter for the shared `Plan` workflow in `core/workflows/plan.md`. Keep shared planning behavior aligned there; this file exists to preserve Claude-specific command wording and execution guidance.
+
 You are helping the user create an implementation plan before writing any PDD prompts. **Plan first, prompt second.**
 
 **User input**: $ARGUMENTS
