@@ -1,5 +1,7 @@
 # PDD Help
 
+> **Version**: v1.3.0-23-g45bb1d7
+
 Quick reference for all PDD commands, workflow order, and usage guidance.
 
 **User input**: $ARGUMENTS

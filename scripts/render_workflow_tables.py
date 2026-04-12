@@ -3,10 +3,28 @@ import argparse
 import json
 import pathlib
 import re
+import subprocess
 import sys
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+_VERSION_OVERRIDE = None
+
+
+def get_version():
+    if _VERSION_OVERRIDE:
+        return _VERSION_OVERRIDE
+    try:
+        result = subprocess.run(
+            ["git", "describe", "--tags", "--always"],
+            capture_output=True, text=True, cwd=ROOT,
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except FileNotFoundError:
+        pass
+    return "unknown"
 ADAPTER_DOCS_PATH = ROOT / "core/metadata/adapter-docs.json"
 CLAUDE_SKILL_PATH = ROOT / "core/metadata/claude-skill.json"
 WORKFLOWS_PATH = ROOT / "core/metadata/workflows.json"
@@ -277,9 +295,12 @@ def render_help_document(workflows, help_meta, provider_id):
     else:
         raise ValueError(f"Unsupported help provider_id: {provider_id}")
 
+    version = get_version()
+
     return (
         f"{frontmatter}"
         "# PDD Help\n\n"
+        f"> **Version**: {version}\n\n"
         "Quick reference for all PDD commands, workflow order, and usage guidance.\n\n"
         f"{user_input}"
         f"{specific_heading}\n\n"
@@ -585,7 +606,11 @@ def render_files():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="fail if generated sections are stale")
+    parser.add_argument("--version", default=None, help="version string to stamp into help output (defaults to git describe)")
     args = parser.parse_args()
+
+    global _VERSION_OVERRIDE
+    _VERSION_OVERRIDE = args.version
 
     rendered = render_files()
     stale = []
