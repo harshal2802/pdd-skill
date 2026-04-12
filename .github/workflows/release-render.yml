@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   render:
@@ -24,9 +25,13 @@ jobs:
       - name: Render workflow tables
         run: python3 scripts/render_workflow_tables.py
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git diff --quiet || (git add -u && git commit -m "Re-render generated sections" && git push)
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Re-render generated sections"
+          branch: auto/re-render-generated-sections
+          title: "Re-render generated sections"
+          body: "Automated re-render of generated sections triggered by a push to main."
+          committer: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
