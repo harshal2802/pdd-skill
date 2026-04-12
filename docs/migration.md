@@ -142,3 +142,56 @@ git commit -m "Restructure PDD layout: consolidate under pdd/, rename app/ to sr
 - **No functional changes** — this is purely a directory reorganization. All workflows, commands, and prompt formats remain the same.
 - **Gradual migration** — if you have a large project, you can migrate one directory at a time. The skill will work with either layout during the transition.
 - **Team communication** — if others on your team use PDD, coordinate the move so everyone updates their working copies.
+
+---
+
+## Repo Structure Migration: Removing Compatibility Symlinks
+
+If you previously referenced the old top-level convenience paths in scripts, docs, or config, update them to the canonical locations.
+
+### What changed
+
+The following root-level symlinks have been removed:
+
+| Old path | Canonical replacement |
+|---|---|
+| `commands/` | `providers/claude/commands/` |
+| `skills/` | `providers/claude/skills/` |
+| `hooks/` | `providers/claude/hooks/` |
+| `copilot/` | `providers/copilot/` |
+| `references/` | `core/references/` |
+| `examples/` | `core/examples/` |
+
+Two root-level symlinks remain because they are required by their respective plugin systems:
+
+- `.claude-plugin/` — Claude Code plugin discovery
+- `plugins/pdd-skill` — Codex repo-local marketplace
+
+### What to update
+
+**Claude Code manual skill install** — if your `settings.json` references the old path:
+
+```diff
+- "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"]
++ "skills": [".claude/skills/pdd-skill/providers/claude/skills/pdd/SKILL.md"]
+```
+
+**Claude Code manual command copy:**
+
+```diff
+- cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
++ cp -r .claude/skills/pdd-skill/providers/claude/commands/* .claude/commands/
+```
+
+**Copilot setup** — if you followed the old copy instructions:
+
+```diff
+- cp copilot/copilot-instructions.md <project>/.github/copilot-instructions.md
+- cp -r copilot/prompts/ <project>/.github/prompts/
+- cp -r references/ <project>/.github/references/
++ cp providers/copilot/copilot-instructions.md <project>/.github/copilot-instructions.md
++ cp -r providers/copilot/prompts/ <project>/.github/prompts/
++ cp -r core/references/ <project>/.github/references/
+```
+
+**Plugin installs are unaffected** — if you installed via `/plugin marketplace add`, no changes are needed.

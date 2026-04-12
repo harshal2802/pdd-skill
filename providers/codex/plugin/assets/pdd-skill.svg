@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">PDD Skill</title>
+  <desc id="desc">Blue rounded square with layered prompt cards and the letters PDD.</desc>
+  <rect width="128" height="128" rx="24" fill="#2563EB"/>
+  <rect x="24" y="28" width="56" height="44" rx="8" fill="#DBEAFE"/>
+  <rect x="36" y="40" width="56" height="44" rx="8" fill="#BFDBFE"/>
+  <rect x="48" y="52" width="56" height="44" rx="8" fill="#FFFFFF"/>
+  <path d="M61 66h31" stroke="#2563EB" stroke-width="6" stroke-linecap="round"/>
+  <path d="M61 78h20" stroke="#60A5FA" stroke-width="6" stroke-linecap="round"/>
+  <text x="24" y="112" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">PDD</text>
+</svg>

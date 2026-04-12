@@ -1,12 +1,20 @@
 # Prompt Driven Development (PDD) Skill
 
-A Claude Code skill for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
+A multi-provider Prompt Driven Development toolkit for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
 
-PDD treats prompts as first-class artifacts — not throwaway inputs. This skill gives Claude nine workflows: **scaffold** a new project structure or **init** PDD in an existing project, write **context** files, **research** a problem space and evaluate approaches, **plan** implementation before coding, generate feature **prompts**, **update** failing prompts, **review** AI-generated output (with automated quality checks), and **evaluate** prompt reliability over time.
+PDD treats prompts as first-class artifacts, not throwaway inputs. This repo currently packages the same core PDD system for Claude Code, GitHub Copilot, and Codex. The core workflows are **scaffold**, **init**, **context**, **research**, **plan**, **prompts**, **update**, **review**, **eval**, plus the `status` and `help` utility workflows.
 
 For simple features, you only need **Context → Prompts → Review**. Research, Plan, and Eval add value for complex or critical features but are not required.
 
 ## Installation
+
+PDD is packaged for three surfaces from the same shared core:
+
+| Provider | Adapter | Notes |
+|---|---|---|
+| Claude Code | `providers/claude/` | Claude skill, slash commands, hooks, and plugin metadata |
+| GitHub Copilot | `providers/copilot/` | Copilot prompts plus always-on instructions |
+| Codex | `providers/codex/` | Codex plugin and `pdd` skill adapter |
 
 ### Claude Code
 
@@ -31,7 +39,7 @@ Then add the skill to `.claude/settings.json` (create the file if it doesn't exi
 
 ```json
 {
-  "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"]
+  "skills": [".claude/skills/pdd-skill/providers/claude/skills/pdd/SKILL.md"]
 }
 ```
 
@@ -39,7 +47,78 @@ Then add the skill to `.claude/settings.json` (create the file if it doesn't exi
 
 ### GitHub Copilot
 
-PDD is also available for GitHub Copilot Chat. See [`copilot/README.md`](copilot/) for setup instructions — it uses a separate set of prompt files with the same nine workflows.
+Clone the repo, then copy these files into your project:
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git /tmp/pdd-skill
+
+# Copy the always-on instructions
+cp /tmp/pdd-skill/providers/copilot/copilot-instructions.md <your-project>/.github/copilot-instructions.md
+
+# Copy the prompt files
+cp -r /tmp/pdd-skill/providers/copilot/prompts/ <your-project>/.github/prompts/
+
+# Copy the reference files (project type flavors)
+cp -r /tmp/pdd-skill/core/references/ <your-project>/.github/references/
+```
+
+In VS Code Copilot Chat, type `/` to see the available PDD prompt files (e.g. `/pdd-scaffold`, `/pdd-context`). Requires VS Code 1.93+ with Copilot Chat prompt file support.
+
+See [`providers/copilot/README.md`](providers/copilot/README.md) for the full workflow list and usage details.
+
+### Codex
+
+Clone the repo into your project as a local plugin:
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git /tmp/pdd-skill
+
+# Copy the plugin into your project
+cp -r /tmp/pdd-skill/plugins/pdd-skill <your-project>/.codex/plugins/pdd-skill
+
+# Or use the repo-local marketplace entry
+cp /tmp/pdd-skill/.agents/plugins/marketplace.json <your-project>/.agents/plugins/marketplace.json
+```
+
+The `pdd` skill exposes all workflows (e.g. `pdd:scaffold`, `pdd:context`, `pdd:review`).
+
+See [`providers/codex/README.md`](providers/codex/README.md) for layout details and the full command table.
+
+## Repo Structure
+
+The repo is now organized into a shared core plus thin provider adapters:
+
+```text
+pdd-skill/
+├── core/
+│   ├── workflows/          # Provider-agnostic workflow definitions
+│   ├── references/         # Shared project-type references
+│   ├── examples/           # Shared example PDD projects
+│   └── metadata/           # Workflow + provider metadata
+├── providers/
+│   ├── claude/             # Claude Code skill, commands, hooks, plugin metadata
+│   ├── copilot/            # Copilot prompt files + always-on instructions
+│   └── codex/              # Codex plugin + skill adapter
+├── plugins/
+│   └── pdd-skill           # Codex plugin compatibility path
+└── .agents/plugins/        # Codex repo-local marketplace metadata
+```
+
+The `.claude-plugin` symlink at the root is required by the Claude plugin system. The `plugins/pdd-skill` path is required by the Codex marketplace. All other top-level compatibility symlinks have been removed — use `core/` and `providers/` paths directly. See [`docs/architecture.md`](docs/architecture.md) for details.
+
+## Maintenance
+
+Shared PDD behavior now lives under `core/metadata/` and `core/workflows/`, while provider wrappers under `providers/` contain generated sections where duplication was previously highest.
+
+When changing shared behavior:
+
+```bash
+python3 scripts/render_workflow_tables.py
+bash tests/consistency.sh
+bash tests/test-hooks.sh
+```
+
+See [`docs/maintenance.md`](docs/maintenance.md) for the full maintenance workflow and [`docs/final-architecture-review.md`](docs/final-architecture-review.md) for the final source-of-truth boundaries.
 
 ## Project Structure
 
@@ -71,24 +150,26 @@ PDD includes slash commands for Claude Code. If you installed via plugin, they'r
 
 ```bash
 # Only needed for manual installs
-cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
+cp -r .claude/skills/pdd-skill/providers/claude/commands/* .claude/commands/
 ```
 
 Invoke them in Claude Code:
 
+<!-- GENERATED:claude-command-table:start -->
 | Command | What it does |
 |---|---|
-| `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and git init |
-| `/project:pdd-init` | Add PDD to an existing project — auto-detects stack and conventions |
-| `/project:pdd-context` | Write or update `pdd/context/project.md`, `conventions.md`, and `decisions.md` |
-| `/project:pdd-research` | Explore problem space, evaluate approaches, and decide what to build |
-| `/project:pdd-plan` | Create an implementation plan before writing prompts |
-| `/project:pdd-prompts` | Generate a focused feature prompt (standalone or chained) |
-| `/project:pdd-update` | Diagnose and fix a prompt that isn't producing good results |
-| `/project:pdd-review` | Verify and review AI-generated output before committing |
-| `/project:pdd-eval` | Run prompt evaluations and track pass rates over time |
-| `/project:pdd-status` | Health check — shows what's set up, what's missing, and what's stale |
-| `/project:pdd-help` | Quick reference — lists all commands, workflow order, and usage guidance |
+| `/project:pdd-scaffold` | Set up a new PDD project with folders, context stubs, and starter guidance. |
+| `/project:pdd-init` | Add PDD structure to an existing repository and infer a starting context. |
+| `/project:pdd-context` | Write or update the persistent project context files that future prompts depend on. |
+| `/project:pdd-research` | Explore the problem space, evaluate options, and decide what to build. |
+| `/project:pdd-plan` | Break a feature into phases and decide the prompt chain strategy before coding. |
+| `/project:pdd-prompts` | Generate focused feature prompts and place them in the right PDD folder. |
+| `/project:pdd-update` | Diagnose and improve a prompt that is producing weak or incorrect output. |
+| `/project:pdd-review` | Verify and review AI-generated output before it is committed. |
+| `/project:pdd-eval` | Track prompt quality over time with repeatable evaluation criteria. |
+| `/project:pdd-status` | Check what PDD artifacts exist, what is stale, and what to do next. |
+| `/project:pdd-help` | Show the available workflows, when to use them, and the typical sequence. |
+<!-- GENERATED:claude-command-table:end -->
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
 
@@ -132,33 +213,23 @@ You can also jump directly to any workflow with slash commands, or let the skill
 
 | Path | Purpose |
 |---|---|
-| `skills/pdd/SKILL.md` | Core skill definition — nine workflows, project type detection, prompt templates |
-| `.claude-plugin/plugin.json` | Plugin manifest for distribution via the Claude Code plugin system |
-| `hooks/` | Optional session-start hook for context freshness checks |
-| `references/frontend.md` | Context questions, conventions, and review checklists for frontend/UI projects |
-| `references/backend.md` | Same for backend/API projects |
-| `references/mobile.md` | Same for mobile (iOS, Android, cross-platform) |
-| `references/data-ml.md` | Same for data science and ML projects |
-| `references/devops.md` | Same for DevOps and infrastructure |
-| `references/fullstack.md` | Same for full-stack projects (also loads frontend + backend refs) |
-| `references/library.md` | Same for library / installable package projects (composable with domain flavors) |
-| `references/cli-devtools.md` | Same for CLI and developer tools (argument parsing, exit codes, signal handling) |
-| `references/embedded-iot.md` | Same for embedded systems and IoT projects (memory constraints, real-time, cross-compilation) |
-| `references/game-dev.md` | Same for game development projects (frame budgets, ECS, asset pipelines, platform certification) |
-| `references/blockchain.md` | Same for blockchain / smart contract projects (security patterns, gas optimization, upgradeability, audit readiness) |
-| `references/security.md` | Same for security / pentesting tool projects (detection quality, safe defaults, false positive management, SIEM integration) |
-| `references/api-platform.md` | Same for API platform / SDK projects (backward compatibility, SDK generation, error design, rate limiting, webhooks) |
-| `references/desktop-gui.md` | Same for desktop / native GUI projects (window management, OS integration, code signing, auto-updates, cross-platform) |
-| `references/compiler-lang.md` | Same for compiler / language tooling projects (parsing, AST design, type systems, error recovery, LSP integration) |
-| `references/robotics.md` | Same for robotics / ROS projects (real-time control, sensor fusion, simulation-first, safety systems, coordinate frames) |
-| `commands/` | Eleven Claude Code slash commands for each workflow + status check + help |
-| `examples/` | Complete PDD example for a Task Management API |
+| `core/workflows/` | Provider-agnostic workflow definitions shared across Claude, Copilot, and Codex |
+| `core/references/` | Shared project-type references used to tailor context questions and review checklists |
+| `core/examples/` | Complete example PDD projects |
+| `core/metadata/workflows.json` | Structured workflow ids, labels, categories, and provider mappings |
+| `providers/claude/skills/pdd/SKILL.md` | Claude Code entrypoint skill |
+| `providers/claude/commands/` | Claude Code slash commands |
+| `providers/claude/hooks/` | Optional Claude session-start hook |
+| `providers/claude/plugin/plugin.json` | Claude plugin manifest |
+| `providers/copilot/` | Copilot prompt files and always-on instructions |
+| `providers/codex/plugin/.codex-plugin/plugin.json` | Codex plugin manifest |
+| `.agents/plugins/marketplace.json` | Repo-local Codex marketplace entry for `plugins/pdd-skill` |
 
 The skill auto-detects your project type and loads the right reference file to enrich context questions, conventions, and review checklists.
 
 ## Example
 
-See [`examples/task-management-api/`](examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
+See [`core/examples/task-management-api/`](core/examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
 
 ## Migrating from the old layout
 
@@ -169,6 +240,8 @@ If you have an existing PDD project using the old layout (with `prompts/`, `cont
 - **[Philosophy](docs/philosophy.md)** — Why PDD exists, the four layers, project type flavors, and how to get started
 - **[Efficiency Tips](docs/efficiency-tips.md)** — Practical habits for reducing token usage and cost
 - **[Migration Guide](docs/migration.md)** — Moving from the old layout to the `pdd/` structure
+- **[Architecture](docs/architecture.md)** — How the repo is organized for multiple providers
+- **[Maintenance](docs/maintenance.md)** — How generated sections and shared metadata are maintained
 
 ## License
 

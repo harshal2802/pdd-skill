@@ -39,7 +39,7 @@ PDD gives you four layers:
 
 ```bash
 git clone https://github.com/harshal2802/pdd-skill.git .claude/skills/pdd-skill
-echo '{ "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"] }' > .claude/settings.json
+echo '{ "skills": [".claude/skills/pdd-skill/providers/claude/skills/pdd/SKILL.md"] }' > .claude/settings.json
 ```
 
 Then use PDD — Claude auto-detects your intent, or use slash commands:
