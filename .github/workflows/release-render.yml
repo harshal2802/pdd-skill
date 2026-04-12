@@ -1,3 +1,5 @@
+# Release Render Workflow
+
 name: Release Render
 
 on:
@@ -8,33 +10,27 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-      - name: Create temporary branch
-        run: |
-          git checkout -b temp-release-branch
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
 
       - name: Commit changes
         run: |
           git add .
-          git commit -m 'Release changes'
+          git diff --cached --quiet || git commit -m 'Release changes'
 
-      - name: Push temporary branch
-        run: |
-          git push origin temp-release-branch
+      - name: Publish release
+        run: npm publish
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: 'Release PR'
-          body: 'This PR releases the changes to main.'
-          base: main
-          head: temp-release-branch
-          token: ${{ secrets.GITHUB_TOKEN }}
