@@ -614,11 +614,15 @@ def main():
 
     rendered = render_files()
     stale = []
+    version_re = re.compile(r"^> \*\*Version\*\*: .+$", re.MULTILINE)
     for path, new_text in rendered.items():
         old_text = path.read_text()
-        if old_text != new_text:
-            stale.append(path)
-            if not args.check:
+        if args.check:
+            if version_re.sub("", old_text) != version_re.sub("", new_text):
+                stale.append(path)
+        else:
+            if old_text != new_text:
+                stale.append(path)
                 path.write_text(new_text)
 
     if args.check and stale:
