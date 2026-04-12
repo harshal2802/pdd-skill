@@ -31,4 +31,4 @@
 - [ ] Generated sections were re-rendered
 - [ ] Docs were updated if install paths or maintainer workflow changed
 - [ ] New provider-facing duplication was avoided or justified
-- [ ] Compatibility links remain documented as deprecated shims, not canonical paths
+- [ ] Only `.claude-plugin` and `plugins/pdd-skill` remain as root-level symlinks

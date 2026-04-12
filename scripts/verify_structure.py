@@ -92,14 +92,15 @@ def main() -> None:
         ".agents/plugins/marketplace.json exists",
     )
 
-    assert_symlink(ROOT / "commands", "providers/claude/commands")
-    assert_symlink(ROOT / "skills", "providers/claude/skills")
-    assert_symlink(ROOT / "hooks", "providers/claude/hooks")
     assert_symlink(ROOT / ".claude-plugin", "providers/claude/plugin")
-    assert_symlink(ROOT / "copilot", "providers/copilot")
-    assert_symlink(ROOT / "references", "core/references")
-    assert_symlink(ROOT / "examples", "core/examples")
     assert_symlink(ROOT / "plugins/pdd-skill", "../providers/codex/plugin")
+
+    # Legacy compatibility symlinks should NOT exist
+    for removed in ("commands", "skills", "hooks", "copilot", "references", "examples"):
+        removed_path = ROOT / removed
+        if removed_path.is_symlink() or removed_path.exists():
+            fail(f"{removed} should have been removed (legacy compatibility symlink)")
+        ok(f"{removed} removed (no longer a compatibility symlink)")
 
     provider_ids = {provider["id"] for provider in provider_meta}
     if provider_ids != {"claude", "copilot", "codex"}:
@@ -113,7 +114,7 @@ def main() -> None:
     ok("README.md covers the multi-provider structure")
 
     copilot_readme = (ROOT / "providers/copilot/README.md").read_text()
-    if "cp -r references/" not in copilot_readme:
+    if "cp -r core/references/" not in copilot_readme:
         fail("providers/copilot/README.md missing references copy instruction")
     ok("providers/copilot/README.md still covers reference copying")
 

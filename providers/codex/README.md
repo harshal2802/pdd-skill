@@ -2,7 +2,7 @@
 
 This provider adapter packages PDD as a Codex plugin with a `pdd` skill.
 
-The canonical Codex provider lives under `providers/codex/`. The root `plugins/pdd-skill` path is a deprecated compatibility shim that remains in place so existing local marketplace setups do not break.
+The canonical Codex provider lives under `providers/codex/`. The root `plugins/pdd-skill` symlink is required by the Codex repo-local marketplace.
 
 ## Repo Packaging
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Test script for hooks/hooks.json session-start hook
+# Test script for providers/claude/hooks/hooks.json session-start hook
 # Verifies all detection cases across new (pdd/) and legacy layouts
 
 set -uo pipefail
 
-HOOK_CMD=$(python3 -c "import json,sys; print(json.load(open('hooks/hooks.json'))['hooks'][0]['hooks'][0]['command'])")
+HOOK_CMD=$(python3 -c "import json,sys; print(json.load(open('providers/claude/hooks/hooks.json'))['hooks'][0]['hooks'][0]['command'])")
 
 pass=0
 fail=0

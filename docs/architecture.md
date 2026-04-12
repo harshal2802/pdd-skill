@@ -35,23 +35,14 @@ Each provider owns its packaging, activation model, and install-facing wrapper f
 
 At this point, the Claude and Copilot workflow wrappers are rendered from shared workflow sources plus provider metadata, so the provider layer is primarily packaging and surface-specific wording rather than a second source of workflow truth.
 
-## Compatibility Paths
+## Root-Level Paths
 
-Top-level paths are still present as compatibility links so existing installs and docs keep working:
+Most legacy compatibility symlinks have been removed. Only two root-level symlinks remain because they are functionally required by their respective plugin systems:
 
-- `commands/`
-- `skills/`
-- `hooks/`
-- `.claude-plugin/`
-- `copilot/`
-- `references/`
-- `examples/`
+- `.claude-plugin/` — required by Claude Code plugin discovery
+- `plugins/pdd-skill` — required by the Codex repo-local marketplace at `.agents/plugins/marketplace.json`
 
-The new Codex plugin distribution path is `plugins/pdd-skill`, with repo-local marketplace metadata at `.agents/plugins/marketplace.json`.
-
-These compatibility paths are now deprecated. New docs, tests, and integrations should point at the canonical `core/` and `providers/` locations. The shims remain in place to avoid breaking existing installs.
-
-## Current Status
+All other paths (`commands/`, `skills/`, `hooks/`, `copilot/`, `references/`, `examples/`) have been removed. Use the canonical `core/` and `providers/` locations directly.
 
 ## Current Status
 
@@ -61,7 +52,7 @@ This architecture is now in its intended steady state for the multi-provider rol
 - Codex support has a real plugin scaffold
 - verification is aware of the new structure
 - Claude and Copilot workflow wrappers are rendered from shared workflow sources
-- compatibility links remain only as deprecated shims
+- legacy compatibility symlinks have been removed (only `.claude-plugin` and `plugins/pdd-skill` remain as functional requirements)
 
 See [`final-architecture-review.md`](final-architecture-review.md) for the reviewer-facing checklist of what now counts as canonical, provider-owned, and intentionally transitional.
 ## Maintenance Loop

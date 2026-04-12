@@ -1,6 +1,6 @@
 # PDD Reference: Frontend / UI Projects
 
-> **Last reviewed**: 2026-03
+> **Last reviewed**: 2026-04
 
 Use this file to enrich Workflows 2, 3, and 5 for frontend and UI projects (React, Vue, Angular, Svelte, vanilla JS/TS, and related stacks).
 
@@ -18,6 +18,14 @@ Ask these after the base questions in `project.md`:
 - What browsers and devices must be supported?
 - Is there a Storybook or component sandbox?
 
+**Design direction** — these prevent generic-looking output:
+
+- What is the intended aesthetic tone? (brutally minimal, maximalist, retro-futuristic, editorial/magazine, luxury/refined, playful, brutalist/raw, organic/natural, art deco, industrial, soft/pastel — or describe your own)
+- Are there specific brand fonts, or should the AI pick distinctive typography? (avoid defaulting to Inter/Roboto/Arial)
+- What is the color strategy? (dominant color + sharp accents, monochrome, dark-first, specific palette)
+- How should motion and animation be used? (page-load reveals, scroll-triggered, hover micro-interactions, restrained/none)
+- What should make this interface memorable? (the one thing a user would remember)
+
 ### Extended `pdd/context/project.md` sections for frontend
 
 ```markdown
@@ -25,6 +33,13 @@ Ask these after the base questions in `project.md`:
 - Component library:
 - Design tokens / theme:
 - Storybook:
+
+## Visual design direction
+- Aesthetic tone: (e.g. brutalist, editorial, luxury, playful — not "clean and modern")
+- Typography: display font + body font (avoid Inter/Roboto/Arial defaults)
+- Color strategy: (dominant color, accent color, dark/light, specific palette)
+- Motion approach: (staggered reveals, scroll-triggered, hover states, restrained)
+- Memorable element: (the one thing a user remembers about this interface)
 
 ## State management
 - Approach:
@@ -85,6 +100,39 @@ Ask these after the base questions in `project.md`:
 - Color contrast ratio: 4.5:1 minimum
 ```
 
+### Visual Design Conventions
+
+```markdown
+# Visual Design Conventions
+
+## Typography
+- Choose distinctive, characterful fonts — never default to Inter, Roboto, or Arial
+- Pair a display font (headings) with a refined body font (text)
+- Use CSS variables for font families so they can be swapped project-wide
+
+## Color
+- Define a dominant color and 1-2 sharp accent colors — avoid evenly distributed palettes
+- Use CSS custom properties for all colors (no hardcoded hex in components)
+- Dark/light mode: design one first, derive the other — don't treat both as afterthoughts
+
+## Motion & Animation
+- Prioritize high-impact moments: a well-orchestrated page load with staggered reveals
+  creates more delight than scattered micro-interactions
+- Use CSS animations where possible; reach for Motion/Framer only when CSS falls short
+- Scroll-triggered and hover states should surprise, not just fade in
+
+## Spatial Composition
+- Break the grid intentionally — asymmetry, overlap, diagonal flow, grid-breaking elements
+- Use generous negative space OR controlled density — avoid the mushy middle
+- Avoid cookie-cutter card grids unless the content genuinely calls for them
+
+## What to Avoid
+- Generic "AI slop": purple gradients on white, system fonts, predictable card layouts
+- Designs that look the same regardless of what the project is about
+- Timid color choices — if the palette doesn't commit to something, it commits to nothing
+- Motion for motion's sake — every animation should serve the aesthetic direction
+```
+
 ---
 
 ## Common Feature Prompt Patterns (Workflow 3)
@@ -96,6 +144,13 @@ Ask these after the base questions in `project.md`:
 
 ## Context
 [Reference pdd/context/project.md — stack, design system, conventions]
+
+## Design direction
+- Aesthetic tone: <tone from project context — e.g. brutalist, editorial, playful>
+- Typography: <display font + body font>
+- Color: <dominant color, accent, dark/light>
+- Motion: <specific animation approach for this component>
+- What makes this component visually distinctive: <one sentence>
 
 ## Task
 Create a <ComponentName> component that <does what>.
@@ -168,6 +223,14 @@ Apply these in addition to the universal review dimensions:
 - [ ] No unnecessary re-renders? (missing memo, useCallback where needed)
 - [ ] Images have dimensions to prevent layout shift?
 - [ ] No large dependencies imported for small utility use?
+
+**Design quality**
+- [ ] Typography is distinctive and intentional — not Inter/Roboto/Arial defaults?
+- [ ] Color palette commits to a direction — no timid, evenly distributed pastels?
+- [ ] Layout has spatial intent — not a generic card grid unless content requires it?
+- [ ] Motion serves the aesthetic — animations feel designed, not default fade-ins?
+- [ ] Overall aesthetic matches the stated design direction from context?
+- [ ] Would a user remember this interface, or could it be any app?
 
 **Code quality**
 - [ ] Component does one thing?

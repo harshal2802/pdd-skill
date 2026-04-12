@@ -2,9 +2,7 @@
 
 The same Prompt Driven Development workflows, adapted for GitHub Copilot Chat in VS Code.
 
-Canonical repo ownership now lives under `core/` and `providers/`, but the `copilot/` and `references/` paths shown below remain available only as deprecated compatibility links for copy-based setup. Prefer `providers/copilot/` and `core/references/` in any new repo docs or automation.
-
-The prompt files themselves are still normal Markdown prompt files, but parts of the surrounding repo docs are now generated from shared metadata so provider terminology stays aligned.
+Parts of the surrounding repo docs are now generated from shared metadata so provider terminology stays aligned.
 
 ## Setup
 
@@ -12,13 +10,13 @@ From the repo root, copy these files into your project:
 
 ```bash
 # Copy the always-on instructions
-cp copilot/copilot-instructions.md <your-project>/.github/copilot-instructions.md
+cp providers/copilot/copilot-instructions.md <your-project>/.github/copilot-instructions.md
 
 # Copy the prompt files
-cp -r copilot/prompts/ <your-project>/.github/prompts/
+cp -r providers/copilot/prompts/ <your-project>/.github/prompts/
 
 # Copy the reference files (project type flavors)
-cp -r references/ <your-project>/.github/references/
+cp -r core/references/ <your-project>/.github/references/
 ```
 
 Your project should end up with:
@@ -106,7 +104,7 @@ Each prompt file suggests the next step at the end, so you don't need to memoriz
 
 ## Differences from the Claude Code version
 
-| Aspect | Claude Code (skills/pdd/SKILL.md) | Copilot (prompt files) |
+| Aspect | Claude Code (providers/claude/skills/pdd/SKILL.md) | Copilot (prompt files) |
 |---|---|---|
 | Activation | Auto-triggers on keywords | User invokes manually via `/` |
 | Reference files | Loaded dynamically by type | Use `#file:` references in prompts |

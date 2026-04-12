@@ -17,8 +17,4 @@ Provider-specific packaging lives under `providers/`:
 - `providers/copilot/`
 - `providers/codex/`
 
-Top-level paths like `commands/`, `skills/`, `copilot/`, `references/`, and `examples/` are compatibility links so existing install paths and docs keep working during the transition.
-
-## Current Approach
-
-This first pass establishes the source-of-truth boundary and Codex-ready structure without fully generating every provider file yet. Claude and Copilot still keep hand-authored wrappers, while Codex consumes the shared workflow and reference layer more directly.
+Only `.claude-plugin/` (Claude plugin discovery) and `plugins/pdd-skill` (Codex marketplace) remain as root-level symlinks. All other legacy compatibility links have been removed.

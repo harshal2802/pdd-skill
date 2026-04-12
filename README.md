@@ -39,7 +39,7 @@ Then add the skill to `.claude/settings.json` (create the file if it doesn't exi
 
 ```json
 {
-  "skills": [".claude/skills/pdd-skill/skills/pdd/SKILL.md"]
+  "skills": [".claude/skills/pdd-skill/providers/claude/skills/pdd/SKILL.md"]
 }
 ```
 
@@ -47,13 +47,42 @@ Then add the skill to `.claude/settings.json` (create the file if it doesn't exi
 
 ### GitHub Copilot
 
-PDD is also available for GitHub Copilot Chat. See [`copilot/README.md`](copilot/) for setup instructions — it uses a separate set of prompt files with the same nine workflows.
+Clone the repo, then copy these files into your project:
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git /tmp/pdd-skill
+
+# Copy the always-on instructions
+cp /tmp/pdd-skill/providers/copilot/copilot-instructions.md <your-project>/.github/copilot-instructions.md
+
+# Copy the prompt files
+cp -r /tmp/pdd-skill/providers/copilot/prompts/ <your-project>/.github/prompts/
+
+# Copy the reference files (project type flavors)
+cp -r /tmp/pdd-skill/core/references/ <your-project>/.github/references/
+```
+
+In VS Code Copilot Chat, type `/` to see the available PDD prompt files (e.g. `/pdd-scaffold`, `/pdd-context`). Requires VS Code 1.93+ with Copilot Chat prompt file support.
+
+See [`providers/copilot/README.md`](providers/copilot/README.md) for the full workflow list and usage details.
 
 ### Codex
 
-PDD now includes a Codex plugin adapter. The canonical plugin manifest lives at [`providers/codex/plugin/.codex-plugin/plugin.json`](providers/codex/plugin/.codex-plugin/plugin.json), with a compatibility path at [`plugins/pdd-skill`](plugins/pdd-skill). Repo-local marketplace metadata lives at [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). The provider-specific notes live in [`providers/codex/README.md`](providers/codex/README.md).
+Clone the repo into your project as a local plugin:
 
-This first pass keeps the Codex provider thin by routing through shared workflow docs in [`core/workflows/`](core/workflows/) and shared project-type references in [`core/references/`](core/references/).
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git /tmp/pdd-skill
+
+# Copy the plugin into your project
+cp -r /tmp/pdd-skill/plugins/pdd-skill <your-project>/.codex/plugins/pdd-skill
+
+# Or use the repo-local marketplace entry
+cp /tmp/pdd-skill/.agents/plugins/marketplace.json <your-project>/.agents/plugins/marketplace.json
+```
+
+The `pdd` skill exposes all workflows (e.g. `pdd:scaffold`, `pdd:context`, `pdd:review`).
+
+See [`providers/codex/README.md`](providers/codex/README.md) for layout details and the full command table.
 
 ## Repo Structure
 
@@ -75,7 +104,7 @@ pdd-skill/
 └── .agents/plugins/        # Codex repo-local marketplace metadata
 ```
 
-Existing top-level paths such as `commands/`, `skills/`, `copilot/`, `references/`, and `examples/` remain available as deprecated compatibility links. Prefer `core/` and `providers/` in any new docs, tooling, or integrations. See [`docs/architecture.md`](docs/architecture.md) for the migration rationale and deprecation policy.
+The `.claude-plugin` symlink at the root is required by the Claude plugin system. The `plugins/pdd-skill` path is required by the Codex marketplace. All other top-level compatibility symlinks have been removed — use `core/` and `providers/` paths directly. See [`docs/architecture.md`](docs/architecture.md) for details.
 
 ## Maintenance
 
@@ -121,7 +150,7 @@ PDD includes slash commands for Claude Code. If you installed via plugin, they'r
 
 ```bash
 # Only needed for manual installs
-cp -r .claude/skills/pdd-skill/commands/* .claude/commands/
+cp -r .claude/skills/pdd-skill/providers/claude/commands/* .claude/commands/
 ```
 
 Invoke them in Claude Code:
@@ -200,7 +229,7 @@ The skill auto-detects your project type and loads the right reference file to e
 
 ## Example
 
-See [`examples/task-management-api/`](examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
+See [`core/examples/task-management-api/`](core/examples/task-management-api/) for a complete PDD setup with filled-in context files, standalone and chained feature prompts, and an eval checklist.
 
 ## Migrating from the old layout
 

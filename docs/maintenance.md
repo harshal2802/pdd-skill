@@ -65,18 +65,11 @@ bash tests/test-hooks.sh
 
 For PR and release prep, see [`release-readiness.md`](release-readiness.md).
 
-## Compatibility Paths
+## Root-Level Paths
 
-The top-level paths below are deprecated compatibility links for existing installs and docs:
+Legacy compatibility symlinks have been removed. Only two root-level symlinks remain because they are required by their respective plugin systems:
 
-- `commands/`
-- `skills/`
-- `hooks/`
-- `.claude-plugin/`
-- `copilot/`
-- `references/`
-- `examples/`
+- `.claude-plugin/` — Claude Code plugin discovery
+- `plugins/pdd-skill` — Codex repo-local marketplace
 
-Their canonical homes live under `providers/` or `core/`.
-
-Do not add new documentation, tests, or automation that targets these shim paths unless you are specifically verifying backward compatibility.
+All docs, tests, and automation should use `core/` and `providers/` paths directly.

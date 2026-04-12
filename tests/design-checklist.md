@@ -46,19 +46,19 @@
 
 | # | Test Case | Signal | Expected | Result |
 |---|---|---|---|---|
-| 2.1 | Frontend from project.md | project.md contains "React 18, Tailwind" | Load `references/frontend.md` | |
-| 2.2 | Backend from user speech | "I'm building an Express API" | Load `references/backend.md` | |
-| 2.3 | Mobile from framework | "React Native with Expo" | Load `references/mobile.md` | |
-| 2.4 | Data/ML from tools | "Using pandas and PyTorch" | Load `references/data-ml.md` | |
-| 2.5 | DevOps from tools | "Terraform + Kubernetes" | Load `references/devops.md` | |
+| 2.1 | Frontend from project.md | project.md contains "React 18, Tailwind" | Load `core/references/frontend.md` | |
+| 2.2 | Backend from user speech | "I'm building an Express API" | Load `core/references/backend.md` | |
+| 2.3 | Mobile from framework | "React Native with Expo" | Load `core/references/mobile.md` | |
+| 2.4 | Data/ML from tools | "Using pandas and PyTorch" | Load `core/references/data-ml.md` | |
+| 2.5 | DevOps from tools | "Terraform + Kubernetes" | Load `core/references/devops.md` | |
 | 2.6 | Full-stack from framework | "Next.js app" | Load `fullstack.md` + `frontend.md` + `backend.md` | |
 | 2.7 | Ambiguous signal | "Python project" | Ask for clarification | |
 | 2.8 | No signal | User says nothing about stack | Ask: "What kind of project is this?" | |
 | 2.9 | Multi-type project | "Terraform for infra + React dashboard" | Load DevOps + Frontend references | |
 | 2.10 | Conflicting conventions | DevOps kebab-case vs Frontend PascalCase | Ask user which to follow | |
-| 2.11 | Embedded/IoT type | "I'm building Arduino firmware" | Load `references/embedded-iot.md` | |
+| 2.11 | Embedded/IoT type | "I'm building Arduino firmware" | Load `core/references/embedded-iot.md` | |
 | 2.12 | Type changes mid-session | Starts backend, later mentions frontend | Re-detect and load additional references | |
-| 2.13 | Library composite type | "React component library on npm" | Load `references/library.md` + `references/frontend.md` | |
+| 2.13 | Library composite type | "React component library on npm" | Load `core/references/library.md` + `core/references/frontend.md` | |
 
 ---
 
@@ -266,8 +266,8 @@ Every workflow in SKILL.md must have a corresponding command and Copilot prompt.
 
 | # | Test Case | How to verify | Result |
 |---|---|---|---|
-| 14.1 | Command for every workflow | Each workflow in SKILL.md has a matching `commands/pdd-*.md` | |
-| 14.2 | Copilot prompt for every command | Each `commands/pdd-*.md` has a matching `copilot/prompts/pdd-*.prompt.md` | |
+| 14.1 | Command for every workflow | Each workflow in SKILL.md has a matching `providers/claude/commands/pdd-*.md` | |
+| 14.2 | Copilot prompt for every command | Each `providers/claude/commands/pdd-*.md` has a matching `providers/copilot/prompts/pdd-*.prompt.md` | |
 | 14.3 | Workflow count matches | SKILL.md count, README count, and actual file count are consistent | |
 | 14.4 | Workflow numbering consistent | Internal cross-references use correct workflow numbers | |
 
@@ -277,10 +277,10 @@ Every path mentioned in a file must be accessible from where that file runs.
 
 | # | Test Case | How to verify | Result |
 |---|---|---|---|
-| 14.5 | SKILL.md → references/ | Every `references/*.md` path in SKILL.md exists in the repo | |
-| 14.6 | Commands → references/ | Every `references/` path in commands exists relative to the skill dir | |
+| 14.5 | SKILL.md → references/ | Every `core/references/*.md` path in SKILL.md exists in the repo | |
+| 14.6 | Commands → references/ | Every `core/references/` path in commands exists relative to the skill dir | |
 | 14.7 | Copilot prompts → `#file:` | Every `#file:references/*.md` in Copilot prompts has a setup instruction to copy it | |
-| 14.8 | Copilot setup → files exist | Every file listed in `copilot/README.md` setup exists in the repo | |
+| 14.8 | Copilot setup → files exist | Every file listed in `providers/copilot/README.md` setup exists in the repo | |
 
 ### 14c. Slash command references
 
@@ -288,16 +288,16 @@ Every `/project:pdd-*` or `/pdd-*` reference points to an existing command.
 
 | # | Test Case | How to verify | Result |
 |---|---|---|---|
-| 14.9 | Commands reference valid commands | Every `/project:pdd-*` in command files maps to an existing `commands/pdd-*.md` | |
-| 14.10 | Copilot prompts reference valid prompts | Every `/pdd-*` in Copilot prompts maps to an existing `copilot/prompts/pdd-*.prompt.md` | |
+| 14.9 | Commands reference valid commands | Every `/project:pdd-*` in command files maps to an existing `providers/claude/commands/pdd-*.md` | |
+| 14.10 | Copilot prompts reference valid prompts | Every `/pdd-*` in Copilot prompts maps to an existing `providers/copilot/prompts/pdd-*.prompt.md` | |
 | 14.11 | SKILL.md references valid commands | Every `/project:pdd-*` in SKILL.md maps to an existing command file | |
 
 ### 14d. README consistency
 
 | # | Test Case | How to verify | Result |
 |---|---|---|---|
-| 14.12 | README command table complete | Every file in `commands/` appears in the README command table | |
-| 14.13 | Copilot README command table complete | Every file in `copilot/prompts/` appears in the Copilot README table | |
+| 14.12 | README command table complete | Every file in `providers/claude/commands/` appears in the README command table | |
+| 14.13 | Copilot README command table complete | Every file in `providers/copilot/prompts/` appears in the Copilot README table | |
 | 14.14 | Copilot README setup covers all deps | Every external file referenced by Copilot prompts has a copy instruction in setup | |
 
 ---
@@ -321,7 +321,7 @@ Every `/project:pdd-*` or `/pdd-*` reference points to an existing command.
 
 ## How to Run This Checklist
 
-1. Read through SKILL.md, commands/, copilot/prompts/, and both READMEs
+1. Read through SKILL.md, providers/claude/commands/, providers/copilot/prompts/, and the provider READMEs
 2. For each test case, verify the expected behavior is defined in the relevant file(s)
 3. Mark PASS or FAIL
 4. For cross-file consistency (section 14), use the verification commands below
@@ -330,35 +330,35 @@ Every `/project:pdd-*` or `/pdd-*` reference points to an existing command.
 
 ```bash
 # 14.1 — Command for every workflow (should be 11: 9 workflows + help + status)
-ls commands/pdd-*.md | wc -l
+ls providers/claude/commands/pdd-*.md | wc -l
 
 # 14.2 — Copilot prompt for every command
-diff <(ls commands/ | sed 's/.md//' | sort) <(ls copilot/prompts/ | sed 's/.prompt.md//' | sort)
+diff <(ls providers/claude/commands/ | sed 's/.md//' | sort) <(ls providers/copilot/prompts/ | sed 's/.prompt.md//' | sort)
 
 # 14.5/14.6 — All referenced reference files exist
 for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
-  [ -f "references/$f.md" ] && echo "OK: references/$f.md" || echo "MISSING: references/$f.md"
+  [ -f "core/references/$f.md" ] && echo "OK: core/references/$f.md" || echo "MISSING: core/references/$f.md"
 done
 
 # 14.7 — Copilot #file: references have setup instructions
-grep -q 'cp.*references/' copilot/README.md && echo "OK: references/ copy instruction" || echo "MISSING: references/ copy instruction"
+grep -q 'cp.*core/references/' providers/copilot/README.md && echo "OK: core/references/ copy instruction" || echo "MISSING: core/references/ copy instruction"
 for f in frontend backend mobile data-ml devops fullstack library cli-devtools embedded-iot game-dev blockchain security api-platform desktop-gui compiler-lang robotics; do
-  grep -q "$f.md" copilot/README.md && echo "OK: $f.md listed" || echo "MISSING from setup: $f.md"
+  grep -q "$f.md" providers/copilot/README.md && echo "OK: $f.md listed" || echo "MISSING from setup: $f.md"
 done
 
 # 14.9/14.10 — Slash command references point to existing files
-grep -oh '/project:pdd-[a-z]*' commands/*.md | sort -u | while read cmd; do
-  f="commands/$(echo $cmd | sed 's|/project:||').md"
+grep -oh '/project:pdd-[a-z]*' providers/claude/commands/*.md | sort -u | while read cmd; do
+  f="providers/claude/commands/$(echo $cmd | sed 's|/project:||').md"
   [ -f "$f" ] && echo "OK: $cmd" || echo "BROKEN: $cmd → $f"
 done
 
 # 14.12/14.13 — README tables match actual files
 echo "=== Main README ==="
-for f in $(ls commands/ | sed 's/.md//'); do
+for f in $(ls providers/claude/commands/ | sed 's/.md//'); do
   grep -q "$f" README.md && echo "OK: $f" || echo "MISSING from README: $f"
 done
 echo "=== Copilot README ==="
-for f in $(ls copilot/prompts/ | sed 's/.prompt.md//'); do
-  grep -q "$f" copilot/README.md && echo "OK: $f" || echo "MISSING from Copilot README: $f"
+for f in $(ls providers/copilot/prompts/ | sed 's/.prompt.md//'); do
+  grep -q "$f" providers/copilot/README.md && echo "OK: $f" || echo "MISSING from Copilot README: $f"
 done
 ```

@@ -44,11 +44,9 @@ def copy_repo(tmpdir: pathlib.Path) -> pathlib.Path:
 
 
 def test_claude_clone_surface(repo_copy: pathlib.Path) -> None:
-    assert_true((repo_copy / "skills").is_symlink(), "cloned repo preserves skills compatibility symlink")
-    assert_true((repo_copy / "commands").is_symlink(), "cloned repo preserves commands compatibility symlink")
     assert_true((repo_copy / ".claude-plugin").is_symlink(), "cloned repo preserves Claude plugin symlink")
-    assert_file(repo_copy / "skills/pdd/SKILL.md", "Claude clone surface exposes skills/pdd/SKILL.md")
-    assert_file(repo_copy / "commands/pdd-help.md", "Claude clone surface exposes commands/pdd-help.md")
+    assert_file(repo_copy / "providers/claude/skills/pdd/SKILL.md", "Claude clone surface exposes providers/claude/skills/pdd/SKILL.md")
+    assert_file(repo_copy / "providers/claude/commands/pdd-help.md", "Claude clone surface exposes providers/claude/commands/pdd-help.md")
     assert_file(repo_copy / ".claude-plugin/plugin.json", "Claude clone surface exposes plugin manifest")
 
 
@@ -56,9 +54,9 @@ def test_copilot_copy_surface(repo_copy: pathlib.Path) -> None:
     install_root = repo_copy / "_tmp-copilot-project" / ".github"
     install_root.mkdir(parents=True)
 
-    shutil.copy2(repo_copy / "copilot/copilot-instructions.md", install_root / "copilot-instructions.md")
-    shutil.copytree(repo_copy / "copilot/prompts", install_root / "prompts")
-    shutil.copytree(repo_copy / "references", install_root / "references")
+    shutil.copy2(repo_copy / "providers/copilot/copilot-instructions.md", install_root / "copilot-instructions.md")
+    shutil.copytree(repo_copy / "providers/copilot/prompts", install_root / "prompts")
+    shutil.copytree(repo_copy / "core/references", install_root / "references")
 
     assert_file(
         install_root / "copilot-instructions.md",
