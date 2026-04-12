@@ -1,38 +1,36 @@
-name: Render on release
+name: Release Render
 
 on:
-  release:
-    types: [published]
-
-permissions:
-  contents: write
+  push:
+    branches:
+      - main
 
 jobs:
-  render:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create temporary branch
+        run: |
+          git checkout -b temp-release-branch
+
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m 'Release changes'
+
+      - name: Push temporary branch
+        run: |
+          git push origin temp-release-branch
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          ref: main
-          fetch-depth: 0
-
-      - name: Render with release version
-        run: python3 scripts/render_workflow_tables.py --version "${{ github.event.release.tag_name }}"
-
-      - name: Check for changes
-        id: diff
-        run: |
-          if git diff --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Commit and push
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Stamp version ${{ github.event.release.tag_name }} into rendered files"
-          git push
+          title: 'Release PR'
+          body: 'This PR releases the changes to main.'
+          base: main
+          head: temp-release-branch
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-requests: write
