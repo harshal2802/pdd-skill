@@ -12,6 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Create temporary branch
         run: |
           git checkout -b temp-release-branch
@@ -33,4 +38,3 @@ jobs:
           base: main
           head: temp-release-branch
           token: ${{ secrets.GITHUB_TOKEN }}
-          pull-requests: write
