@@ -1,9 +1,6 @@
 name: Release Render
 
 on:
-  push:
-    branches:
-      - main
   release:
     types: [published]
 
@@ -28,21 +25,16 @@ jobs:
 
       - name: Render workflow tables
         run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            python3 scripts/render_workflow_tables.py --version "${{ github.event.release.tag_name }}"
-          else
-            python3 scripts/render_workflow_tables.py
-          fi
+          python3 scripts/render_workflow_tables.py --version "${{ github.event.release.tag_name }}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "Re-render generated sections"
+          commit-message: "Re-render generated sections for ${{ github.event.release.tag_name }}"
           branch: auto/re-render-generated-sections
-          title: "Re-render generated sections"
+          title: "Re-render generated sections for ${{ github.event.release.tag_name }}"
           body: >
             Automated re-render of generated sections triggered by
-            ${{ github.event_name == 'release' && format('release {0}', github.event.release.tag_name) || 'a push to main' }}.
+            release ${{ github.event.release.tag_name }}.
           committer: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
