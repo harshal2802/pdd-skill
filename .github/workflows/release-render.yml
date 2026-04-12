@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -16,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -23,7 +27,12 @@ jobs:
           python-version: '3.x'
 
       - name: Render workflow tables
-        run: python3 scripts/render_workflow_tables.py
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            python3 scripts/render_workflow_tables.py --version "${{ github.event.release.tag_name }}"
+          else
+            python3 scripts/render_workflow_tables.py
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -31,7 +40,9 @@ jobs:
           commit-message: "Re-render generated sections"
           branch: auto/re-render-generated-sections
           title: "Re-render generated sections"
-          body: "Automated re-render of generated sections triggered by a push to main."
+          body: >
+            Automated re-render of generated sections triggered by
+            ${{ github.event_name == 'release' && format('release {0}', github.event.release.tag_name) || 'a push to main' }}.
           committer: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
 
