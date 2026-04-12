@@ -5,7 +5,7 @@ description: "Quick reference for all PDD commands, workflow order, and usage gu
 
 # PDD Help
 
-> **Version**: v1.3.0-24-g363fd8a
+> **Version**: v1.3.0-7-g2cf7a2c
 
 Quick reference for all PDD commands, workflow order, and usage guidance.
 
