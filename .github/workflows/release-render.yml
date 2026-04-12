@@ -32,6 +32,7 @@ jobs:
         with:
           commit-message: "Re-render generated sections for ${{ github.event.release.tag_name }}"
           branch: auto/re-render-generated-sections
+          base: main
           title: "Re-render generated sections for ${{ github.event.release.tag_name }}"
           body: >
             Automated re-render of generated sections triggered by
