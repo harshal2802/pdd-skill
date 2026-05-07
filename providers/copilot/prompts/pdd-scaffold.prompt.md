@@ -36,7 +36,7 @@ If the user already has a populated project directory or repository, route them 
 
 ## Step 2: Create The Base Structure
 
-Create a layout like:
+Create every folder and file shown in this layout. The source directory defaults to `src/` unless the user chose a different source directory name in Step 1.
 
 ```text
 <project-name>/
@@ -55,6 +55,15 @@ Create a layout like:
   <source-dir>/
   README.md
 ```
+
+On macOS/Linux, use commands like:
+
+```bash
+mkdir -p pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}} src
+touch pdd/context/project.md pdd/context/conventions.md pdd/context/decisions.md README.md
+```
+
+If the user chose a source directory name other than `src/`, replace `src` in the command with that name.
 
 Initialize git only if the directory is not already a repository.
 
@@ -80,7 +89,9 @@ Make it clear what each major folder is for:
 ## Produces
 
 - PDD folder structure under `pdd/`
+- source directory, defaulting to `src/`
 - starter context files
+- project `README.md`
 - a natural handoff to the context workflow
 
 ## Edge Cases
