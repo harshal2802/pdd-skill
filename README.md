@@ -43,7 +43,7 @@ Then add the skill to `.claude/settings.json` (create the file if it doesn't exi
 }
 ```
 
-> **Tip:** To pin a specific version, add `--branch v1.3.0` to the clone command. To install globally instead of per-project, clone to `~/pdd-skill` and reference it in `~/.claude/settings.json`.
+> **Tip:** To pin a specific version, add `--branch v1.5.0` to the clone command. To install globally instead of per-project, clone to `~/pdd-skill` and reference it in `~/.claude/settings.json`.
 
 ### GitHub Copilot
 

@@ -1,6 +1,6 @@
 {
   "name": "pdd-skill",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "description": "Prompt Driven Development for Codex: structure AI-assisted work with durable context, versioned prompts, and review workflows.",
   "author": {
     "name": "harshal2802",
