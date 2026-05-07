@@ -223,6 +223,35 @@ def validate_generated_markers():
             )
 
 
+def validate_scaffold_contract():
+    expected_fragments = (
+        "The source directory defaults to `src/`",
+        "mkdir -p pdd/{prompts/{features,templates,experiments},context,evals/{baselines,scripts}} src",
+        "replace `src` in the command",
+        "- source directory, defaulting to `src/`",
+        "- project `README.md`",
+    )
+    scaffold_paths = (
+        ROOT / "core/workflows/scaffold.md",
+        ROOT / "providers/claude/commands/pdd-scaffold.md",
+        ROOT / "providers/copilot/prompts/pdd-scaffold.prompt.md",
+    )
+
+    for path in scaffold_paths:
+        text = path.read_text()
+        for fragment in expected_fragments:
+            assert_true(
+                fragment in text,
+                f"{path.relative_to(ROOT)} preserves scaffold source directory contract: {fragment}",
+            )
+
+    init_text = (ROOT / "core/workflows/init.md").read_text()
+    assert_true(
+        "Do not create a new source directory" in init_text,
+        "init workflow still avoids creating source directories",
+    )
+
+
 def main():
     workflows, workflow_ids, provider_ids = validate_workflows()
     validate_adapter_docs(workflows)
@@ -232,6 +261,7 @@ def main():
     validate_status()
     validate_claude_skill(workflows)
     validate_generated_markers()
+    validate_scaffold_contract()
 
 
 if __name__ == "__main__":
