@@ -6,22 +6,26 @@
         {
           "check": "`pdd/context/project.md` exists and is non-empty",
           "claude_how": "Read file, check for filled-in sections",
-          "copilot_how": "Read file, check for filled-in sections"
+          "copilot_how": "Read file, check for filled-in sections",
+          "antigravity_how": "Read file, check for filled-in sections"
         },
         {
           "check": "`pdd/context/conventions.md` exists and is non-empty",
           "claude_how": "Read file",
-          "copilot_how": "Read file"
+          "copilot_how": "Read file",
+          "antigravity_how": "Read file"
         },
         {
           "check": "`pdd/context/decisions.md` exists and has entries",
           "claude_how": "Read file, count decisions",
-          "copilot_how": "Read file, count decisions"
+          "copilot_how": "Read file, count decisions",
+          "antigravity_how": "Read file, count decisions"
         },
         {
           "check": "Context is fresh",
           "claude_how": "Check for `**Last updated**` dates; flag if older than 30 days",
-          "copilot_how": "Check for `**Last updated**` dates; flag if older than 30 days"
+          "copilot_how": "Check for `**Last updated**` dates; flag if older than 30 days",
+          "antigravity_how": "Check for `**Last updated**` dates; flag if older than 30 days"
         }
       ]
     },
@@ -31,27 +35,32 @@
         {
           "check": "`pdd/prompts/features/` has prompt files",
           "claude_how": "Glob for `pdd/prompts/features/**/*.md`",
-          "copilot_how": "Look for `pdd/prompts/features/**/*.md`"
+          "copilot_how": "Look for `pdd/prompts/features/**/*.md`",
+          "antigravity_how": "Glob for `pdd/prompts/features/**/*.md`"
         },
         {
           "check": "Prompts follow the template structure",
           "claude_how": "Spot-check for `## Task`, `## Context`, `## Constraints` sections",
-          "copilot_how": "Spot-check for `## Task`, `## Context`, `## Constraints` sections"
+          "copilot_how": "Spot-check for `## Task`, `## Context`, `## Constraints` sections",
+          "antigravity_how": "Spot-check for `## Task`, `## Context`, `## Constraints` sections"
         },
         {
           "check": "`pdd/prompts/experiments/` has stale entries",
           "claude_how": "Flag any experiment files older than 7 days; suggest \"Promote to `pdd/prompts/features/` or delete\"",
-          "copilot_how": "Flag any experiment files older than 7 days; suggest \"Promote to `pdd/prompts/features/` or delete\""
+          "copilot_how": "Flag any experiment files older than 7 days; suggest \"Promote to `pdd/prompts/features/` or delete\"",
+          "antigravity_how": "Flag any experiment files older than 7 days; suggest \"Promote to `pdd/prompts/features/` or delete\""
         },
         {
           "check": "Prompt chains are complete",
           "claude_how": "Check numbered sequences for gaps (for example, `-01-` exists but `-02-` is missing)",
-          "copilot_how": "Check numbered sequences for gaps (for example, `-01-` exists but `-02-` is missing)"
+          "copilot_how": "Check numbered sequences for gaps (for example, `-01-` exists but `-02-` is missing)",
+          "antigravity_how": "Check numbered sequences for gaps (for example, `-01-` exists but `-02-` is missing)"
         },
         {
           "check": "Templates available",
           "claude_how": "Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3 or more feature prompts exist with similar structure, suggest extracting a template.",
-          "copilot_how": "Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3 or more feature prompts exist with similar structure, suggest extracting a template."
+          "copilot_how": "Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3 or more feature prompts exist with similar structure, suggest extracting a template.",
+          "antigravity_how": "Check `pdd/prompts/templates/` for `.template.md` files. If empty but 3 or more feature prompts exist with similar structure, suggest extracting a template."
         }
       ]
     },
@@ -61,12 +70,14 @@
         {
           "check": "`pdd/evals/` has eval files",
           "claude_how": "Glob for `pdd/evals/*.md`",
-          "copilot_how": "Look for `pdd/evals/*.md`"
+          "copilot_how": "Look for `pdd/evals/*.md`",
+          "antigravity_how": "Glob for `pdd/evals/*.md`"
         },
         {
           "check": "Eval coverage",
           "claude_how": "Compare prompts in `pdd/prompts/features/` vs evals; flag prompts without evals",
-          "copilot_how": "Compare prompts in `pdd/prompts/features/` vs evals; flag prompts without evals"
+          "copilot_how": "Compare prompts in `pdd/prompts/features/` vs evals; flag prompts without evals",
+          "antigravity_how": "Compare prompts in `pdd/prompts/features/` vs evals; flag prompts without evals"
         }
       ]
     },
@@ -76,12 +87,14 @@
         {
           "check": "`src/` has committed artifacts",
           "claude_how": "Check if `src/` has files",
-          "copilot_how": "Check if `src/` has files"
+          "copilot_how": "Check if `src/` has files",
+          "antigravity_how": "Check if `src/` has files"
         },
         {
           "check": "Uncommitted AI output",
           "claude_how": "Check git status for untracked files outside the PDD structure",
-          "copilot_how": "Check git status for untracked files outside the PDD structure"
+          "copilot_how": "Check git status for untracked files outside the PDD structure",
+          "antigravity_how": "Check git status for untracked files outside the PDD structure"
         }
       ]
     }

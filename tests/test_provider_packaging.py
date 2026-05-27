@@ -77,6 +77,34 @@ def test_copilot_copy_surface(repo_copy: pathlib.Path) -> None:
     assert_true(len(reference_files) == 16, "Copilot install gets all 16 reference files")
 
 
+def test_antigravity_copy_surface(repo_copy: pathlib.Path) -> None:
+    install_root = repo_copy / "_tmp-antigravity-project"
+    install_root.mkdir()
+
+    shutil.copy2(repo_copy / "providers/antigravity/GEMINI.md", install_root / "GEMINI.md")
+    skill_dir = install_root / ".agents/skills/pdd"
+    skill_dir.mkdir(parents=True)
+    shutil.copy2(repo_copy / "providers/antigravity/skills/pdd/SKILL.md", skill_dir / "SKILL.md")
+    shutil.copytree(repo_copy / "providers/antigravity/workflows", install_root / ".agent/workflows")
+    shutil.copytree(repo_copy / "core/references", install_root / ".agent/references")
+
+    assert_file(install_root / "GEMINI.md", "Antigravity copy surface installs GEMINI.md")
+    assert_file(skill_dir / "SKILL.md", "Antigravity copy surface installs skill entrypoint")
+    assert_file(
+        install_root / ".agent/workflows/pdd-context.md",
+        "Antigravity copy surface installs workflow files",
+    )
+    assert_file(
+        install_root / ".agent/references/frontend.md",
+        "Antigravity copy surface installs shared references",
+    )
+
+    workflow_files = sorted((install_root / ".agent/workflows").glob("*.md"))
+    reference_files = sorted((install_root / ".agent/references").glob("*.md"))
+    assert_true(len(workflow_files) == 11, "Antigravity install gets all 11 workflow files")
+    assert_true(len(reference_files) == 16, "Antigravity install gets all 16 reference files")
+
+
 def test_codex_plugin_surface(repo_copy: pathlib.Path) -> None:
     plugin_root = repo_copy / "plugins/pdd-skill"
     assert_true(plugin_root.is_dir(), "Codex compatibility plugin path resolves to a directory")
@@ -114,6 +142,7 @@ def main() -> None:
         test_claude_clone_surface(repo_copy)
         test_copilot_copy_surface(repo_copy)
         test_codex_plugin_surface(repo_copy)
+        test_antigravity_copy_surface(repo_copy)
         test_manifest_alignment(repo_copy)
 
 

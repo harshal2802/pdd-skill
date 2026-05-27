@@ -27,6 +27,16 @@
         ".agents/plugins/marketplace.json",
         "plugins/pdd-skill"
       ]
+    },
+    {
+      "id": "antigravity",
+      "label": "Google Antigravity",
+      "root": "providers/antigravity",
+      "compatibility_paths": [
+        "GEMINI.md",
+        "skills",
+        "workflows"
+      ]
     }
   ]
 }

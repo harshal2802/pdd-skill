@@ -63,6 +63,10 @@ def main() -> None:
             ROOT / f"providers/copilot/prompts/pdd-{workflow_id}.prompt.md",
             f"providers/copilot/prompts/pdd-{workflow_id}.prompt.md exists",
         )
+        assert_file(
+            ROOT / f"providers/antigravity/workflows/pdd-{workflow_id}.md",
+            f"providers/antigravity/workflows/pdd-{workflow_id}.md exists",
+        )
 
     for ref in sorted((ROOT / "core/references").glob("*.md")):
         ok(f"{ref.relative_to(ROOT)} exists")
@@ -91,6 +95,18 @@ def main() -> None:
         ROOT / ".agents/plugins/marketplace.json",
         ".agents/plugins/marketplace.json exists",
     )
+    assert_file(
+        ROOT / "providers/antigravity/GEMINI.md",
+        "providers/antigravity/GEMINI.md exists",
+    )
+    assert_file(
+        ROOT / "providers/antigravity/skills/pdd/SKILL.md",
+        "providers/antigravity/skills/pdd/SKILL.md exists",
+    )
+    assert_file(
+        ROOT / "providers/antigravity/README.md",
+        "providers/antigravity/README.md exists",
+    )
 
     assert_symlink(ROOT / ".claude-plugin", "providers/claude/plugin")
     assert_symlink(ROOT / "plugins/pdd-skill", "../providers/codex/plugin")
@@ -103,12 +119,13 @@ def main() -> None:
         ok(f"{removed} removed (no longer a compatibility symlink)")
 
     provider_ids = {provider["id"] for provider in provider_meta}
-    if provider_ids != {"claude", "copilot", "codex"}:
+    expected_provider_ids = {"claude", "copilot", "codex", "antigravity"}
+    if provider_ids != expected_provider_ids:
         fail(f"provider ids mismatch: {sorted(provider_ids)}")
-    ok("provider metadata covers claude, copilot, and codex")
+    ok("provider metadata covers claude, copilot, codex, and antigravity")
 
     readme = (ROOT / "README.md").read_text()
-    for expected in ("Claude Code", "GitHub Copilot", "Codex", "core/", "providers/"):
+    for expected in ("Claude Code", "GitHub Copilot", "Codex", "Antigravity", "core/", "providers/"):
         if expected not in readme:
             fail(f"README.md missing {expected!r}")
     ok("README.md covers the multi-provider structure")
