@@ -9,7 +9,8 @@
       "providers": {
         "claude": "/project:pdd-scaffold",
         "copilot": "/pdd-scaffold",
-        "codex": "scaffold"
+        "codex": "scaffold",
+        "antigravity": "/pdd-scaffold"
       }
     },
     {
@@ -21,7 +22,8 @@
       "providers": {
         "claude": "/project:pdd-init",
         "copilot": "/pdd-init",
-        "codex": "init"
+        "codex": "init",
+        "antigravity": "/pdd-init"
       }
     },
     {
@@ -33,7 +35,8 @@
       "providers": {
         "claude": "/project:pdd-context",
         "copilot": "/pdd-context",
-        "codex": "context"
+        "codex": "context",
+        "antigravity": "/pdd-context"
       }
     },
     {
@@ -45,7 +48,8 @@
       "providers": {
         "claude": "/project:pdd-research",
         "copilot": "/pdd-research",
-        "codex": "research"
+        "codex": "research",
+        "antigravity": "/pdd-research"
       }
     },
     {
@@ -57,7 +61,8 @@
       "providers": {
         "claude": "/project:pdd-plan",
         "copilot": "/pdd-plan",
-        "codex": "plan"
+        "codex": "plan",
+        "antigravity": "/pdd-plan"
       }
     },
     {
@@ -69,7 +74,8 @@
       "providers": {
         "claude": "/project:pdd-prompts",
         "copilot": "/pdd-prompts",
-        "codex": "prompts"
+        "codex": "prompts",
+        "antigravity": "/pdd-prompts"
       }
     },
     {
@@ -81,7 +87,8 @@
       "providers": {
         "claude": "/project:pdd-update",
         "copilot": "/pdd-update",
-        "codex": "update"
+        "codex": "update",
+        "antigravity": "/pdd-update"
       }
     },
     {
@@ -93,7 +100,8 @@
       "providers": {
         "claude": "/project:pdd-review",
         "copilot": "/pdd-review",
-        "codex": "review"
+        "codex": "review",
+        "antigravity": "/pdd-review"
       }
     },
     {
@@ -105,7 +113,8 @@
       "providers": {
         "claude": "/project:pdd-eval",
         "copilot": "/pdd-eval",
-        "codex": "eval"
+        "codex": "eval",
+        "antigravity": "/pdd-eval"
       }
     },
     {
@@ -117,7 +126,8 @@
       "providers": {
         "claude": "/project:pdd-status",
         "copilot": "/pdd-status",
-        "codex": "status"
+        "codex": "status",
+        "antigravity": "/pdd-status"
       }
     },
     {
@@ -129,7 +139,8 @@
       "providers": {
         "claude": "/project:pdd-help",
         "copilot": "/pdd-help",
-        "codex": "help"
+        "codex": "help",
+        "antigravity": "/pdd-help"
       }
     }
   ]

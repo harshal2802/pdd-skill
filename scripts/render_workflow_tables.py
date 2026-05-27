@@ -46,6 +46,7 @@ WORKFLOW_RENDER_IDS = (
 TARGET_SPECS = {
     "README.md": (
         "claude-command-table",
+        "antigravity-command-table",
     ),
     "providers/copilot/README.md": (
         "copilot-command-table",
@@ -108,6 +109,39 @@ TARGET_SPECS = {
     "providers/copilot/prompts/pdd-update.prompt.md": (),
     "providers/copilot/prompts/pdd-review.prompt.md": (),
     "providers/copilot/prompts/pdd-eval.prompt.md": (),
+    "providers/antigravity/README.md": (
+        "antigravity-command-table",
+    ),
+    "providers/antigravity/GEMINI.md": (
+        "antigravity-principles",
+        "antigravity-routing-table",
+    ),
+    "providers/antigravity/skills/pdd/SKILL.md": (
+        "antigravity-workflow-overview",
+        "antigravity-workflow-transitions",
+        "antigravity-quick-path",
+        "antigravity-principles",
+        "antigravity-routing-table",
+    ),
+    "providers/antigravity/workflows/pdd-help.md": (
+        "antigravity-help-quick-start",
+        "antigravity-help-command-groups",
+        "antigravity-help-scenarios",
+        "antigravity-help-command-detail",
+    ),
+    "providers/antigravity/workflows/pdd-status.md": (
+        "antigravity-status-checks",
+        "antigravity-status-output-format",
+    ),
+    "providers/antigravity/workflows/pdd-scaffold.md": (),
+    "providers/antigravity/workflows/pdd-init.md": (),
+    "providers/antigravity/workflows/pdd-context.md": (),
+    "providers/antigravity/workflows/pdd-research.md": (),
+    "providers/antigravity/workflows/pdd-plan.md": (),
+    "providers/antigravity/workflows/pdd-prompts.md": (),
+    "providers/antigravity/workflows/pdd-update.md": (),
+    "providers/antigravity/workflows/pdd-review.md": (),
+    "providers/antigravity/workflows/pdd-eval.md": (),
 }
 INLINE_CODE_RE = re.compile(r"`([^`\n]+)`")
 
@@ -292,6 +326,21 @@ def render_help_document(workflows, help_meta, provider_id):
             "scenarios": "copilot-help-scenarios",
             "command_detail": "copilot-help-command-detail",
         }
+    elif provider_id == "antigravity":
+        frontmatter = ""
+        user_input = ""
+        specific_heading = "## If the user asked about a specific command"
+        specific_text = (
+            'If the user mentioned a specific command (e.g., "context", "pdd-context", "review"), '
+            "show detailed help for that command only:"
+        )
+        fallback_heading = "## If no specific command was mentioned"
+        markers = {
+            "quick_start": "antigravity-help-quick-start",
+            "command_groups": "antigravity-help-command-groups",
+            "scenarios": "antigravity-help-scenarios",
+            "command_detail": "antigravity-help-command-detail",
+        }
     else:
         raise ValueError(f"Unsupported help provider_id: {provider_id}")
 
@@ -369,6 +418,13 @@ def render_status_document(status_meta, provider_id):
             "checks": "copilot-status-checks",
             "output": "copilot-status-output-format",
         }
+    elif provider_id == "antigravity":
+        frontmatter = ""
+        user_input = ""
+        markers = {
+            "checks": "antigravity-status-checks",
+            "output": "antigravity-status-output-format",
+        }
     else:
         raise ValueError(f"Unsupported status provider_id: {provider_id}")
 
@@ -395,6 +451,7 @@ def render_routing_table(workflows, routing_meta, provider_id):
         "claude": ("If the user says...", "Use workflow"),
         "copilot": ("User intent", "Suggest"),
         "codex": ("If the user wants to...", "Use"),
+        "antigravity": ("User intent", "Use"),
     }
     rows = []
     for route in routing_meta["routes"]:
@@ -408,6 +465,9 @@ def render_routing_table(workflows, routing_meta, provider_id):
         elif provider_id == "codex":
             left = route["codex_intent"]
             right = f"`{workflow['providers']['codex']}`"
+        elif provider_id == "antigravity":
+            left = route["antigravity_intent"]
+            right = f"Use `{workflow['providers']['antigravity']}`"
         else:
             raise ValueError(f"Unsupported provider_id: {provider_id}")
         rows.append((left, right))
@@ -500,6 +560,18 @@ def render_workflow_adapter_document(workflow, adapter_meta, workflows, provider
             f"{body}\n"
         )
 
+    if provider_id == "antigravity":
+        adapter_note = (
+            f"This is the Antigravity adapter for the shared `{workflow['label']}` workflow in "
+            f"`core/workflows/{workflow['id']}.md`. Keep shared workflow behavior aligned there; "
+            "this file exists to preserve Antigravity-specific `/pdd-*` command wording."
+        )
+        return (
+            f"# {title}\n\n"
+            f"{adapter_note}\n\n"
+            f"{body}\n"
+        )
+
     raise ValueError(f"Unsupported workflow adapter provider_id: {provider_id}")
 
 
@@ -531,6 +603,7 @@ def render_files():
     rendered_blocks = {
         ROOT / "README.md": {
             "claude-command-table": markdown_table(provider_rows(workflows, "claude")),
+            "antigravity-command-table": markdown_table(provider_rows(workflows, "antigravity")),
         },
         ROOT / "providers/copilot/README.md": {
             "copilot-command-table": markdown_table(provider_rows(workflows, "copilot")),
@@ -555,12 +628,28 @@ def render_files():
             "codex-complex-flow": principles_meta["codex_default_flow"]["complex"],
             "codex-routing-table": render_routing_table(workflows, routing_meta, "codex"),
         },
+        ROOT / "providers/antigravity/README.md": {
+            "antigravity-command-table": markdown_table(provider_rows(workflows, "antigravity")),
+        },
+        ROOT / "providers/antigravity/GEMINI.md": {
+            "antigravity-principles": render_principles(principles_meta, "antigravity"),
+            "antigravity-routing-table": render_routing_table(workflows, routing_meta, "antigravity"),
+        },
+        ROOT / "providers/antigravity/skills/pdd/SKILL.md": {
+            "antigravity-workflow-overview": render_claude_workflow_overview(workflows, claude_skill_meta),
+            "antigravity-workflow-transitions": render_claude_transitions(claude_skill_meta),
+            "antigravity-quick-path": f"**Quick path**: {principles_meta['claude_quick_path']}",
+            "antigravity-principles": render_principles(principles_meta, "antigravity"),
+            "antigravity-routing-table": render_routing_table(workflows, routing_meta, "antigravity"),
+        },
     }
     fully_rendered_targets = {
         ROOT / "providers/claude/commands/pdd-help.md": render_help_document(workflows, help_meta, "claude"),
         ROOT / "providers/copilot/prompts/pdd-help.prompt.md": render_help_document(workflows, help_meta, "copilot"),
+        ROOT / "providers/antigravity/workflows/pdd-help.md": render_help_document(workflows, help_meta, "antigravity"),
         ROOT / "providers/claude/commands/pdd-status.md": render_status_document(status_meta, "claude"),
         ROOT / "providers/copilot/prompts/pdd-status.prompt.md": render_status_document(status_meta, "copilot"),
+        ROOT / "providers/antigravity/workflows/pdd-status.md": render_status_document(status_meta, "antigravity"),
     }
     for workflow_id in WORKFLOW_RENDER_IDS:
         workflow = workflow_map[workflow_id]
@@ -571,6 +660,9 @@ def render_files():
         fully_rendered_targets[
             ROOT / f"providers/copilot/prompts/pdd-{workflow_id}.prompt.md"
         ] = render_workflow_adapter_document(workflow, adapter_meta, workflows, "copilot")
+        fully_rendered_targets[
+            ROOT / f"providers/antigravity/workflows/pdd-{workflow_id}.md"
+        ] = render_workflow_adapter_document(workflow, adapter_meta, workflows, "antigravity")
 
     expected_paths = set(target_paths())
     actual_paths = set(rendered_blocks) | set(fully_rendered_targets)

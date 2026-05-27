@@ -1,8 +1,3 @@
----
-agent: agent
-description: "Quick reference for all PDD commands, workflow order, and usage guidance"
----
-
 # PDD Help
 
 > **Version**: v1.4.0-3-gf83deb4
@@ -29,13 +24,13 @@ Show the full quick reference below.
 
 ### Quick start
 
-<!-- GENERATED:copilot-help-quick-start:start -->
+<!-- GENERATED:antigravity-help-quick-start:start -->
 > **Quick start**: For most features, you only need three commands: **Context -> Prompts -> Review**. Add Research, Plan, and Eval for complex or critical features.
-<!-- GENERATED:copilot-help-quick-start:end -->
+<!-- GENERATED:antigravity-help-quick-start:end -->
 
 ### All commands
 
-<!-- GENERATED:copilot-help-command-groups:start -->
+<!-- GENERATED:antigravity-help-command-groups:start -->
 **Getting started**
 
 | Command | What it does |
@@ -61,11 +56,11 @@ Show the full quick reference below.
 |---|---|
 | `/pdd-review` | Verify and review AI-generated output before it is committed. |
 | `/pdd-eval` | Track prompt quality over time with repeatable evaluation criteria. |
-<!-- GENERATED:copilot-help-command-groups:end -->
+<!-- GENERATED:antigravity-help-command-groups:end -->
 
 ### "What should I use?"
 
-<!-- GENERATED:copilot-help-scenarios:start -->
+<!-- GENERATED:antigravity-help-scenarios:start -->
 | I want to... | Use |
 |---|---|
 | Start a brand new project | `/pdd-scaffold` -> `/pdd-context` |
@@ -75,13 +70,13 @@ Show the full quick reference below.
 | Fix a prompt that isn't working | `/pdd-update` |
 | Check if my project setup is complete | `/pdd-status` |
 | Track prompt quality over time | `/pdd-eval` |
-<!-- GENERATED:copilot-help-scenarios:end -->
+<!-- GENERATED:antigravity-help-scenarios:end -->
 
 ### Per-command detail
 
 Use this table when the user asks about a specific command.
 
-<!-- GENERATED:copilot-help-command-detail:start -->
+<!-- GENERATED:antigravity-help-command-detail:start -->
 | Command | When to use | Inputs | Produces | Next step |
 |---|---|---|---|---|
 | `pdd-scaffold` | Starting a brand new project from scratch | Project name (optional) | Folder structure with context stubs | `/pdd-context` |
@@ -95,4 +90,4 @@ Use this table when the user asks about a specific command.
 | `pdd-eval` | After committing, to track prompt reliability | Prompt file plus expected outcomes | Eval results in `pdd/evals/` | Update the prompt if quality drops |
 | `pdd-status` | When you want to check project health | None | Status report with suggestions | Whatever the report recommends |
 | `pdd-help` | When you want to see available commands | Command name (optional) | This reference | Whatever workflow fits |
-<!-- GENERATED:copilot-help-command-detail:end -->
+<!-- GENERATED:antigravity-help-command-detail:end -->

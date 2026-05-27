@@ -2,7 +2,7 @@
 
 A multi-provider Prompt Driven Development toolkit for structuring AI-assisted development with versioned prompts, persistent context, and structured review.
 
-PDD treats prompts as first-class artifacts, not throwaway inputs. This repo currently packages the same core PDD system for Claude Code, GitHub Copilot, and Codex. The core workflows are **scaffold**, **init**, **context**, **research**, **plan**, **prompts**, **update**, **review**, **eval**, plus the `status` and `help` utility workflows.
+PDD treats prompts as first-class artifacts, not throwaway inputs. This repo currently packages the same core PDD system for Claude Code, GitHub Copilot, Codex, and Google Antigravity. The core workflows are **scaffold**, **init**, **context**, **research**, **plan**, **prompts**, **update**, **review**, **eval**, plus the `status` and `help` utility workflows.
 
 For simple features, you only need **Context → Prompts → Review**. Research, Plan, and Eval add value for complex or critical features but are not required.
 
@@ -15,6 +15,7 @@ PDD is packaged for three surfaces from the same shared core:
 | Claude Code | `providers/claude/` | Claude skill, slash commands, hooks, and plugin metadata |
 | GitHub Copilot | `providers/copilot/` | Copilot prompts plus always-on instructions |
 | Codex | `providers/codex/` | Codex plugin and `pdd` skill adapter |
+| Google Antigravity | `providers/antigravity/` | Antigravity skill, workflows, and `GEMINI.md` workspace rules |
 
 ### Claude Code
 
@@ -83,6 +84,33 @@ cp /tmp/pdd-skill/.agents/plugins/marketplace.json <your-project>/.agents/plugin
 The `pdd` skill exposes all workflows (e.g. `pdd:scaffold`, `pdd:context`, `pdd:review`).
 
 See [`providers/codex/README.md`](providers/codex/README.md) for layout details and the full command table.
+
+### Google Antigravity
+
+Clone the repo, then copy these files into your project:
+
+```bash
+git clone https://github.com/harshal2802/pdd-skill.git /tmp/pdd-skill
+
+# Copy the workspace rules
+cp /tmp/pdd-skill/providers/antigravity/GEMINI.md <your-project>/GEMINI.md
+
+# Copy the skill entrypoint
+mkdir -p <your-project>/.agents/skills/pdd
+cp /tmp/pdd-skill/providers/antigravity/skills/pdd/SKILL.md <your-project>/.agents/skills/pdd/SKILL.md
+
+# Copy the workflow files
+mkdir -p <your-project>/.agent/workflows
+cp /tmp/pdd-skill/providers/antigravity/workflows/*.md <your-project>/.agent/workflows/
+
+# Copy the reference files (project type flavors)
+mkdir -p <your-project>/.agent/references
+cp -r /tmp/pdd-skill/core/references/* <your-project>/.agent/references/
+```
+
+In Antigravity, the workflow files auto-expose as slash commands (e.g. `/pdd-scaffold`, `/pdd-context`). `GEMINI.md` is used instead of the cross-tool-standard `AGENTS.md` so installing alongside Codex or Cursor does not produce a rules-file collision.
+
+See [`providers/antigravity/README.md`](providers/antigravity/README.md) for layout details and the full command table.
 
 ## Repo Structure
 
@@ -172,6 +200,24 @@ Invoke them in Claude Code:
 <!-- GENERATED:claude-command-table:end -->
 
 All commands accept optional arguments, e.g., `/project:pdd-scaffold my-api` or `/project:pdd-review paste your code here`.
+
+In Antigravity (workflow files auto-expose as `/`-prefixed slash commands):
+
+<!-- GENERATED:antigravity-command-table:start -->
+| Command | What it does |
+|---|---|
+| `/pdd-scaffold` | Set up a new PDD project with folders, context stubs, and starter guidance. |
+| `/pdd-init` | Add PDD structure to an existing repository and infer a starting context. |
+| `/pdd-context` | Write or update the persistent project context files that future prompts depend on. |
+| `/pdd-research` | Explore the problem space, evaluate options, and decide what to build. |
+| `/pdd-plan` | Break a feature into phases and decide the prompt chain strategy before coding. |
+| `/pdd-prompts` | Generate focused feature prompts and place them in the right PDD folder. |
+| `/pdd-update` | Diagnose and improve a prompt that is producing weak or incorrect output. |
+| `/pdd-review` | Verify and review AI-generated output before it is committed. |
+| `/pdd-eval` | Track prompt quality over time with repeatable evaluation criteria. |
+| `/pdd-status` | Check what PDD artifacts exist, what is stale, and what to do next. |
+| `/pdd-help` | Show the available workflows, when to use them, and the typical sequence. |
+<!-- GENERATED:antigravity-command-table:end -->
 
 ## Workflow
 

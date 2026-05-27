@@ -122,7 +122,7 @@ def validate_routing(workflow_ids):
     assert_equal(len(route_ids), len(set(route_ids)), "routing workflow ids are unique")
 
     for route in routing_meta["routes"]:
-        for key in ("claude_signal", "copilot_intent", "codex_intent"):
+        for key in ("claude_signal", "copilot_intent", "codex_intent", "antigravity_intent"):
             assert_true(bool(route[key].strip()), f"routing text present for {route['workflow_id']}.{key}")
 
 
@@ -152,7 +152,7 @@ def validate_status():
         assert_true(bool(layer["title"].strip()), f"status layer title is present: {layer['title']}")
         assert_true(bool(layer["checks"]), f"status layer has checks: {layer['title']}")
         for check in layer["checks"]:
-            for key in ("check", "claude_how", "copilot_how"):
+            for key in ("check", "claude_how", "copilot_how", "antigravity_how"):
                 assert_true(bool(check[key].strip()), f"status check has {key}: {layer['title']}")
 
     assert_true(bool(status_meta["output_format"]), "status output format is present")
